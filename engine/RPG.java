@@ -1,0 +1,53 @@
+package engine;
+
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import org.lwjgl.LWJGLException;
+import org.lwjgl.input.Controllers;
+import org.newdawn.slick.AppGameContainer;
+import org.newdawn.slick.GameContainer;
+import org.newdawn.slick.SlickException;
+import org.newdawn.slick.state.StateBasedGame;
+
+public class RPG extends StateBasedGame {
+    
+    
+    public RPG() {
+
+        super("(Not So)Simple RPG with Slick2D!");
+        
+    }
+    
+    
+
+    public static void main(String[] arguments)
+	    {
+	        try
+	        {
+                    try {
+                        Controllers.create();
+                    } catch (LWJGLException ex) {
+                        Logger.getLogger(RPG.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+	            AppGameContainer app = new AppGameContainer(new RPG());
+                    Sounds.load();
+                    app.setSmoothDeltas(true);
+                    app.setTargetFrameRate(60);
+	            app.setDisplayMode(SceneMap.B_WIDTH, SceneMap.B_HEIGHT, false);
+                    app.setVSync(true);
+	            app.start();
+                    Controllers.destroy();
+	        }
+	        catch (SlickException e)
+	        {
+	            e.printStackTrace();
+	        }
+	    }
+
+    @Override
+    public void initStatesList(GameContainer gc) throws SlickException {
+        addState(new SceneMap(0));
+        addState(new SceneMenu(1));
+    }
+                
+}
