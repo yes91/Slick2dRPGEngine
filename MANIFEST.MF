@@ -1,5 +1,0 @@
-Manifest-Version: 1.0
-Launcher-VM-Args: 
-Launcher-Main-Class: rpgslickport.RPG
-Main-Class: org.ninjacave.jarsplice.JarSpliceLauncher
-

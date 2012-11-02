@@ -58,14 +58,12 @@ public class GaussianFilter extends ConvolveFilter {
 		return radius;
 	}
 
-    @Override
     public BufferedImage filter( BufferedImage src, BufferedImage dst ) {
         int width = src.getWidth();
         int height = src.getHeight();
 
-        if ( dst == null ) {
+        if ( dst == null )
             dst = createCompatibleDestImage( src, null );
-        }
 
         int[] inPixels = new int[width*height];
         int[] outPixels = new int[width*height];
@@ -95,19 +93,15 @@ public class GaussianFilter extends ConvolveFilter {
 					if (f != 0) {
 						int ix = x+col;
 						if ( ix < 0 ) {
-							if ( edgeAction == CLAMP_EDGES ) {
-                                                        ix = 0;
-                                                    }
-							else if ( edgeAction == WRAP_EDGES ) {
-                                                        ix = (x+width) % width;
-                                                    }
+							if ( edgeAction == CLAMP_EDGES )
+								ix = 0;
+							else if ( edgeAction == WRAP_EDGES )
+								ix = (x+width) % width;
 						} else if ( ix >= width) {
-							if ( edgeAction == CLAMP_EDGES ) {
-                                                        ix = width-1;
-                                                    }
-							else if ( edgeAction == WRAP_EDGES ) {
-                                                        ix = (x+width) % width;
-                                                    }
+							if ( edgeAction == CLAMP_EDGES )
+								ix = width-1;
+							else if ( edgeAction == WRAP_EDGES )
+								ix = (x+width) % width;
 						}
 						int rgb = inPixels[ioffset+ix];
 						a += f * ((rgb >> 24) & 0xff);
@@ -142,18 +136,15 @@ public class GaussianFilter extends ConvolveFilter {
 		int index = 0;
 		for (int row = -r; row <= r; row++) {
 			float distance = row*row;
-			if (distance > radius2) {
-                        matrix[index] = 0;
-                    }
-			else {
-                        matrix[index] = (float)Math.exp(-(distance)/sigma22) / sqrtSigmaPi2;
-                    }
+			if (distance > radius2)
+				matrix[index] = 0;
+			else
+				matrix[index] = (float)Math.exp(-(distance)/sigma22) / sqrtSigmaPi2;
 			total += matrix[index];
 			index++;
 		}
-		for (int i = 0; i < rows; i++) {
-                matrix[i] /= total;
-            }
+		for (int i = 0; i < rows; i++)
+			matrix[i] /= total;
 
 		return new Kernel(rows, 1, matrix);
 	}
@@ -162,4 +153,3 @@ public class GaussianFilter extends ConvolveFilter {
 		return "Blur/Gaussian Blur...";
 	}
 }
-
