@@ -142,23 +142,9 @@ public class WorldPlayer extends GameObject {
         
         if(input.isKeyPressed(Input.KEY_U)){
             
-            giveItem(ItemReader.getItems().get(0), 1);
-            giveItem(ItemReader.getItems().get(2), 1);
-            giveItem(ItemReader.getItems().get(3), 1);
-            giveItem(ItemReader.getItems().get(5), 1);
-            giveItem(ItemReader.getItems().get(4), 1);
-            giveItem(ItemReader.getItems().get(6), 1);
-            giveItem(ItemReader.getItems().get(7), 1);
-            giveItem(ItemReader.getItems().get(8), 1);
-            giveItem(ItemReader.getItems().get(9), 1);
-            giveItem(ItemReader.getItems().get(10), 1);
-            giveItem(ItemReader.getItems().get(11), 1);
-            giveItem(ItemReader.getItems().get(12), 1);
-            giveItem(ItemReader.getItems().get(13), 1);
-            giveItem(ItemReader.getItems().get(14), 1);
-            giveItem(ItemReader.getItems().get(15), 1);
-            giveItem(ItemReader.getItems().get(16), 1);
-            giveItem(ItemReader.getItems().get(17), 1);
+            for(Item item : ItemReader.getItems()){
+                giveItem(item, 1);
+            }
         }
         
         if (input.isKeyPressed(Input.KEY_R)) {
