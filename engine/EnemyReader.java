@@ -29,7 +29,7 @@ public class EnemyReader {
           SAXBuilder builder = new SAXBuilder();
  
 	  try {
-              InputStream is = EnemyReader.class.getResourceAsStream("res/EnemyFile.xml");
+              InputStream is = EnemyReader.class.getClassLoader().getResourceAsStream("res/EnemyFile.xml");
  
 		Document document = (Document) builder.build(is);
 		Element rootNode = document.getRootElement();

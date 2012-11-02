@@ -25,7 +25,7 @@ public class ItemReader {
           SAXBuilder builder = new SAXBuilder();
  
 	  try {
-              InputStream is = ItemReader.class.getResourceAsStream("res/ItemFile.xml");
+              InputStream is = ItemReader.class.getClassLoader().getResourceAsStream("res/ItemFile.xml");
  
 		Document document = (Document) builder.build(is);
 		Element rootNode = document.getRootElement();
