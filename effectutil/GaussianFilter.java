@@ -153,3 +153,4 @@ public class GaussianFilter extends ConvolveFilter {
 		return "Blur/Gaussian Blur...";
 	}
 }
+
