@@ -39,15 +39,15 @@
   </object>
   <object name="Rea" type="Npc" x="1728" y="1280" width="64" height="96">
    <properties>
-    <property name="image" value="/src/rpgslickport/res/003-Fighter03.png"/>
+    <property name="image" value="/src/res/003-Fighter03.png"/>
     <property name="script" value="event/script/Rea1.py"/>
     <property name="text" value="Hello Atticus!"/>
    </properties>
   </object>
   <object name="Event3" type="Teleport" x="1914" y="1466" width="74" height="74">
    <properties>
-    <property name="map" value="/src/rpgslickport/res/testmap3.tmx"/>
-    <property name="map2" value="/src/rpgslickport/res"/>
+    <property name="map" value="/src/res/testmap3.tmx"/>
+    <property name="map2" value="/src/res"/>
    </properties>
   </object>
   <object name="Slime" type="Enemy" x="1476" y="1281" width="96" height="96">

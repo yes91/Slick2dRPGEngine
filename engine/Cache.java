@@ -24,7 +24,7 @@ public class Cache {
     
     public static Image getImage(String filename){
         try {
-            return new Image("/src/rpgslickport/"+filename); 
+            return new Image("/src/engine/"+filename); 
         } catch (SlickException ex) {
             Logger.getLogger(Cache.class.getName()).log(Level.SEVERE, null, ex);
         }

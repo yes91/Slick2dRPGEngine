@@ -74,8 +74,8 @@ public class SceneMap extends SceneBase {
                 container.setShowFPS(false);
                 //container.setMaximumLogicUpdateInterval(60);
                 input = container.getInput();
-                testbattler = new Image("/src/rpgslickport/res/yuan_3.png");
-                worldPlayer = new WorldPlayer(new Image("/src/rpgslickport/craft.png"));
+                testbattler = new Image("/src/res/yuan_3.png");
+                worldPlayer = new WorldPlayer(new Image("/src/engine/craft.png"));
                 String[] coms = new String[6];
                 coms[0] = "Item";
                 coms[1] = "Skill";
@@ -84,19 +84,19 @@ public class SceneMap extends SceneBase {
                 coms[4] = "Save";
                 coms[5] = "Options";
                 wind = new WindowCommand(160,coms, 1, 0);
-                s = Shader.makeShader("/src/rpgslickport/blur.vrt", "/src/rpgslickport/blur.frg");
-                s2 = Shader.makeShader("/src/rpgslickport/blur2.vrt", "/src/rpgslickport/blur2.frg");
+                s = Shader.makeShader("/src/engine/blur.vrt", "/src/engine/blur.frg");
+                s2 = Shader.makeShader("/src/engine/blur2.vrt", "/src/engine/blur2.frg");
                 uielements = new ArrayList<>();
                 //uielements.add(wind);
                 EnemyReader.populateEnemies();
-                map = new Map(new TiledMap("/src/rpgslickport/res/testmap2.tmx", "/src/rpgslickport/res"), worldPlayer);
+                map = new Map(new TiledMap("/src/res/testmap2.tmx", "/src/res"), worldPlayer);
                 uiFocus = false;
                 inMenu = false;
-                music = new Music("/src/rpgslickport/res/fatefulencounter.wav");
+                music = new Music("/src/res/fatefulencounter.wav");
                 isPlaying = true;
                 music.loop();
-                items = new Image("/src/rpgslickport/IconSet.png");
-                light = new Image("/src/rpgslickport/res/LightRays.png");
+                items = new Image("/src/engine/IconSet.png");
+                light = new Image("/src/res/LightRays.png");
                 ItemReader.populateItems();
                 //System.out.println(new GameBattler().stat.getBaseHP());
                 
