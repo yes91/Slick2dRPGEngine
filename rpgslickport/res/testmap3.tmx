@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" width="25" height="25" tilewidth="64" tileheight="64">
+ <tileset firstgid="1" name="Outside_A2" tilewidth="64" tileheight="64">
+  <image source="Outside_A2.png" width="1024" height="960"/>
+ </tileset>
+ <tileset firstgid="241" name="metatiles" tilewidth="64" tileheight="64">
+  <image source="metatiles.png" width="128" height="128"/>
+  <tile id="0">
+   <properties>
+    <property name="blocked" value="true"/>
+   </properties>
+  </tile>
+ </tileset>
+ <layer name="Tile Layer 1" width="25" height="25">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAC2NkYGBgHMWjeBSP4mGGhYHYEIpFaGTHQSQ7Do3agRcrI9mhQof4H8WjeCRgAEZ9LMHECQAA
+  </data>
+ </layer>
+ <layer name="Tile Layer 2" width="25" height="25">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAC2NgGAWjYBSMglEw2MGngXbAKBgFo2DQAQCeidLvxAkAAA==
+  </data>
+ </layer>
+ <layer name="Collisions" width="25" height="25" opacity="0.48">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAC2NgGAWjYBSMglEw2MHHgXbAKBgFo2DQAQCGxv5KxAkAAA==
+  </data>
+ </layer>
+ <objectgroup name="Event" width="25" height="25">
+  <object name="Event1" type="Teleport" x="826" y="890" width="74" height="74">
+   <properties>
+    <property name="map" value="/src/rpgslickport/res/testmap2.tmx"/>
+    <property name="map2" value="/src/rpgslickport/res"/>
+   </properties>
+  </object>
+ </objectgroup>
+</map>
