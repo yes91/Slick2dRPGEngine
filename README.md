@@ -1,4 +1,4 @@
-Slick2dRPGEngine
+Slick2d RPG Engine
 ================
 
 The current project goal is to refactor everything currently in use and remove nonfunctional elements. The next step before moving on with the major classes
