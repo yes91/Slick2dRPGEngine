@@ -18,6 +18,8 @@ import org.newdawn.slick.Image;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.Music;
 import org.newdawn.slick.SlickException;
+import org.newdawn.slick.command.InputProvider;
+import org.newdawn.slick.command.KeyControl;
 import org.newdawn.slick.state.StateBasedGame;
 import org.newdawn.slick.tiled.TiledMap;
 import org.newdawn.slick.util.BufferedImageUtil;
@@ -68,22 +70,21 @@ public class SceneMap extends SceneBase {
     @Override
     public void init(GameContainer container, StateBasedGame sbg) throws SlickException
 	    {
+                input = container.getInput();
+                inputp = new InputProvider(input);
+                inputp.bindCommand(new KeyControl(Input.KEY_W), up);
+                inputp.bindCommand(new KeyControl(Input.KEY_S), down);
+                inputp.bindCommand(new KeyControl(Input.KEY_A), left);
+                inputp.bindCommand(new KeyControl(Input.KEY_D), right);
+                inputp.bindCommand(new KeyControl(Input.KEY_LSHIFT), sprint);
+                inputp.bindCommand(new KeyControl(Input.KEY_J), action);
                 buffer = new Image(B_WIDTH,B_HEIGHT);
                 awtBuffer = new BufferedImage(B_WIDTH,B_HEIGHT,BufferedImage.TYPE_INT_ARGB);
                 allowClose = false;
                 container.setShowFPS(false);
                 //container.setMaximumLogicUpdateInterval(60);
-                input = container.getInput();
                 testbattler = new Image("/src/res/yuan_3.png");
                 worldPlayer = new WorldPlayer(new Image("/src/engine/craft.png"));
-                String[] coms = new String[6];
-                coms[0] = "Item";
-                coms[1] = "Skill";
-                coms[2] = "Equip";
-                coms[3] = "Status";
-                coms[4] = "Save";
-                coms[5] = "Options";
-                wind = new WindowCommand(160,coms, 1, 0);
                 s = Shader.makeShader("/src/engine/blur.vrt", "/src/engine/blur.frg");
                 s2 = Shader.makeShader("/src/engine/blur2.vrt", "/src/engine/blur2.frg");
                 uielements = new ArrayList<>();
@@ -132,7 +133,7 @@ public class SceneMap extends SceneBase {
           worldPlayer.currentHP = 0;
           
         }
-                worldPlayer.update(input, delta);
+                worldPlayer.update(inputp, delta);
                 if((input.isKeyPressed(Input.KEY_E)) && activeMenu == null){
                     makeMenuBack(container);
                     input.clearKeyPressedRecord();
