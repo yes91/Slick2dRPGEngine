@@ -16,6 +16,7 @@ import org.newdawn.slick.Sound;
  *
  * @author Kieran
  */
+@Deprecated
 public class Menu{
     
     private Window main;
@@ -34,7 +35,8 @@ public class Menu{
     private Item itemSelected;
     private WorldPlayer player;
     
-    
+    //Deprected; however, notable code within commented body.
+    /*
     public Menu(WorldPlayer p){
         player = p;
         skin = Cache.getImage("Window.png");
@@ -129,7 +131,7 @@ public class Menu{
             /*if(!itemSelected.isUseable() & input.isKeyPressed(Input.KEY_J)){
                 player.equip(itemSelected);
             }*/
-            }
+            /*}
             if(countInv > 15){
             
             countInv = 15;
@@ -280,6 +282,6 @@ public class Menu{
     public boolean getNotSub(){
         
         return notInSub;
-    }
+    }*/
     
 }

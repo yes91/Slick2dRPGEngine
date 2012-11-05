@@ -55,11 +55,13 @@ public class SceneMenu extends SceneBase{
     }
 
     @Override
-    public void update(GameContainer gc, StateBasedGame sbg, int i) throws SlickException {
-        ((WindowSelectable)wind).update(input);
-        if(input.isKeyPressed(Input.KEY_K)){
+    public void update(GameContainer gc, StateBasedGame sbg, int delta) throws SlickException {
+        ((WindowSelectable)wind).update(inputp);
+        if(inputp.isCommandControlPressed(cancel)){
             Sounds.cancel.play();
             input.clearKeyPressedRecord();
+            input.clearControlPressedRecord();
+            sbg.getState(0).update(gc, sbg, delta);
             sbg.enterState(0);
         }
     }

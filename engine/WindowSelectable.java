@@ -6,6 +6,7 @@ package engine;
 
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
+import org.newdawn.slick.command.InputProvider;
 import org.newdawn.slick.geom.Rectangle;
 import org.newdawn.slick.state.StateBasedGame;
 
@@ -119,22 +120,22 @@ public class WindowSelectable extends Window{
         }
     }
     
-    public void update(Input input){
+    public void update(InputProvider input){
         int lastIndex = index;
-        if(input.isKeyPressed(Input.KEY_DOWN)){
-            cursorDown(input.isKeyDown(Input.KEY_DOWN));
+        if(input.isCommandControlPressed(SceneBase.down)){
+            cursorDown(input.isCommandControlDown(SceneBase.down));
         }
-        if(input.isKeyPressed(Input.KEY_UP)){
-            cursorUp(input.isKeyDown(Input.KEY_UP));
+        if(input.isCommandControlPressed(SceneBase.up)){
+            cursorUp(input.isCommandControlDown(SceneBase.up));
         }
-        if(input.isKeyPressed(Input.KEY_DOWN)){
-            cursorDown(input.isKeyDown(Input.KEY_DOWN));
+        if(input.isCommandControlPressed(SceneBase.down)){
+            cursorDown(input.isCommandControlDown(SceneBase.down));
         }
-        if(input.isKeyPressed(Input.KEY_RIGHT)){
-            cursorRight(input.isKeyDown(Input.KEY_RIGHT));
+        if(input.isCommandControlPressed(SceneBase.right)){
+            cursorRight(input.isCommandControlDown(SceneBase.right));
         }
-        if(input.isKeyPressed(Input.KEY_LEFT)){
-            cursorLeft(input.isKeyDown(Input.KEY_LEFT));
+        if(input.isCommandControlPressed(SceneBase.left)){
+            cursorLeft(input.isCommandControlDown(SceneBase.left));
         }
         if(index != lastIndex) { Sounds.cursor.play(); }
         updateCursor();

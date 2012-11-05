@@ -18,6 +18,8 @@ import org.newdawn.slick.Image;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.Music;
 import org.newdawn.slick.SlickException;
+import org.newdawn.slick.command.ControllerButtonControl;
+import org.newdawn.slick.command.ControllerDirectionControl;
 import org.newdawn.slick.command.InputProvider;
 import org.newdawn.slick.command.KeyControl;
 import org.newdawn.slick.state.StateBasedGame;
@@ -48,7 +50,6 @@ public class SceneMap extends SceneBase {
     public static Window lastAdded;
     private Menu activeMenu;
     private WindowCommand wind;
-    public static boolean inMenu;
     private Image testbattler;
     //WorldPlayer worldPlayer;
     Camera camera;
@@ -76,6 +77,16 @@ public class SceneMap extends SceneBase {
                 inputp.bindCommand(new KeyControl(Input.KEY_S), down);
                 inputp.bindCommand(new KeyControl(Input.KEY_A), left);
                 inputp.bindCommand(new KeyControl(Input.KEY_D), right);
+                inputp.bindCommand(new KeyControl(Input.KEY_E), menu);
+                inputp.bindCommand(new KeyControl(Input.KEY_K), cancel);
+                inputp.bindCommand(new ControllerDirectionControl(0, ControllerDirectionControl.DOWN), down);
+                inputp.bindCommand(new ControllerDirectionControl(0, ControllerDirectionControl.UP), up);
+                inputp.bindCommand(new ControllerDirectionControl(0, ControllerDirectionControl.LEFT), left);
+                inputp.bindCommand(new ControllerDirectionControl(0, ControllerDirectionControl.RIGHT), right);
+                inputp.bindCommand(new ControllerButtonControl(0, 1), sprint);
+                inputp.bindCommand(new ControllerButtonControl(0, 3), action);
+                inputp.bindCommand(new ControllerButtonControl(0, 4), menu);
+                inputp.bindCommand(new ControllerButtonControl(0, 2), cancel);
                 inputp.bindCommand(new KeyControl(Input.KEY_LSHIFT), sprint);
                 inputp.bindCommand(new KeyControl(Input.KEY_J), action);
                 buffer = new Image(B_WIDTH,B_HEIGHT);
@@ -92,7 +103,6 @@ public class SceneMap extends SceneBase {
                 EnemyReader.populateEnemies();
                 map = new Map(new TiledMap("/src/res/testmap2.tmx", "/src/res"), worldPlayer);
                 uiFocus = false;
-                inMenu = false;
                 music = new Music("/src/res/fatefulencounter.wav");
                 isPlaying = true;
                 music.loop();
@@ -134,15 +144,18 @@ public class SceneMap extends SceneBase {
           
         }
                 worldPlayer.update(inputp, delta);
-                if((input.isKeyPressed(Input.KEY_E)) && activeMenu == null){
+                if((inputp.isCommandControlPressed(menu))){
                     makeMenuBack(container);
                     input.clearKeyPressedRecord();
+                    input.clearControlPressedRecord();
+                    sbg.getState(1).update(container, sbg, delta);
                     sbg.enterState(1);
                     //activeMenu = new Menu(worldPlayer);
                     //uiFocus = true;
                     //inMenu = true;
                 }
-                if(inMenu==true){
+                //Old menu
+                /*if(inMenu==true){
                     activeMenu.update(input);
                     if((input.isKeyPressed(Input.KEY_K)) && activeMenu.getNotSub()){ 
                         activeMenu.destroy();
@@ -151,7 +164,7 @@ public class SceneMap extends SceneBase {
                         activeMenu = null;
                         uiFocus = false;
                     }
-                }
+                }*/
                 if(uiFocus == true){
                     if(input.isKeyDown(Input.KEY_K) && allowClose){
                         uielements.remove(lastAdded);
@@ -161,7 +174,7 @@ public class SceneMap extends SceneBase {
                 map.update(container, worldPlayer);
                 for(Window w:uielements){
                     if(w instanceof WindowSelectable){
-                       ((WindowSelectable)w).update(input);
+                       ((WindowSelectable)w).update(inputp);
                     }
                 }
 	    }
@@ -187,10 +200,11 @@ public class SceneMap extends SceneBase {
             map.renderUI(worldPlayer);
             }
         
-        if(inMenu == true){
+        //Old menu
+        /*if(inMenu == true){
             
             activeMenu.render(g);
-        }
+        }*/
 }
     
     private void tpPlayer(int tileX, int tileY, WorldPlayer p){

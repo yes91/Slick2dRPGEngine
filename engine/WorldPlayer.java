@@ -2,7 +2,6 @@ package engine;
 
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
-import org.newdawn.slick.Input;
 import org.newdawn.slick.command.InputProvider;
 import org.newdawn.slick.geom.Rectangle;
 import org.newdawn.slick.tiled.TiledMap;
@@ -115,6 +114,7 @@ public class WorldPlayer extends GameObject {
         inven.add(item, a);
     }
     
+    @Deprecated
     public void renderInv(Graphics g2d, Window w, int sp, int x, int y){
         inven.render(g2d, w, sp, x, y, "all");
     }
