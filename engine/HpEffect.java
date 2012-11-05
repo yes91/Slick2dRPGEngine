@@ -8,13 +8,6 @@ package engine;
  *
  * @author redblast71
  */
-public class GameActor extends GameBattler{
-    String name;
-    
-    
-    public GameActor(int ActorID){
-        
-    
-    }
+public class HpEffect extends Effect {
     
 }

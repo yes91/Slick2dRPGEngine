@@ -8,13 +8,13 @@ package engine;
  *
  * @author redblast71
  */
-public class GameActor extends GameBattler{
+public abstract class Effect {
     String name;
+    GameBattler[] target; // The target of a particular effect
     
-    
-    public GameActor(int ActorID){
-        
-    
+    @Override
+    public String toString(){
+        return name;
     }
     
 }

@@ -71,24 +71,6 @@ public class SceneMap extends SceneBase {
     @Override
     public void init(GameContainer container, StateBasedGame sbg) throws SlickException
 	    {
-                input = container.getInput();
-                inputp = new InputProvider(input);
-                inputp.bindCommand(new KeyControl(Input.KEY_W), up);
-                inputp.bindCommand(new KeyControl(Input.KEY_S), down);
-                inputp.bindCommand(new KeyControl(Input.KEY_A), left);
-                inputp.bindCommand(new KeyControl(Input.KEY_D), right);
-                inputp.bindCommand(new KeyControl(Input.KEY_E), menu);
-                inputp.bindCommand(new KeyControl(Input.KEY_K), cancel);
-                inputp.bindCommand(new ControllerDirectionControl(0, ControllerDirectionControl.DOWN), down);
-                inputp.bindCommand(new ControllerDirectionControl(0, ControllerDirectionControl.UP), up);
-                inputp.bindCommand(new ControllerDirectionControl(0, ControllerDirectionControl.LEFT), left);
-                inputp.bindCommand(new ControllerDirectionControl(0, ControllerDirectionControl.RIGHT), right);
-                inputp.bindCommand(new ControllerButtonControl(0, 1), sprint);
-                inputp.bindCommand(new ControllerButtonControl(0, 3), action);
-                inputp.bindCommand(new ControllerButtonControl(0, 4), menu);
-                inputp.bindCommand(new ControllerButtonControl(0, 2), cancel);
-                inputp.bindCommand(new KeyControl(Input.KEY_LSHIFT), sprint);
-                inputp.bindCommand(new KeyControl(Input.KEY_J), action);
                 buffer = new Image(B_WIDTH,B_HEIGHT);
                 awtBuffer = new BufferedImage(B_WIDTH,B_HEIGHT,BufferedImage.TYPE_INT_ARGB);
                 allowClose = false;

@@ -10,7 +10,7 @@ import org.newdawn.slick.Image;
  *
  * @author redblast71
  */
-public class GameBattler {
+public abstract class GameBattler {
     
     private final int HP_LIMIT = 999999;
     public Image battleSprite;
@@ -31,20 +31,7 @@ public class GameBattler {
     public int baseSPD;
     public int SPDplus;
     
-    public GameBattler(){
-        battleSprite = null;
-        currentHP = 0;
-        currentMP = 0;
-        //@action = Game_BattleAction.new(self)
-        //@states = []                    # States (ID array)
-        //@state_turns = {}               # Remaining turns for states (Hash)
-        //@hidden = false   
-        //@immortal = false
-        clearExtraValues();
-        //clear_sprite_effects
-        //clear_action_results 
-    }
-    
+        
     public void clearExtraValues(){
         HPplus = 0;
         MPplus = 0;

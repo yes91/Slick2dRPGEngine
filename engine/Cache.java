@@ -31,6 +31,15 @@ public class Cache {
         return null;
     }
     
+    public static Image getRes(String filename){
+        try {
+            return new Image("/src/res/"+filename); 
+        } catch (SlickException ex) {
+            Logger.getLogger(Cache.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
+    }
+    
     public static UnicodeFont getFont(){
         
         if(font == null){
