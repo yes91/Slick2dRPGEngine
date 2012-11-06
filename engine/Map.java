@@ -32,15 +32,9 @@ public class Map {
     public int boundsY;
     
     public Map(TiledMap mp, WorldPlayer p){
-<<<<<<< HEAD
         events = new ArrayList<Event>();
         listRect = new ArrayList<Rectangle>();
         objs = new ArrayList<GameObject>();
-=======
-        events = new ArrayList();
-        listRect = new ArrayList();
-        objs = new ArrayList();
->>>>>>> upstream/master
         map = mp;
         camera = new Camera(map, map.getWidth()*map.getTileWidth(),map.getHeight()*map.getTileHeight());
         boundsX = map.getWidth()*map.getTileWidth();
@@ -64,11 +58,7 @@ public class Map {
                 {
 	                     String value = map.getObjectType(0, Object);
                              if("Actor".equals(value)){
-<<<<<<< HEAD
-	                     events.add(new Event((float)map.getObjectX(0, Object), (float)map.getObjectY(0, Object), map.getObjectWidth(0, Object), map.getObjectHeight(0, Object), value,map.getObjectProperty(0, Object, "text", "false"),null,null,null));
-=======
 	                     events.add(new Event((float)map.getObjectX(0, Object), (float)map.getObjectY(0, Object), map.getObjectWidth(0, Object), map.getObjectHeight(0, Object), value,map.getObjectProperty(0, Object, "text", "false"),null,null));
->>>>>>> upstream/master
                              }
                              if("Npc".equals(value)){
                                  NPC npc = null;
@@ -84,11 +74,7 @@ public class Map {
                                  
                              }
                              if("Teleport".equals(value)){
-<<<<<<< HEAD
-                                 events.add(new Event(map.getObjectX(0, Object), map.getObjectY(0, Object), map.getObjectWidth(0, Object), map.getObjectHeight(0, Object), value, map.getObjectProperty(0, Object, "text", "false"),map.getObjectProperty(0, Object, "map", "false"),map.getObjectProperty(0, Object, "map2", "false"),null));
-=======
                                  events.add(new Event(map.getObjectX(0, Object), map.getObjectY(0, Object), map.getObjectWidth(0, Object), map.getObjectHeight(0, Object), value, map.getObjectProperty(0, Object, "text", "false"),map.getObjectProperty(0, Object, "map", "false"),map.getObjectProperty(0, Object, "map2", "false")));
->>>>>>> upstream/master
                              }
                              
                              if("Enemy".equals(value)){
@@ -102,13 +88,8 @@ public class Map {
                             }
 	        }
                 objs.add(p);
-<<<<<<< HEAD
-                p.setX(SceneMap.B_WIDTH/2);
-                p.setY(SceneMap.B_HEIGHT/2);
-=======
                 p.setX(Float.parseFloat(map.getMapProperty("startPosx", "1"))*64);
                 p.setY(Float.parseFloat(map.getMapProperty("startPosy", "1"))*64);
->>>>>>> upstream/master
         
     }
     
@@ -124,11 +105,7 @@ public class Map {
     public void update(GameContainer container, WorldPlayer p) throws SlickException {
         
          SceneMap.blocked = false;
-<<<<<<< HEAD
-        if(p.getX() > boundsX | p.getY() > boundsY | p.getX() < 0 | p.getY() < 0){
-=======
         if(p.getX()+p.getBounds().getWidth() > boundsX | p.getY()+p.getHeight() > boundsY | p.getX() < 0 | p.getY() < 0){
->>>>>>> upstream/master
             SceneMap.blocked = true;
         }
         for(Rectangle o: listRect){

@@ -1,9 +1,5 @@
 package engine;
 
-<<<<<<< HEAD
-=======
-
->>>>>>> upstream/master
 public class Equipment {
   
     private int itmIndex;  

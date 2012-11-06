@@ -31,8 +31,7 @@ public class Cache {
         return null;
     }
     
-<<<<<<< HEAD
-=======
+
     public static Image getRes(String filename){
         try {
             return new Image("/src/res/"+filename); 
@@ -42,7 +41,6 @@ public class Cache {
         return null;
     }
     
->>>>>>> upstream/master
     public static UnicodeFont getFont(){
         
         if(font == null){

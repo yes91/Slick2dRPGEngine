@@ -4,49 +4,11 @@
  */
 package engine;
 
-<<<<<<< HEAD
-import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
-import org.newdawn.slick.Input;
-=======
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import org.newdawn.slick.Graphics;
-import org.newdawn.slick.Image;
-import org.newdawn.slick.Input;
-import org.newdawn.slick.SlickException;
-import org.newdawn.slick.Sound;
->>>>>>> upstream/master
 
-/**
- *
- * @author Kieran
- */
-<<<<<<< HEAD
-=======
 @Deprecated
->>>>>>> upstream/master
 public class Menu{
     
-    private Window main;
-    private Window opts;
-    private Window portr;
-    private boolean notInSub;
-    private boolean inInv;
-    private boolean inEquip;
-    private Image skin;
-    private int y;
-    private int yInv;
-    private int xOff;
-    private int count;
-    private int countInv;
-    private int itemIndex;
-    private Item itemSelected;
-    private WorldPlayer player;
-    
-<<<<<<< HEAD
-    
-=======
     //Deprected; however, notable code within commented body.
     /*
 >>>>>>> upstream/master
@@ -144,11 +106,7 @@ public class Menu{
             /*if(!itemSelected.isUseable() & input.isKeyPressed(Input.KEY_J)){
                 player.equip(itemSelected);
             }*/
-<<<<<<< HEAD
-            }
-=======
             /*}
->>>>>>> upstream/master
             if(countInv > 15){
             
             countInv = 15;
@@ -302,7 +260,5 @@ public class Menu{
 <<<<<<< HEAD
     }
 =======
-    }*/
->>>>>>> upstream/master
-    
+    }*/    
 }
