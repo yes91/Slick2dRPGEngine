@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" width="50" height="50" tilewidth="64" tileheight="64">
+ <tileset firstgid="1" name="Outside_A2" tilewidth="64" tileheight="64">
+  <image source="Outside_A2.png" width="1024" height="960"/>
+ </tileset>
+ <tileset firstgid="241" name="metatiles" tilewidth="64" tileheight="64">
+  <image source="metatiles.png" width="128" height="128"/>
+  <tile id="0">
+   <properties>
+    <property name="blocked" value="true"/>
+   </properties>
+  </tile>
+ </tileset>
+ <layer name="Tile Layer 1" width="50" height="50">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAC+3SQQqAIBCFYSXmBHX/uxTUuZogF0mEkdFL/sUHMS56zzGGECIA4KArnCnZ8tn+bR/8v9Y9X52r7yA5u3/L5uo7uptPeTcpm2WzP+2jxo4UlLwT5bfUYu5Wu/RuEMjx1OgmgRz0oIciemihhxZ64A2zWwRyAAAAAAAAlFgBCEnkrhAnAAA=
+  </data>
+ </layer>
+ <layer name="Tile Layer 2" width="50" height="50">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAC+3RywmDQBQF0NlJCjANGO0iFaVOLSgV+AQFyUIFSSaD58BlPqv3SQmALa/cBVzQkZnbS17m///sCAD4lmp1Vh//y/v904qYPA/+laKJPHIXcdItUkfu871UU+19ZEjl99FGulR2HwAAAMC+EU6oIjkQJwAA
+  </data>
+ </layer>
+ <layer name="Collisions" width="50" height="50" opacity="0.51">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAC+3TQQrAIAwEQP//2/yg1xKkeKkxOHMJiAezi2MA8CWqH3Chlcz1Ukv+59MRAPCXeM1I55HusM8scz3Uyv+jK3sAAAAA3TwTFNFiECcAAA==
+  </data>
+ </layer>
+ <objectgroup color="#a45849" name="Event" width="50" height="50">
+  <object name="Event1" type="Actor" x="1786" y="1594" width="74" height="74">
+   <properties>
+    <property name="text" value="Can you read this? Booyeah!"/>
+   </properties>
+  </object>
+  <object name="Event2" type="Actor" x="1466" y="1594" width="74" height="74">
+   <properties>
+    <property name="text" value="I'm a map event too!"/>
+   </properties>
+  </object>
+  <object name="Rea" type="Npc" x="1728" y="1280" width="64" height="96">
+   <properties>
+    <property name="image" value="/src/res/003-Fighter03.png"/>
+    <property name="script" value="event/script/Rea1.py"/>
+    <property name="text" value="Hello Atticus!"/>
+   </properties>
+  </object>
+  <object name="Event3" type="Teleport" x="1914" y="1466" width="74" height="74">
+   <properties>
+    <property name="map" value="/src/res/testmap3.tmx"/>
+    <property name="map2" value="/src/res"/>
+   </properties>
+  </object>
+  <object name="Slime" type="Enemy" x="1476" y="1281" width="96" height="96">
+   <properties>
+    <property name="Index" value="0"/>
+   </properties>
+  </object>
+ </objectgroup>
+</map>

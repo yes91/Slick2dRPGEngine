@@ -1,0 +1,128 @@
+<ItemList>
+  <item>
+    <type>weapon</type>
+    <name>Gestalt Sword</name>
+    <subtype>sword</subtype>
+    <dmg>10</dmg>
+    <gid>1</gid>
+  </item>
+  <item>
+      <type>weapon</type>
+      <name>Philosopher's Tongue</name>
+      <subtype>sword</subtype>
+      <dmg>20</dmg>
+      <gid>2</gid>
+  </item>
+  <item>
+      <type>weapon</type>
+      <name>Gib Wibbit</name>
+      <subtype>sword</subtype>
+      <dmg>30</dmg>
+      <gid>3</gid>
+  </item>
+  <item>
+      <type>weapon</type>
+      <name>Neo Platinar</name>
+      <subtype>sword</subtype>
+      <dmg>40</dmg>
+      <gid>4</gid>
+  </item>
+  <item>
+      <type>consumable</type>
+      <name>Potion</name>
+      <subtype>hppotion</subtype>
+      <effect>10</effect>
+      <gid>64</gid>
+  </item>
+  <item>
+    <type>weapon</type>
+    <name>Steam Gunblade</name>
+    <subtype>sword</subtype>
+    <dmg>10</dmg>
+    <gid>19</gid>
+  </item>
+  <item>
+      <type>weapon</type>
+      <name>Neo Platinar1</name>
+      <subtype>sword</subtype>
+      <dmg>40</dmg>
+      <gid>4</gid>
+  </item>
+  <item>
+      <type>weapon</type>
+      <name>Neo Platinar2</name>
+      <subtype>sword</subtype>
+      <dmg>40</dmg>
+      <gid>4</gid>
+  </item>
+  <item>
+      <type>weapon</type>
+      <name>Neo Platinar3</name>
+      <subtype>sword</subtype>
+      <dmg>40</dmg>
+      <gid>4</gid>
+  </item>
+  <item>
+      <type>weapon</type>
+      <name>Neo Platinar4</name>
+      <subtype>sword</subtype>
+      <dmg>40</dmg>
+      <gid>4</gid>
+  </item>
+  <item>
+      <type>weapon</type>
+      <name>Neo Platinar5</name>
+      <subtype>sword</subtype>
+      <dmg>40</dmg>
+      <gid>4</gid>
+  </item>
+  <item>
+      <type>weapon</type>
+      <name>Neo Platinar6</name>
+      <subtype>sword</subtype>
+      <dmg>40</dmg>
+      <gid>4</gid>
+  </item>
+  <item>
+      <type>weapon</type>
+      <name>Neo Platinar7</name>
+      <subtype>sword</subtype>
+      <dmg>40</dmg>
+      <gid>4</gid>
+  </item>
+  <item>
+      <type>weapon</type>
+      <name>Neo Platinar8</name>
+      <subtype>sword</subtype>
+      <dmg>40</dmg>
+      <gid>4</gid>
+  </item>
+  <item>
+      <type>weapon</type>
+      <name>Neo Platinar9</name>
+      <subtype>sword</subtype>
+      <dmg>40</dmg>
+      <gid>4</gid>
+  </item>
+  <item>
+      <type>weapon</type>
+      <name>Neo Platinar10</name>
+      <subtype>sword</subtype>
+      <dmg>40</dmg>
+      <gid>4</gid>
+  </item>
+  <item>
+      <type>weapon</type>
+      <name>Neo Platinar11</name>
+      <subtype>sword</subtype>
+      <dmg>40</dmg>
+      <gid>4</gid>
+  </item>
+  <item>
+      <type>weapon</type>
+      <name>Neo Platinar12</name>
+      <subtype>sword</subtype>
+      <dmg>40</dmg>
+      <gid>4</gid>
+  </item>
+</ItemList>
