@@ -215,7 +215,7 @@ public class SceneTitle extends SceneBase{
                         input.clearControlPressedRecord();
                         sbg.enterState(1, new FadeOutTransition(), fin); break;
                     case 1: ; break;
-                    case 2: 
+                    case 2:
                         lastAdded = new WindowSystem(2, 1);
                         uielements.add(lastAdded); break;
                     case 3: gc.exit(); break;

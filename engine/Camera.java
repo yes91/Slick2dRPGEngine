@@ -19,6 +19,7 @@ public class Camera {
         private int lastTX, lastTY;
 	private int mapWidth, mapHeight;
 	public static Rectangle viewPort; 
+        private GameObject target;
 	/* We define a rectangle with the size of our screen, this represents our camera
 	 * "range", so everything inside the viewport will be drawn on the screen, we will
 	 * be able to move this rectangle across the map. */
@@ -30,28 +31,33 @@ public class Camera {
 		viewPort = new Rectangle(0, 0, SceneMap.B_WIDTH, SceneMap.B_HEIGHT);
 		this.mapWidth = mapWidth;
 		this.mapHeight = mapHeight;
+                target = SceneBase.worldPlayer;
 	}
+        
+        public void setTarget(GameObject go){
+            target = go;
+        }
  
-	public void translate (Graphics g, WorldPlayer entity) {
+	public void translate (Graphics g) {
  
-	if((int)entity.getX()-SceneMap.B_WIDTH/2+16 < 0) {
+	if((int)target.getX()-SceneMap.B_WIDTH/2+16 < 0) {
                 transX = 0;
             }
-    	else if((int)entity.getX()+SceneMap.B_WIDTH/2+16 > mapWidth) {
+    	else if((int)target.getX()+SceneMap.B_WIDTH/2+16 > mapWidth) {
                 transX = -mapWidth+SceneMap.B_WIDTH;
             }
     	else {
-                transX = -(int)entity.getX()+SceneMap.B_WIDTH/2-16;
+                transX = -(int)target.getX()+SceneMap.B_WIDTH/2-16;
             }
  
-    	if((int)entity.getY()-SceneMap.B_HEIGHT/2+16 < 0) {
+    	if((int)target.getY()-SceneMap.B_HEIGHT/2+16 < 0) {
                 transY = 0;
             }
-    	else if((int)entity.getY()+SceneMap.B_HEIGHT/2+16 > mapHeight) {
+    	else if((int)target.getY()+SceneMap.B_HEIGHT/2+16 > mapHeight) {
                 transY = -mapHeight+SceneMap.B_HEIGHT;
             }
     	else {
-                transY = -(int)entity.getY()+SceneMap.B_HEIGHT/2-16;
+                transY = -(int)target.getY()+SceneMap.B_HEIGHT/2-16;
             }
  
         if(!SceneMap.blocked){

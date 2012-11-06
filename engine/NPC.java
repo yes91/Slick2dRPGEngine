@@ -16,7 +16,7 @@ public class NPC extends Event{
     int frame;
     
     public NPC(float x, float y, int width, int height, String dg, Image i){
-        super(x, y, width, height, "Npc", dg, null, null, "");
+        super(x, y, width, height, "Npc", dg, null, null);
         this.image = i;
         frame = 0;
     }
