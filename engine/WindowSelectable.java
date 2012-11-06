@@ -5,7 +5,11 @@
 package engine;
 
 import org.newdawn.slick.Graphics;
+<<<<<<< HEAD
 import org.newdawn.slick.Input;
+=======
+import org.newdawn.slick.command.InputProvider;
+>>>>>>> upstream/master
 import org.newdawn.slick.geom.Rectangle;
 import org.newdawn.slick.state.StateBasedGame;
 
@@ -119,6 +123,7 @@ public class WindowSelectable extends Window{
         }
     }
     
+<<<<<<< HEAD
     public void update(Input input){
         int lastIndex = index;
         if(input.isKeyPressed(Input.KEY_DOWN)){
@@ -135,6 +140,24 @@ public class WindowSelectable extends Window{
         }
         if(input.isKeyPressed(Input.KEY_LEFT)){
             cursorLeft(input.isKeyDown(Input.KEY_LEFT));
+=======
+    public void update(InputProvider input){
+        int lastIndex = index;
+        if(input.isCommandControlPressed(SceneBase.down)){
+            cursorDown(input.isCommandControlDown(SceneBase.down));
+        }
+        if(input.isCommandControlPressed(SceneBase.up)){
+            cursorUp(input.isCommandControlDown(SceneBase.up));
+        }
+        if(input.isCommandControlPressed(SceneBase.down)){
+            cursorDown(input.isCommandControlDown(SceneBase.down));
+        }
+        if(input.isCommandControlPressed(SceneBase.right)){
+            cursorRight(input.isCommandControlDown(SceneBase.right));
+        }
+        if(input.isCommandControlPressed(SceneBase.left)){
+            cursorLeft(input.isCommandControlDown(SceneBase.left));
+>>>>>>> upstream/master
         }
         if(index != lastIndex) { Sounds.cursor.play(); }
         updateCursor();

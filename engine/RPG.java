@@ -46,8 +46,14 @@ public class RPG extends StateBasedGame {
 
     @Override
     public void initStatesList(GameContainer gc) throws SlickException {
+<<<<<<< HEAD
         addState(new SceneMap(0));
         addState(new SceneMenu(1));
+=======
+        addState(new SceneTitle(0));
+        addState(new SceneMap(1));
+        addState(new SceneMenu(2));
+>>>>>>> upstream/master
     }
                 
 }

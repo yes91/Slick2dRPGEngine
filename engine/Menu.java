@@ -4,14 +4,28 @@
  */
 package engine;
 
+<<<<<<< HEAD
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.Input;
+=======
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import org.newdawn.slick.Graphics;
+import org.newdawn.slick.Image;
+import org.newdawn.slick.Input;
+import org.newdawn.slick.SlickException;
+import org.newdawn.slick.Sound;
+>>>>>>> upstream/master
 
 /**
  *
  * @author Kieran
  */
+<<<<<<< HEAD
+=======
+@Deprecated
+>>>>>>> upstream/master
 public class Menu{
     
     private Window main;
@@ -30,7 +44,12 @@ public class Menu{
     private Item itemSelected;
     private WorldPlayer player;
     
+<<<<<<< HEAD
     
+=======
+    //Deprected; however, notable code within commented body.
+    /*
+>>>>>>> upstream/master
     public Menu(WorldPlayer p){
         player = p;
         skin = Cache.getImage("Window.png");
@@ -125,7 +144,11 @@ public class Menu{
             /*if(!itemSelected.isUseable() & input.isKeyPressed(Input.KEY_J)){
                 player.equip(itemSelected);
             }*/
+<<<<<<< HEAD
             }
+=======
+            /*}
+>>>>>>> upstream/master
             if(countInv > 15){
             
             countInv = 15;
@@ -276,6 +299,10 @@ public class Menu{
     public boolean getNotSub(){
         
         return notInSub;
+<<<<<<< HEAD
     }
+=======
+    }*/
+>>>>>>> upstream/master
     
 }

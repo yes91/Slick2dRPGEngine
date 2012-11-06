@@ -26,7 +26,11 @@ public class Enemy extends Event{
     
     public Enemy(Image i,String n,int hp, int mp,int atk, int def,int matk,int mdef){
         
+<<<<<<< HEAD
         super(0,0,0,0,"Enemy",null,null,null,null);
+=======
+        super(0,0,0,0,"Enemy",null,null,null);
+>>>>>>> upstream/master
         enemySprite = i;
         try {
             eBattleSprite = new Image(i.getResourceReference().replaceAll(".png", "")+"!.png");
@@ -34,9 +38,15 @@ public class Enemy extends Event{
         } catch (SlickException ex) {
             Logger.getLogger(Enemy.class.getName()).log(Level.SEVERE, null, ex);
         }
+<<<<<<< HEAD
         this.name = n;
         this.maxHP = hp;
         this.maxMP = mp;
+=======
+        name = n;
+        maxHP = hp;
+        maxMP = mp;
+>>>>>>> upstream/master
         
     }
     

@@ -2,7 +2,11 @@ package engine;
 
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
+<<<<<<< HEAD
 import org.newdawn.slick.Input;
+=======
+import org.newdawn.slick.command.InputProvider;
+>>>>>>> upstream/master
 import org.newdawn.slick.geom.Rectangle;
 import org.newdawn.slick.tiled.TiledMap;
 
@@ -19,10 +23,17 @@ public class WorldPlayer extends GameObject {
     private boolean action;
     public String name;
     public Item hand;
+<<<<<<< HEAD
     public Item head;
     public Item chest;
     public Item legs;
     public Item boots;
+=======
+    public  Item head;
+    public  Item chest;
+    public  Item legs;
+    public  Item boots;
+>>>>>>> upstream/master
     public int baseHP;
     public int maxHP;
     public int currentHP;
@@ -42,7 +53,11 @@ public class WorldPlayer extends GameObject {
     }
 
 
+<<<<<<< HEAD
     public void update(Input in, int delta) {
+=======
+    public void update(InputProvider in, int delta) {
+>>>>>>> upstream/master
         getInput(in, delta);
         if(SceneMap.isBlocked() == true || SceneMap.stopPlayer() == true)
         {
@@ -114,21 +129,34 @@ public class WorldPlayer extends GameObject {
         inven.add(item, a);
     }
     
+<<<<<<< HEAD
+=======
+    @Deprecated
+>>>>>>> upstream/master
     public void renderInv(Graphics g2d, Window w, int sp, int x, int y){
         inven.render(g2d, w, sp, x, y, "all");
     }
 
+<<<<<<< HEAD
     public void getInput(Input input, int delta) {
+=======
+    public void getInput(InputProvider input, int delta) {
+>>>>>>> upstream/master
         
 
         if(SceneMap.uiFocus == false){
         
+<<<<<<< HEAD
         if (input.isKeyPressed(Input.KEY_J)) {
+=======
+        if (input.isCommandControlPressed(SceneBase.action)) {
+>>>>>>> upstream/master
             
             action = true;
         }
         else { action = false; } 
         
+<<<<<<< HEAD
         //if (input.isKeyPressed(Input.KEY_E)) {
             
             //new Menu(this);
@@ -140,10 +168,27 @@ public class WorldPlayer extends GameObject {
         }
         
         if(input.isKeyPressed(Input.KEY_U)){
+=======
+        //Old Menu
+        /*if (input.isKeyPressed(Input.KEY_E)) {
+            
+            //new Menu(this);
+        }*/
+   
+        //Debug Command
+        /*if (input.isKeyPressed(Input.KEY_Q)){
+            
+            giveItem(ItemReader.getItems().get(1), 1);
+        }*/
+        
+        //Debug Command
+        /*if(input.isKeyPressed(Input.KEY_U)){
+>>>>>>> upstream/master
             
             for(Item item : ItemReader.getItems()){
                 giveItem(item, 1);
             }
+<<<<<<< HEAD
         }
         
         if (input.isKeyPressed(Input.KEY_R)) {
@@ -154,6 +199,19 @@ public class WorldPlayer extends GameObject {
 
         if (input.isKeyDown(Input.KEY_A)) {
             if(input.isKeyDown(Input.KEY_LSHIFT)){
+=======
+        }*/
+        
+        //Debug Command
+        /*if (input.isKeyPressed(Input.KEY_R)) {
+            
+            currentHP -= 10;
+        }*/
+        
+
+        if (input.isCommandControlDown(SceneBase.left)) {
+            if(input.isCommandControlDown(SceneBase.sprint)){
+>>>>>>> upstream/master
                 dx = -(0.48f * delta);
             }
             else{
@@ -161,8 +219,13 @@ public class WorldPlayer extends GameObject {
             }
         }
         
+<<<<<<< HEAD
         if (input.isKeyDown(Input.KEY_D)) {
             if(input.isKeyDown(Input.KEY_LSHIFT)){
+=======
+        if (input.isCommandControlDown(SceneBase.right)) {
+            if(input.isCommandControlDown(SceneBase.sprint)){
+>>>>>>> upstream/master
                 dx = 0.48f * delta;
             }
             else{
@@ -170,12 +233,21 @@ public class WorldPlayer extends GameObject {
             }
         }
         
+<<<<<<< HEAD
         if((!input.isKeyDown(Input.KEY_D)) && (!input.isKeyDown(Input.KEY_A))) 
         
         { dx = 0; }
 
         if (input.isKeyDown(Input.KEY_W)) {
             if(input.isKeyDown(Input.KEY_LSHIFT)){
+=======
+        if((!input.isCommandControlDown(SceneBase.right)) && (!input.isCommandControlDown(SceneBase.left))) 
+        
+        { dx = 0; }
+
+        if (input.isCommandControlDown(SceneBase.up)) {
+            if(input.isCommandControlDown(SceneBase.sprint)){
+>>>>>>> upstream/master
                 dy = -(0.48f * delta);
             }
             else{
@@ -183,8 +255,13 @@ public class WorldPlayer extends GameObject {
             }
         }
 
+<<<<<<< HEAD
         if (input.isKeyDown(Input.KEY_S)) {
             if(input.isKeyDown(Input.KEY_LSHIFT)){
+=======
+        if (input.isCommandControlDown(SceneBase.down)) {
+            if(input.isCommandControlDown(SceneBase.sprint)){
+>>>>>>> upstream/master
                 dy = 0.48f * delta;
             }
             else{
@@ -192,7 +269,11 @@ public class WorldPlayer extends GameObject {
             }
         }
         
+<<<<<<< HEAD
         if((!input.isKeyDown(Input.KEY_W)) && (!input.isKeyDown(Input.KEY_S)))
+=======
+        if((!input.isCommandControlDown(SceneBase.up)) && (!input.isCommandControlDown(SceneBase.down)))
+>>>>>>> upstream/master
             
         { dy = 0; }
         

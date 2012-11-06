@@ -16,14 +16,22 @@ public class Event extends GameObject{
     String type;
     String maploc;
     String maploc2;
+<<<<<<< HEAD
     String script;
     
     public Event(float x, float y, int width, int height,String type1,String dg, String map, String map2, String scrip){
+=======
+    
+    public Event(float x, float y, int width, int height,String type1,String dg, String map, String map2){
+>>>>>>> upstream/master
         super.pos.x = x;
         super.pos.y = y;
         super.height = height;
         super.width = width;
+<<<<<<< HEAD
         script = scrip;
+=======
+>>>>>>> upstream/master
         type = type1;
         dialog = dg;
         maploc = map;

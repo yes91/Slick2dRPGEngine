@@ -18,26 +18,37 @@ public class Inventory {
     
     public static final int INV_SIZE = 50;
     public static final int MAX_AMOUNT = 99;
+<<<<<<< HEAD
     public ArrayList<Consumable> items;
     public ArrayList<Weapon> weapons;
     public ArrayList<Item> allitems;
     //public ArrayList<Armor> inven4;
     private int[] amountsI;
     private int[] amountsW;
+=======
+    public ArrayList<Item> items;
+    //public ArrayList<Armor> inven4;
+    private int[] amounts;
+>>>>>>> upstream/master
     private int yOrigin;
     
     Inventory(){
         
         items = new ArrayList<>();
+<<<<<<< HEAD
         allitems = new ArrayList<>();
         weapons = new ArrayList<>();
         amountsI = new int[INV_SIZE];
         amountsW = new int[INV_SIZE];
+=======
+        amounts = new int[INV_SIZE];
+>>>>>>> upstream/master
         initInv();
         yOrigin = 0;
     }
     
   public boolean add(Item item, int a){
+<<<<<<< HEAD
         if(item instanceof Weapon){
             if(weapons.contains((Weapon)item)){
                 if(amountsW[weapons.indexOf((Weapon)item)] < MAX_AMOUNT){
@@ -67,12 +78,27 @@ public class Inventory {
             }
         }
         update();
+=======
+            if(items.contains(item)){
+                if(amounts[items.indexOf(item)] < MAX_AMOUNT){
+                amounts[items.indexOf(item)] += a;
+                }
+            }
+            else if(items.size() < INV_SIZE){
+                items.add(item);
+                amounts[items.indexOf(item)] = a;
+            }
+            else if(items.size() == INV_SIZE){
+                return false;
+            }
+>>>>>>> upstream/master
         return true;
     }
 //Two options for items - draw amounts by item, pass in inventory<--- I did this. || Draw amounts by inventory, item 
 //only draws icon & name
     
     public boolean remove(Item item, int amt){
+<<<<<<< HEAD
         if(item instanceof Weapon){
             if(weapons.contains((Weapon)item)){
                 if(!(amountsW[weapons.indexOf((Weapon)item)]-amt <= 0)){
@@ -101,6 +127,22 @@ public class Inventory {
         return true;
     }
     
+=======
+            if(items.contains(item)){
+                if(!(amounts[items.indexOf(item)]-amt <= 0)){
+                amounts[items.indexOf(item)] -= amt;
+                }
+                else{
+                    amounts[items.indexOf(item)] = 0;
+                    items.remove(item);
+                }
+            }
+            else return false;
+        return true;
+    }
+    
+    @Deprecated
+>>>>>>> upstream/master
     public void render(Graphics g2d, Window w, int spacing, int x, int y, String sort){
         
         if((getCurrLength() > 0)) {
@@ -108,6 +150,7 @@ public class Inventory {
         for(int iter = yOrigin; iter < yOrigin+1;){
         g2d.setClip(w.getX()+6-(int)Camera.viewPort.getX(), w.getY()+6-(int)Camera.viewPort.getY(), w.getWidth()-6, w.getHeight()-12);
         if(sort.equals("all")){
+<<<<<<< HEAD
         for(Item item: allitems){
                 try {
                     item.render(g2d, this, x, iter+spacing+y);
@@ -129,12 +172,25 @@ public class Inventory {
             if(iter > (itConst*(getCurrLength()-1))+yOrigin){ break; }
                 }
             } 
+=======
+        for(Item item: items){
+                    try {
+                    item.render(g2d, this, x, iter+spacing+y);
+                    } catch (SlickException ex) {
+                        Logger.getLogger(Inventory.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                    iter+=itConst;
+                    if(iter > (itConst*(getCurrLength()-1))+yOrigin){ break; }
+                }
+            }
+>>>>>>> upstream/master
         }
         g2d.clearClip();
         }
     }
     
     public int getCurrLength() {
+<<<<<<< HEAD
         return weapons.size()+items.size();
     }
 
@@ -146,6 +202,15 @@ public class Inventory {
             amountsI[i] = 0;
         }
         
+=======
+        return items.size();
+    }
+
+    private void initInv() {
+        for(int i = 0; i < amounts.length; i++){
+            amounts[i] = 0;
+        }  
+>>>>>>> upstream/master
     }
     
     public void scroll(int dy){
@@ -158,6 +223,7 @@ public class Inventory {
         yOrigin = y;
     }
     
+<<<<<<< HEAD
     public void update(){
         allitems = new ArrayList<>();
         allitems.addAll(items);
@@ -177,6 +243,13 @@ public class Inventory {
              }
          }
         
+=======
+    public int getItemAmount(Item item){
+        int amt = 0;
+        if(items.contains(item)){
+            amt = amounts[items.indexOf(item)];
+        }
+>>>>>>> upstream/master
         return amt;
     }
     
