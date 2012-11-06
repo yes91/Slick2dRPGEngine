@@ -61,8 +61,8 @@ public class SceneMenu extends SceneBase{
             Sounds.cancel.play();
             input.clearKeyPressedRecord();
             input.clearControlPressedRecord();
-            sbg.getState(0).update(gc, sbg, delta);
-            sbg.enterState(0);
+            sbg.getState(1).update(gc, sbg, delta);
+            sbg.enterState(1);
         }
     }
     

@@ -4,6 +4,9 @@
  */
 package engine;
 
+import effectutil.CameraFadeInTransition;
+import java.util.ArrayList;
+import org.newdawn.slick.ControllerListener;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
@@ -15,6 +18,7 @@ import org.newdawn.slick.command.ControllerDirectionControl;
 import org.newdawn.slick.command.InputProvider;
 import org.newdawn.slick.command.KeyControl;
 import org.newdawn.slick.state.StateBasedGame;
+import org.newdawn.slick.state.transition.FadeOutTransition;
 
 /**
  *
@@ -22,12 +26,18 @@ import org.newdawn.slick.state.StateBasedGame;
  */
 public class SceneTitle extends SceneBase{
     
-    private KeyListener listener;
+    private CameraFadeInTransition fin;
+    private KeyListener klistener;
+    private ControllerListener clistener;
     private Image back;
     private WindowCommand wind;
     private int keyPressed;
     private char repChar;
+    private int controller;
+    private int buttonPressed;
     private boolean inSubMenu;
+    private ArrayList<Window> uielements;
+    private Window lastAdded;
     public int stateID = -1;
     
     public SceneTitle(int stateID){
@@ -42,7 +52,7 @@ public class SceneTitle extends SceneBase{
     @Override
     public void init(GameContainer gc, StateBasedGame sbg) throws SlickException {
         inSubMenu = false;
-        listener = new KeyListener(){ 
+        klistener = new KeyListener(){ 
             
             @Override
             public void keyPressed(int index, char c){
@@ -75,8 +85,81 @@ public class SceneTitle extends SceneBase{
             }
         
         };
+        clistener = new ControllerListener(){
+
+            @Override
+            public void controllerLeftPressed(int i) {
+                
+            }
+
+            @Override
+            public void controllerLeftReleased(int i) {
+                
+            }
+
+            @Override
+            public void controllerRightPressed(int i) {
+                
+            }
+
+            @Override
+            public void controllerRightReleased(int i) {
+                
+            }
+
+            @Override
+            public void controllerUpPressed(int i) {
+                
+            }
+
+            @Override
+            public void controllerUpReleased(int i) {
+                
+            }
+
+            @Override
+            public void controllerDownPressed(int i) {
+                
+            }
+
+            @Override
+            public void controllerDownReleased(int i) {
+                
+            }
+
+            @Override
+            public void controllerButtonPressed(int i, int i1) {
+                controller = i; buttonPressed = i1;
+            }
+
+            @Override
+            public void controllerButtonReleased(int i, int i1) {
+                
+            }
+
+            @Override
+            public void setInput(Input input) {
+                
+            }
+
+            @Override
+            public boolean isAcceptingInput() {
+                return true;
+            }
+
+            @Override
+            public void inputEnded() {
+                
+            }
+
+            @Override
+            public void inputStarted() {
+                
+            }
+        };
         input = gc.getInput();
-        input.addKeyListener(listener);
+        input.addKeyListener(klistener);
+        input.addControllerListener(clistener);
         inputp = new InputProvider(input);
         inputp.bindCommand(new KeyControl(Input.KEY_W), up);
         inputp.bindCommand(new KeyControl(Input.KEY_S), down);
@@ -94,15 +177,29 @@ public class SceneTitle extends SceneBase{
         inputp.bindCommand(new ControllerButtonControl(0, 2), cancel);
         inputp.bindCommand(new KeyControl(Input.KEY_LSHIFT), sprint);
         inputp.bindCommand(new KeyControl(Input.KEY_J), action);
+        uielements = new ArrayList<>();
+        fin = new CameraFadeInTransition();
         back = Cache.getRes("TitleBack.png");
         String[] coms = new String[]{"New Game","Continue","Options","Exit"};
-        wind = new WindowCommand(260, coms, 1, 0);
+        wind = new WindowCommand(160, coms, 1, 0);
+        wind.initX = (1280/2) - 80;
+        wind.initY = 500;
     }
 
     @Override
     public void render(GameContainer gc, StateBasedGame sbg, Graphics g) throws SlickException {
         back.draw(0, 0);
-        wind.render(g, sbg);
+        Cache.getFont().drawString(300, 100, "Debug Message: KeyListener "+repChar);
+        Cache.getFont().drawString(300, 150, "Debug Message: ContollerListener Button: "+buttonPressed+" on Controller: "+controller);
+        if(!inSubMenu){
+            wind.render(g, sbg);
+        }
+        else{
+            Cache.getFont().drawString(300, 50, "Debug Message: In Submenu");
+            for(Window w: uielements){
+            w.render(g, sbg);
+            }
+        }
     }
 
     @Override
@@ -111,13 +208,31 @@ public class SceneTitle extends SceneBase{
         ((WindowSelectable)wind).update(inputp);
             if(inputp.isCommandControlDown(action)){
                 switch(wind.index){
-                    
+                    case 0:
+                        input.removeKeyListener(klistener);
+                        input.removeControllerListener(clistener);
+                        input.clearKeyPressedRecord();
+                        input.clearControlPressedRecord();
+                        sbg.enterState(1, new FadeOutTransition(), fin); break;
+                    case 1: ; break;
+                    case 2: 
+                        lastAdded = new WindowSystem(2, 1);
+                        uielements.add(lastAdded); break;
+                    case 3: gc.exit(); break;
                 }
                 inSubMenu = true;
             }
         }
         else{
-            
+            for(Window w: uielements){
+                if(w instanceof WindowSelectable){
+                    ((WindowSelectable)w).update(inputp);
+                }
+            }
+            if(inputp.isCommandControlDown(cancel)){
+                uielements.remove(lastAdded);
+                inSubMenu = false;
+            }
         }
     }
     

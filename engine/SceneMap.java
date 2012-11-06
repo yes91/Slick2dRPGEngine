@@ -85,9 +85,9 @@ public class SceneMap extends SceneBase {
                 EnemyReader.populateEnemies();
                 map = new Map(new TiledMap("/src/res/testmap2.tmx", "/src/res"), worldPlayer);
                 uiFocus = false;
-                music = new Music("/src/res/fatefulencounter.wav");
-                isPlaying = true;
-                music.loop();
+                //music = new Music("/src/res/fatefulencounter.wav");
+                //isPlaying = true;
+                //music.loop();
                 items = new Image("/src/engine/IconSet.png");
                 light = new Image("/src/res/LightRays.png");
                 ItemReader.populateItems();
@@ -130,8 +130,8 @@ public class SceneMap extends SceneBase {
                     makeMenuBack(container);
                     input.clearKeyPressedRecord();
                     input.clearControlPressedRecord();
-                    sbg.getState(1).update(container, sbg, delta);
-                    sbg.enterState(1);
+                    sbg.getState(2).update(container, sbg, delta);
+                    sbg.enterState(2);
                     //activeMenu = new Menu(worldPlayer);
                     //uiFocus = true;
                     //inMenu = true;
