@@ -30,6 +30,8 @@ public abstract class GameBattler {
     public int MDEFplus;
     public int baseSPD;
     public int SPDplus;
+    private AttackStat attack;
+    private AttackStat baseAttack;
     
     public void clearExtraValues(){
         HPplus = 0;
@@ -68,4 +70,32 @@ public abstract class GameBattler {
     public int getMaxSPD(){
         return Math.min(Math.max(baseSPD + SPDplus, 1), 999);
     }
+
+	/**
+	 * @return the attack
+	 */
+	public int getAttack() {
+		return attack.getAttack();
+	}
+
+	/**
+	 * @param attack the new attack value
+	 */
+	public void setAttack(int attackValue) {
+		this.attack.setAttack(attackValue);
+	}
+
+	/**
+	 * @return the baseAttack
+	 */
+	public int getBaseAttack() {
+		return baseAttack.getAttack();
+	}
+
+	/**
+	 * @param baseAttack the baseAttack to set
+	 */
+	public void setBaseAttack(int baseAttack) {
+		this.baseAttack.setAttack(baseAttack);
+	}
 }

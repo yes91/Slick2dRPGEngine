@@ -6,6 +6,7 @@ public abstract class Effect {
 	private boolean activated; // Whether or not the Effect is activated
 	
 	public abstract void activate();
+	public abstract void deactivate();
 
 	/**
 	 * @return whether or not the effect is activated
