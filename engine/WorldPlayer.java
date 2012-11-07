@@ -124,8 +124,7 @@ public class WorldPlayer extends GameObject {
 
         if(SceneMap.uiFocus == false){
         
-        if (input.isCommandControlPressed(SceneBase.action)) {
-            
+        if (input.isCommandControlPressed(SceneBase.action)) {            
             action = true;
         }
         else { action = false; } 
@@ -144,10 +143,23 @@ public class WorldPlayer extends GameObject {
         
         //Debug Command
         /*if(input.isKeyPressed(Input.KEY_U)){
+>>>>>>> upstream/master
             
             for(Item item : ItemReader.getItems()){
                 giveItem(item, 1);
             }
+<<<<<<< HEAD
+        }
+        
+        if (input.isKeyPressed(Input.KEY_R)) {
+            
+            currentHP -= 10;
+        }
+        
+
+        if (input.isKeyDown(Input.KEY_A)) {
+            if(input.isKeyDown(Input.KEY_LSHIFT)){
+=======
         }*/
         
         //Debug Command
@@ -175,6 +187,7 @@ public class WorldPlayer extends GameObject {
             }
         }
         
+
         if((!input.isCommandControlDown(SceneBase.right)) && (!input.isCommandControlDown(SceneBase.left))) 
         
         { dx = 0; }

@@ -5,6 +5,7 @@ import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 
 public class Item {
+	public static enum Targets {SINGLE_PLAYER, WHOLE_PARTY, SINGLE_ENEMY, WHOLE_ENEMY_PARTY}
     
     private boolean useable;
     private Image image;
@@ -22,8 +23,7 @@ public class Item {
         
     }
     
-    public void render(Graphics g2d, Inventory inv, float x, float y) throws SlickException{
-        
+    public void render(Graphics g2d, Inventory inv, float x, float y) throws SlickException{ 
         Sprite.drawSpriteFrame(image, g2d, x, y, 16, index, 24, 24);
         Cache.getFont().drawString(x+24, y, name);
         String amountToDraw = "" + inv.getItemAmount(this);

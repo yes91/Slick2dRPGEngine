@@ -14,7 +14,6 @@ import org.newdawn.slick.state.BasicGameState;
  * @author Kieran
  */
 public abstract class SceneBase extends BasicGameState{
-    
     public static Input input;
     public static BasicCommand up = new BasicCommand("Up");
     public static BasicCommand down = new BasicCommand("Down");

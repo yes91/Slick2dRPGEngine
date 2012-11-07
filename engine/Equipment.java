@@ -1,6 +1,5 @@
 package engine;
 
-
 public class Equipment {
   
     private int itmIndex;  

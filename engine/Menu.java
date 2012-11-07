@@ -4,38 +4,10 @@
  */
 package engine;
 
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import org.newdawn.slick.Graphics;
-import org.newdawn.slick.Image;
-import org.newdawn.slick.Input;
-import org.newdawn.slick.SlickException;
-import org.newdawn.slick.Sound;
-
-/**
- *
- * @author Kieran
- */
 @Deprecated
 public class Menu{
     
-    private Window main;
-    private Window opts;
-    private Window portr;
-    private boolean notInSub;
-    private boolean inInv;
-    private boolean inEquip;
-    private Image skin;
-    private int y;
-    private int yInv;
-    private int xOff;
-    private int count;
-    private int countInv;
-    private int itemIndex;
-    private Item itemSelected;
-    private WorldPlayer player;
-    
-    //Deprected; however, notable code within commented body.
+    //Deprecated; however, notable code within commented body.
     /*
     public Menu(WorldPlayer p){
         player = p;
@@ -282,6 +254,5 @@ public class Menu{
     public boolean getNotSub(){
         
         return notInSub;
-    }*/
-    
+    }*/    
 }
