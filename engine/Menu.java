@@ -4,14 +4,11 @@
  */
 package engine;
 
-import org.newdawn.slick.Image;
-
 @Deprecated
 public class Menu{
     
-    //Deprected; however, notable code within commented body.
+    //Deprecated; however, notable code within commented body.
     /*
->>>>>>> upstream/master
     public Menu(WorldPlayer p){
         player = p;
         skin = Cache.getImage("Window.png");
@@ -257,8 +254,5 @@ public class Menu{
     public boolean getNotSub(){
         
         return notInSub;
-<<<<<<< HEAD
-    }
-=======
     }*/    
 }

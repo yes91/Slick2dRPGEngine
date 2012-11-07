@@ -47,8 +47,6 @@ public class SceneMap extends SceneBase {
     public static boolean uiFocus;
     private Music music;
     public static Window lastAdded;
-    private Menu activeMenu;
-    private WindowCommand wind;
     private Image testbattler;
     //WorldPlayer worldPlayer;
     Camera camera;

@@ -22,6 +22,7 @@ public abstract class GameBattler {
     public int MPplus;
     public int baseATK;
     public int ATKplus;
+    private int ATK;
     public int baseMATK;
     public int MATKplus;
     public int baseDEF;
@@ -30,8 +31,6 @@ public abstract class GameBattler {
     public int MDEFplus;
     public int baseSPD;
     public int SPDplus;
-    private AttackStat attack;
-    private AttackStat baseAttack;
     
     public void clearExtraValues(){
         HPplus = 0;
@@ -72,30 +71,17 @@ public abstract class GameBattler {
     }
 
 	/**
-	 * @return the attack
+	 * @return the aTK
 	 */
-	public int getAttack() {
-		return attack.getAttack();
+	public int getATK() {
+		return ATK;
 	}
 
 	/**
-	 * @param attack the new attack value
+	 * @param aTK the aTK to set
 	 */
-	public void setAttack(int attackValue) {
-		this.attack.setAttack(attackValue);
+	public void setATK(int aTK) {
+		ATK = aTK;
 	}
 
-	/**
-	 * @return the baseAttack
-	 */
-	public int getBaseAttack() {
-		return baseAttack.getAttack();
-	}
-
-	/**
-	 * @param baseAttack the baseAttack to set
-	 */
-	public void setBaseAttack(int baseAttack) {
-		this.baseAttack.setAttack(baseAttack);
-	}
 }

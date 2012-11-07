@@ -4,8 +4,6 @@
  */
 package engine;
 
-import org.newdawn.slick.Input;
-
 /**
  *
  * @author redblast71

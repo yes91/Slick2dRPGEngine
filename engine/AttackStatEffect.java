@@ -19,12 +19,12 @@ public class AttackStatEffect extends StatEffect {
 
 	@Override
 	public void increaseStat(int amount, GameBattler target) {
-		target.setAttack(target.getAttack() + amount);
+		target.setATK(target.getATK() + amount);
 	}
 
 	@Override
 	public void decreaseStat(int amount, GameBattler target) {
-		target.setAttack(target.getAttack() - amount);
+		target.setATK(target.getATK() - amount);
 	}
 
 	/**
