@@ -10,7 +10,6 @@ import java.util.Scanner;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL20;
 import org.newdawn.slick.SlickException;
-import org.newdawn.slick.opengl.Texture;
 import org.newdawn.slick.util.ResourceLoader;
 
 
@@ -444,6 +443,7 @@ public class Shader {
   	                       name, qualifier, type, vecSize, size);
   	  vars.put(var.name, var);
   	}
+  	scanner.close();
   }
   
   
@@ -457,6 +457,7 @@ public class Shader {
       }
       scanner.next();
     }
+    scanner.close();
   }
 }
 

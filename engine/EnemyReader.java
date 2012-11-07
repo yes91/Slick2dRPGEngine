@@ -33,7 +33,7 @@ public class EnemyReader {
  
 		Document document = (Document) builder.build(is);
 		Element rootNode = document.getRootElement();
-		List list = rootNode.getChildren("enemy");
+		List<Element> list = rootNode.getChildren("enemy");
  
 		for (int i = 0; i < list.size(); i++) {
  

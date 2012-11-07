@@ -47,8 +47,6 @@ public class SceneMap extends SceneBase {
     public static boolean uiFocus;
     private Music music;
     public static Window lastAdded;
-    private Menu activeMenu;
-    private WindowCommand wind;
     private Image testbattler;
     //WorldPlayer worldPlayer;
     Camera camera;
@@ -71,6 +69,7 @@ public class SceneMap extends SceneBase {
     @Override
     public void init(GameContainer container, StateBasedGame sbg) throws SlickException
 	    {
+
                 gfilter = new GaussianFilter(BLUR_RADIUS);
                 ImageBuffer scratch = new ImageBuffer(B_WIDTH,B_HEIGHT);
                 buffer = scratch.getImage();
@@ -140,6 +139,7 @@ public class SceneMap extends SceneBase {
                 }
                 //Old menu
                 /*if(inMenu==true){
+>>>>>>> upstream/master
                     activeMenu.update(input);
                     if((input.isKeyPressed(Input.KEY_K)) && activeMenu.getNotSub()){ 
                         activeMenu.destroy();
@@ -148,6 +148,9 @@ public class SceneMap extends SceneBase {
                         activeMenu = null;
                         uiFocus = false;
                     }
+<<<<<<< HEAD
+                }
+=======
                 }*/
                 if(uiFocus == true){
                     if(input.isKeyDown(Input.KEY_K) && allowClose){

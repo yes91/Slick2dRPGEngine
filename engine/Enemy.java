@@ -24,8 +24,7 @@ public class Enemy extends Event{
     private int maxMP;
     private int currentMP;
     
-    public Enemy(Image i,String n,int hp, int mp,int atk, int def,int matk,int mdef){
-        
+    public Enemy(Image i,String n,int hp, int mp,int atk, int def,int matk,int mdef){   
         super(0,0,0,0,"Enemy",null,null,null);
         enemySprite = i;
         try {

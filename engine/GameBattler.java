@@ -22,6 +22,7 @@ public abstract class GameBattler {
     public int MPplus;
     public int baseATK;
     public int ATKplus;
+    private int ATK;
     public int baseMATK;
     public int MATKplus;
     public int baseDEF;
@@ -31,7 +32,6 @@ public abstract class GameBattler {
     public int baseSPD;
     public int SPDplus;
     
-        
     public void clearExtraValues(){
         HPplus = 0;
         MPplus = 0;
@@ -69,4 +69,19 @@ public abstract class GameBattler {
     public int getMaxSPD(){
         return Math.min(Math.max(baseSPD + SPDplus, 1), 999);
     }
+
+	/**
+	 * @return the aTK
+	 */
+	public int getATK() {
+		return ATK;
+	}
+
+	/**
+	 * @param aTK the aTK to set
+	 */
+	public void setATK(int aTK) {
+		ATK = aTK;
+	}
+
 }
