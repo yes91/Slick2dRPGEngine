@@ -71,6 +71,7 @@ public class Inventory {
         for(int iter = yOrigin; iter < yOrigin+1;){
         g2d.setClip(w.getX()+6-(int)Camera.viewPort.getX(), w.getY()+6-(int)Camera.viewPort.getY(), w.getWidth()-6, w.getHeight()-12);
         if(sort.equals("all")){
+
         for(Item item: items){
                     try {
                     item.render(g2d, this, x, iter+spacing+y);

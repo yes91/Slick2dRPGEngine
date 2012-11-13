@@ -15,13 +15,10 @@ import java.util.logging.Logger;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
+import org.newdawn.slick.ImageBuffer;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.Music;
 import org.newdawn.slick.SlickException;
-import org.newdawn.slick.command.ControllerButtonControl;
-import org.newdawn.slick.command.ControllerDirectionControl;
-import org.newdawn.slick.command.InputProvider;
-import org.newdawn.slick.command.KeyControl;
 import org.newdawn.slick.state.StateBasedGame;
 import org.newdawn.slick.tiled.TiledMap;
 import org.newdawn.slick.util.BufferedImageUtil;
@@ -38,6 +35,8 @@ public class SceneMap extends SceneBase {
     Shader s2;
     public static final int B_WIDTH = 1280;
     public static final int B_HEIGHT = 720;
+    private GaussianFilter gfilter;
+    private final int BLUR_RADIUS = 10;
     public static boolean allowClose;
     public static DepthCompare depthComp = new DepthCompare();
     public static int deltaG;
@@ -48,13 +47,12 @@ public class SceneMap extends SceneBase {
     public static boolean uiFocus;
     private Music music;
     public static Window lastAdded;
-    private Menu activeMenu;
-    private WindowCommand wind;
     private Image testbattler;
     //WorldPlayer worldPlayer;
     Camera camera;
     private Image buffer;
     private BufferedImage awtBuffer;
+    private Graphics bg;
     static Image items;
     //public Input input;
     public static Map map;
@@ -71,8 +69,12 @@ public class SceneMap extends SceneBase {
     @Override
     public void init(GameContainer container, StateBasedGame sbg) throws SlickException
 	    {
-                buffer = new Image(B_WIDTH,B_HEIGHT);
-                awtBuffer = new BufferedImage(B_WIDTH,B_HEIGHT,BufferedImage.TYPE_INT_ARGB);
+
+                gfilter = new GaussianFilter(BLUR_RADIUS);
+                ImageBuffer scratch = new ImageBuffer(B_WIDTH,B_HEIGHT);
+                buffer = scratch.getImage();
+                bg = buffer.getGraphics();
+                awtBuffer = new BufferedImage(B_WIDTH,B_HEIGHT,BufferedImage.TYPE_INT_ARGB);        
                 allowClose = false;
                 container.setShowFPS(false);
                 //container.setMaximumLogicUpdateInterval(60);
@@ -98,7 +100,7 @@ public class SceneMap extends SceneBase {
     @Override
 	    public void update(GameContainer container, StateBasedGame sbg, int delta) throws SlickException
 	    {
-                System.out.println(delta);
+                //System.out.println(delta);
                 deltaG = delta;
                 if(input.isKeyPressed(Input.KEY_F10)){
                     if(isPlaying){
@@ -111,8 +113,7 @@ public class SceneMap extends SceneBase {
                     container.exit();
                 }
                 if(input.isKeyPressed(Input.KEY_F4)){
-                    makeMenuBack(container);
-                    sbg.enterState(1);
+                    map.camera.setTarget(map.objs.get(0));
                 }
                 if(input.isKeyDown(Input.KEY_RALT) && input.isKeyPressed(Input.KEY_ENTER)){
                     fullscreen = container.isFullscreen();
@@ -138,6 +139,7 @@ public class SceneMap extends SceneBase {
                 }
                 //Old menu
                 /*if(inMenu==true){
+>>>>>>> upstream/master
                     activeMenu.update(input);
                     if((input.isKeyPressed(Input.KEY_K)) && activeMenu.getNotSub()){ 
                         activeMenu.destroy();
@@ -146,6 +148,9 @@ public class SceneMap extends SceneBase {
                         activeMenu = null;
                         uiFocus = false;
                     }
+<<<<<<< HEAD
+                }
+=======
                 }*/
                 if(uiFocus == true){
                     if(input.isKeyDown(Input.KEY_K) && allowClose){
@@ -164,7 +169,7 @@ public class SceneMap extends SceneBase {
     @Override
 	    public void render(GameContainer container, StateBasedGame sbg, Graphics g) throws SlickException	    
             {
-        map.camera.translate(g, worldPlayer);
+        map.camera.translate(g);
         map.render(worldPlayer, g);
         //Sprite.animateSprite(testbattler, g, 200, 200, 423, 270, 4, 0, 4, 0, true);
         //Sprite.drawSpriteFrame(testbattler, g, 200, 200, 4, 0, 423, 270);
@@ -251,14 +256,13 @@ public class SceneMap extends SceneBase {
         } catch (SlickException ex) {
             Logger.getLogger(SceneMap.class.getName()).log(Level.SEVERE, null, ex);
         }*/
-        try {
-            map.camera.translate(buffer.getGraphics(), worldPlayer);
-            map.render(worldPlayer, buffer.getGraphics());
+            map.camera.translate(bg);
+            map.render(worldPlayer, bg);
             Collections.sort(map.objs, depthComp);
             for(GameObject go: map.objs) {
-                go.render(buffer.getGraphics());
+                go.render(bg);
             }
-            buffer.getGraphics().flush();
+            bg.flush();
             for(int x = 0; x < buffer.getWidth();x++ ){
                 for(int y = 0; y < buffer.getHeight();y++){
                     org.newdawn.slick.Color c = buffer.getColor(x, y);
@@ -266,16 +270,13 @@ public class SceneMap extends SceneBase {
                 }
             }
             
-            (new GaussianFilter(10)).filter(awtBuffer, awtBuffer);
+            gfilter.filter(awtBuffer, awtBuffer);
             try {
                 buffer.setTexture(BufferedImageUtil.getTexture(null, awtBuffer));
             } catch (IOException ex) {
                 Logger.getLogger(SceneMap.class.getName()).log(Level.SEVERE, null, ex);
             }
                 SceneMenu.back = buffer;
-        } catch (SlickException ex) {
-            Logger.getLogger(SceneMap.class.getName()).log(Level.SEVERE, null, ex);
-        }
     }
 
     @Override

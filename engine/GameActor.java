@@ -8,13 +8,13 @@ package engine;
  *
  * @author redblast71
  */
-public class GameActor extends GameBattler{
+
+public class GameActor extends GameBattler{   
     String name;
     
     
     public GameActor(int ActorID){
-        
-    
+            
     }
     
 }

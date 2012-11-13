@@ -29,7 +29,7 @@ public class ItemReader {
  
 		Document document = (Document) builder.build(is);
 		Element rootNode = document.getRootElement();
-		List list = rootNode.getChildren("item");
+		List<Element> list = rootNode.getChildren("item");
  
 		for (int i = 0; i < list.size(); i++) {
  
