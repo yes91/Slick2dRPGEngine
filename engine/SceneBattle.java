@@ -6,6 +6,7 @@ package engine;
 
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
+import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.StateBasedGame;
 
@@ -16,6 +17,7 @@ import org.newdawn.slick.state.StateBasedGame;
 public class SceneBattle extends SceneBase{
     
     private int stateID = -1;
+    private static Image battleBack;
     
     public SceneBattle(int stateID){
         this.stateID = stateID;
@@ -28,11 +30,14 @@ public class SceneBattle extends SceneBase{
 
     @Override
     public void init(GameContainer gc, StateBasedGame sbg) throws SlickException {
-        
+        battleBack = null;
     }
 
     @Override
-    public void render(GameContainer gc, StateBasedGame sbg, Graphics grphcs) throws SlickException {
+    public void render(GameContainer gc, StateBasedGame sbg, Graphics g) throws SlickException {
+        if(battleBack != null){
+        g.drawImage(battleBack, 0, 0);
+        }
         
     }
 
@@ -40,5 +45,15 @@ public class SceneBattle extends SceneBase{
     public void update(GameContainer gc, StateBasedGame sbg, int i) throws SlickException {
         
     }
+    
+    public void setBattleBack(Image b){
+        battleBack = b;
+    }
+    
+    public Image getBattleBack(){
+        return battleBack;
+    }
+    
+    
     
 }

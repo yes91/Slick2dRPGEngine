@@ -1,9 +1,12 @@
 package engine;
 
+import java.util.List;
+
 /**
  * 
  * @author keith
  * This class is a class that represents an effect that changes the attack stat
+ * temporarily.
  *
  */
 public class AttackStatEffect extends StatEffect {
@@ -31,7 +34,7 @@ public class AttackStatEffect extends StatEffect {
 	 * Activates the AttackStatEffect
 	 * @param targets The targets of the activation
 	 */
-	public void activate(GameBattler[] targets) { 
+	public void activate(List<GameBattler> targets) { 
 		if(!this.isActivated()) {
 			if(this.increase) {
 				for(GameBattler gameBattler : targets) {
@@ -56,7 +59,7 @@ public class AttackStatEffect extends StatEffect {
 	 * Deactivates the AttackStatEffect for the specified targets
 	 * @param targets
 	 */
-	public void deactivate(GameBattler[] targets) {
+	public void deactivate(List<GameBattler> targets) {
 		if(this.isActivated()) {
 			if(this.increase) {
 				for(GameBattler gameBattler : targets) {
