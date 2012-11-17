@@ -1,5 +1,7 @@
 package engine;
 
+import java.util.List;
+
 /**
  * 
  * @author keith
@@ -8,9 +10,6 @@ package engine;
  */
 public class AttackStatEffect extends StatEffect {
 	
-	private boolean increase;
-	private int amount;
-	
 	public AttackStatEffect(boolean increase, Item.Targets target, int amount) {
 		this.increase = increase;
 		this.target = target;
@@ -18,29 +17,38 @@ public class AttackStatEffect extends StatEffect {
 	}
 
 	@Override
-	public void increaseStat(int amount, GameBattler target) {
-		target.setATK(target.getATK() + amount);
+	public void increaseStat(GameBattler target) {
+		increaseStat(target, getAmount());
 	}
 
 	@Override
-	public void decreaseStat(int amount, GameBattler target) {
-		target.setATK(target.getATK() - amount);
+	public void decreaseStat(GameBattler target) {
+		decreaseStat(target, getAmount());
 	}
+	
+	public void increaseStat(GameBattler target, int amount) {
+		target.setATKplus(target.getATKplus() + amount);
+	}
+
+	public void decreaseStat(GameBattler target, int amount) {
+		target.setATKplus(target.getATKplus() - amount);
+	}
+	
 
 	/**
 	 * Activates the AttackStatEffect
 	 * @param targets The targets of the activation
 	 */
-	public void activate(GameBattler[] targets) { 
+	public void activate(List<GameBattler> targets) { 
 		if(!this.isActivated()) {
 			if(this.increase) {
 				for(GameBattler gameBattler : targets) {
-					increaseStat(this.amount, gameBattler);
+					increaseStat(gameBattler);
 				}
 			} 
 			else {
 				for(GameBattler gameBattler : targets) {
-					decreaseStat(this.amount, gameBattler);
+					decreaseStat(gameBattler);
 				}
 			}
 		}
@@ -56,16 +64,20 @@ public class AttackStatEffect extends StatEffect {
 	 * Deactivates the AttackStatEffect for the specified targets
 	 * @param targets
 	 */
-	public void deactivate(GameBattler[] targets) {
+	public void deactivate(List<GameBattler> targets) {
+		deactivate(targets, getAmount());
+	}
+	
+	public void deactivate(List<GameBattler> targets, int amount) {
 		if(this.isActivated()) {
 			if(this.increase) {
 				for(GameBattler gameBattler : targets) {
-					decreaseStat(this.amount, gameBattler);
+					decreaseStat(gameBattler, amount);
 				}
 			} 
 			else {
 				for(GameBattler gameBattler : targets) {
-					increaseStat(this.amount, gameBattler);
+					increaseStat(gameBattler, amount);
 				}
 			}
 		}

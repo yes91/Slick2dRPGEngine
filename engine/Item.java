@@ -1,10 +1,14 @@
 package engine;
 
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+import java.util.Arrays;
+
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 
-public class Item {
+public class Item implements PropertyChangeListener{
 	public static enum Targets {SINGLE_PLAYER, WHOLE_PARTY, SINGLE_ENEMY, WHOLE_ENEMY_PARTY}
     
     private boolean useable;
@@ -12,6 +16,8 @@ public class Item {
     private String name;
     private String type;
     private int index;
+    public GameBattler wielder;
+    public AttackStatEffect attackBoost;
 
     
     
@@ -20,7 +26,6 @@ public class Item {
       image = SceneMap.getImage();
       this.name = name;
       this.useable = use;
-        
     }
     
     public void render(Graphics g2d, Inventory inv, float x, float y) throws SlickException{ 
@@ -64,6 +69,15 @@ public class Item {
     public String toString(){
         return name;
     }
+
+	@Override
+	public void propertyChange(PropertyChangeEvent e) {
+		if(e.getPropertyName() == "amount") {
+			GameBattler[] targets = {wielder};
+			attackBoost.deactivate(Arrays.asList(targets), (int)e.getOldValue());
+			attackBoost.activate(Arrays.asList(targets));
+		}
+	}
 
 }
   

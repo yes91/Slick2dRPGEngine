@@ -4,13 +4,14 @@
  */
 package engine;
 
+
 import org.newdawn.slick.Image;
 
 /**
  *
  * @author redblast71
  */
-public abstract class GameBattler {
+public abstract class GameBattler{
     
     private final int HP_LIMIT = 999999;
     public Image battleSprite;
@@ -22,7 +23,6 @@ public abstract class GameBattler {
     public int MPplus;
     public int baseATK;
     public int ATKplus;
-    private int ATK;
     public int baseMATK;
     public int MATKplus;
     public int baseDEF;
@@ -70,18 +70,139 @@ public abstract class GameBattler {
         return Math.min(Math.max(baseSPD + SPDplus, 1), 999);
     }
 
-	/**
-	 * @return the aTK
-	 */
-	public int getATK() {
-		return ATK;
+	public Image getBattleSprite() {
+		return battleSprite;
 	}
 
-	/**
-	 * @param aTK the aTK to set
-	 */
-	public void setATK(int aTK) {
-		ATK = aTK;
+	public void setBattleSprite(Image battleSprite) {
+		this.battleSprite = battleSprite;
 	}
 
+	public int getCurrentHP() {
+		return currentHP;
+	}
+
+	public void setCurrentHP(int currentHP) {
+		this.currentHP = currentHP;
+	}
+
+	public int getCurrentMP() {
+		return currentMP;
+	}
+
+	public void setCurrentMP(int currentMP) {
+		this.currentMP = currentMP;
+	}
+
+	public int getBaseHP() {
+		return baseHP;
+	}
+
+	public void setBaseHP(int baseHP) {
+		this.baseHP = baseHP;
+	}
+
+	public int getHPplus() {
+		return HPplus;
+	}
+
+	public void setHPplus(int hPplus) {
+		HPplus = hPplus;
+	}
+
+	public int getBaseMP() {
+		return baseMP;
+	}
+
+	public void setBaseMP(int baseMP) {
+		this.baseMP = baseMP;
+	}
+
+	public int getMPplus() {
+		return MPplus;
+	}
+
+	public void setMPplus(int mPplus) {
+		MPplus = mPplus;
+	}
+
+	public int getBaseATK() {
+		return baseATK;
+	}
+
+	public void setBaseATK(int baseATK) {
+		this.baseATK = baseATK;
+	}
+
+	public int getATKplus() {
+		return ATKplus;
+	}
+
+	public void setATKplus(int aTKplus) {
+		ATKplus = aTKplus;
+	}
+
+	public int getBaseMATK() {
+		return baseMATK;
+	}
+
+	public void setBaseMATK(int baseMATK) {
+		this.baseMATK = baseMATK;
+	}
+
+	public int getMATKplus() {
+		return MATKplus;
+	}
+
+	public void setMATKplus(int mATKplus) {
+		MATKplus = mATKplus;
+	}
+
+	public int getBaseDEF() {
+		return baseDEF;
+	}
+
+	public void setBaseDEF(int baseDEF) {
+		this.baseDEF = baseDEF;
+	}
+
+	public int getDEFplus() {
+		return DEFplus;
+	}
+
+	public void setDEFplus(int dEFplus) {
+		DEFplus = dEFplus;
+	}
+
+	public int getBaseMDEF() {
+		return baseMDEF;
+	}
+
+	public void setBaseMDEF(int baseMDEF) {
+		this.baseMDEF = baseMDEF;
+	}
+
+	public int getMDEFplus() {
+		return MDEFplus;
+	}
+
+	public void setMDEFplus(int mDEFplus) {
+		MDEFplus = mDEFplus;
+	}
+
+	public int getBaseSPD() {
+		return baseSPD;
+	}
+
+	public void setBaseSPD(int baseSPD) {
+		this.baseSPD = baseSPD;
+	}
+
+	public int getSPDplus() {
+		return SPDplus;
+	}
+
+	public void setSPDplus(int sPDplus) {
+		SPDplus = sPDplus;
+	}
 }
