@@ -31,7 +31,9 @@ public class WindowSelectable extends Window{
     @Override
     public void render(Graphics g, StateBasedGame sbg){
         super.render(g, sbg);
+        if(itemMax > 0){
         drawCursorRect(g);
+        }
     }
     
     public void setCursorPos(int id){
@@ -120,6 +122,7 @@ public class WindowSelectable extends Window{
     }
     
     public void update(InputProvider input){
+        if(itemMax > 0){
         int lastIndex = index;
         if(input.isCommandControlPressed(SceneBase.down)){
             cursorDown(input.isCommandControlDown(SceneBase.down));
@@ -138,6 +141,7 @@ public class WindowSelectable extends Window{
         }
         if(index != lastIndex) { Sounds.cursor.play(); }
         updateCursor();
+        }
     }
     
     public void updateCursor(){

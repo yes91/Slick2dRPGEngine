@@ -57,7 +57,7 @@ public class SceneMap extends SceneBase {
     //public Input input;
     public static Map map;
     public Image light;
-    public static ArrayList<Window> uielements;
+    private static ArrayList<Window> uielements;
     
     
     

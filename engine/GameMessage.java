@@ -14,14 +14,14 @@ public class GameMessage {
     
     public final int MAX_LINE = 4;
     
-    public Stack texts;
+    public Stack<String> texts;
     
     public GameMessage(){
         clear();
     }
     
     public final void clear(){
-        texts = null;
+        texts = new Stack();
     }
     
     public boolean busy(){
