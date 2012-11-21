@@ -49,6 +49,7 @@ public class RPG extends StateBasedGame {
         addState(new SceneTitle(0));
         addState(new SceneMap(1));
         addState(new SceneMenu(2));
+        addState(new SceneBattle(3));
     }
                 
 }

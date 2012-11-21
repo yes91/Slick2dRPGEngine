@@ -6,6 +6,7 @@ import java.util.List;
  * 
  * @author keith
  * This class is a class that represents an effect that changes the attack stat
+ * temporarily.
  *
  */
 public class AttackStatEffect extends StatEffect {
@@ -39,6 +40,7 @@ public class AttackStatEffect extends StatEffect {
 	 * Activates the AttackStatEffect
 	 * @param targets The targets of the activation
 	 */
+    @Override
 	public void activate(List<GameBattler> targets) { 
 		if(!this.isActivated()) {
 			if(this.increase) {
@@ -64,11 +66,13 @@ public class AttackStatEffect extends StatEffect {
 	 * Deactivates the AttackStatEffect for the specified targets
 	 * @param targets
 	 */
+    @Override
 	public void deactivate(List<GameBattler> targets) {
 		deactivate(targets, getAmount());
 	}
 	
 	public void deactivate(List<GameBattler> targets, int amount) {
+
 		if(this.isActivated()) {
 			if(this.increase) {
 				for(GameBattler gameBattler : targets) {
