@@ -31,6 +31,7 @@ public class SceneTitle extends SceneBase{
     private ControllerListener clistener;
     private Image back;
     private WindowCommand wind;
+    private WindowMessage test;
     private int keyPressed;
     private char repChar;
     private int controller;
@@ -182,6 +183,11 @@ public class SceneTitle extends SceneBase{
         back = Cache.getRes("TitleBack.png");
         String[] coms = new String[]{"New Game","Continue","Options","Exit"};
         wind = new WindowCommand(160, coms, 1, 0);
+        gameMessage.texts.push("Hello, this is a test of the message system");
+        gameMessage.texts.push("This is a new line. This is still the same line");
+        gameMessage.texts.push("Habla espanol por favor, senor. No hablo ingles.");
+        gameMessage.texts.push("Goody gumdrop trincket tucker pie jammer.");
+        test = new WindowMessage();
         wind.initX = (1280/2) - 80;
         wind.initY = 500;
     }
@@ -214,7 +220,8 @@ public class SceneTitle extends SceneBase{
                         input.clearKeyPressedRecord();
                         input.clearControlPressedRecord();
                         sbg.enterState(1, new FadeOutTransition(), fin); break;
-                    case 1: ; break;
+                    case 1: lastAdded = test;
+                        uielements.add(lastAdded); break;
                     case 2:
                         lastAdded = new WindowSystem(2, 1);
                         uielements.add(lastAdded); break;

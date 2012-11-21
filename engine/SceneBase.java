@@ -25,5 +25,6 @@ public abstract class SceneBase extends BasicGameState{
     public static BasicCommand menu = new BasicCommand("Menu");
     public static InputProvider inputp;
     public static WorldPlayer worldPlayer;
+    public static GameMessage gameMessage = new GameMessage();
     
 }
