@@ -4,6 +4,8 @@
  */
 package engine;
 
+import java.beans.PropertyChangeEvent;
+
 /**
  *
  * @author redblast71
@@ -30,4 +32,8 @@ public class Weapon extends Item {
     public String getSubtype(){
         return subtype;   
     }    
+
+    @Override
+    public void propertyChange(PropertyChangeEvent pce) {
+    }
 }

@@ -12,6 +12,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import org.jdom2.JDOMException;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
@@ -78,7 +80,7 @@ public class SceneMap extends SceneBase {
                 allowClose = false;
                 container.setShowFPS(false);
                 //container.setMaximumLogicUpdateInterval(60);
-                testbattler = new Image("/src/res/yuan_3.png");
+                setTestbattler(new Image("/src/res/yuan_3.png"));
                 worldPlayer = new WorldPlayer(new Image("/src/engine/craft.png"));
                 s = Shader.makeShader("/src/engine/blur.vrt", "/src/engine/blur.frg");
                 s2 = Shader.makeShader("/src/engine/blur2.vrt", "/src/engine/blur2.frg");
@@ -92,7 +94,12 @@ public class SceneMap extends SceneBase {
                 //music.loop();
                 items = new Image("/src/engine/IconSet.png");
                 light = new Image("/src/res/LightRays.png");
-                ItemReader.populateItems();
+                ItemReader reader = new ItemReader();
+                try {
+					reader.populateItems();
+				} catch (JDOMException | IOException e) {
+					e.printStackTrace();
+				}
                 //System.out.println(new GameBattler().stat.getBaseHP());
                 
 	    }
@@ -194,7 +201,8 @@ public class SceneMap extends SceneBase {
         }*/
 }
     
-    private void tpPlayer(int tileX, int tileY, WorldPlayer p){
+    @SuppressWarnings("unused")
+	private void tpPlayer(int tileX, int tileY, WorldPlayer p){
         
         p.setX(tileX*map.map.getTileWidth());
         p.setY(tileY*map.map.getTileHeight());
@@ -283,5 +291,19 @@ public class SceneMap extends SceneBase {
     public int getID() {
         return stateID;
     }
+
+	/**
+	 * @return the testbattler
+	 */
+	public Image getTestbattler() {
+		return testbattler;
+	}
+
+	/**
+	 * @param testbattler the testbattler to set
+	 */
+	public void setTestbattler(Image testbattler) {
+		this.testbattler = testbattler;
+	}
 
 }

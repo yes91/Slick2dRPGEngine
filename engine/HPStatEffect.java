@@ -1,13 +1,9 @@
 package engine;
 
-public class DefenseStatEffect extends StatEffect {
-
-	public DefenseStatEffect(boolean increase, Item.Targets target, int amount) {
+public class HPStatEffect extends StatEffect {
+	
+	public HPStatEffect(boolean increase, Item.Targets target, int amount) {
 		super(increase, target, amount);
-	}
-
-	public void increaseStat(GameBattler target, int amount) {
-		target.setDEFplus(target.getDEFplus() + amount);
 	}
 
 	@Override
@@ -15,8 +11,12 @@ public class DefenseStatEffect extends StatEffect {
 		increaseStat(target, getAmount());
 	}
 
+	public void increaseStat(GameBattler target, int amount) {
+		target.setCurrentHP(target.getCurrentHP() + amount);
+	}
+
 	public void decreaseStat(GameBattler target, int amount) {
-		target.setDEFplus(target.getDEFplus() - amount);
+		target.setCurrentHP(target.getCurrentHP() - amount);
 	}
 
 	@Override

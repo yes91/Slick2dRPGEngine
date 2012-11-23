@@ -6,7 +6,8 @@ public abstract class Effect {
 	
 	Item.Targets target; // The target of the Effect
 	private boolean activated; // Whether or not the Effect is activated
-	
+
+        
 	public abstract void activate();
 	public abstract void deactivate();
 	public abstract void activate(List<GameBattler> targets);
