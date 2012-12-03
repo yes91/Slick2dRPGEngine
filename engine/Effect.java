@@ -4,7 +4,7 @@ import java.util.List;
 
 public abstract class Effect {
 	
-	Item.Targets target; // The target of the Effect
+	ConsumableItem.Targets target; // The target of the Effect
 	private boolean activated; // Whether or not the Effect is activated
 
         
@@ -27,10 +27,10 @@ public abstract class Effect {
 		this.activated = activated;
 	}
 	
-	public Item.Targets getTarget() {
+	public ConsumableItem.Targets getTarget() {
 		return target;
 	}
-	public void setTarget(Item.Targets target) {
+	public void setTarget(ConsumableItem.Targets target) {
 		this.target = target;
 	}
 	

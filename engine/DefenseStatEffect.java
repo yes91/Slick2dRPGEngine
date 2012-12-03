@@ -2,7 +2,7 @@ package engine;
 
 public class DefenseStatEffect extends StatEffect {
 
-	public DefenseStatEffect(boolean increase, Item.Targets target, int amount) {
+	public DefenseStatEffect(boolean increase, ConsumableItem.Targets target, int amount) {
 		super(increase, target, amount);
 	}
 

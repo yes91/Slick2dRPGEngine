@@ -10,7 +10,7 @@ import java.beans.PropertyChangeEvent;
  *
  * @author redblast71
  */
-public class Weapon extends Item {
+public class Weapon extends Item { // Weapons are items
     
     private int damage;
     private String subtype;

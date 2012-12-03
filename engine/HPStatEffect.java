@@ -2,7 +2,7 @@ package engine;
 
 public class HPStatEffect extends StatEffect {
 	
-	public HPStatEffect(boolean increase, Item.Targets target, int amount) {
+	public HPStatEffect(boolean increase,ConsumableItem.Targets target, int amount) {
 		super(increase, target, amount);
 	}
 

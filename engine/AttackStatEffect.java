@@ -1,5 +1,4 @@
 package engine;
-
 /**
  * 
  * @author keith
@@ -9,7 +8,7 @@ package engine;
  */
 public class AttackStatEffect extends StatEffect {
 	
-	public AttackStatEffect(boolean increase, Item.Targets target, int amount) {
+	public AttackStatEffect(boolean increase, ConsumableItem.Targets target, int amount) {
 		super(increase, target, amount);
 	}
 

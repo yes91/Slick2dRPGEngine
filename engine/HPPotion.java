@@ -3,6 +3,10 @@ package engine;
 public class HPPotion extends Potion{
 	
 	HPStatEffect heal;
+	
+	public HPPotion(String name) {
+		this(name, true);
+	}
 
 	public HPPotion(boolean useable) {
 		this("HP Potion", useable);

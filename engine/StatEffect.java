@@ -8,7 +8,7 @@ public abstract class StatEffect extends Effect {
 	protected boolean increase;
 	protected int amount;
 	
-	public StatEffect(boolean increase, Item.Targets target, int amount) {
+	public StatEffect(boolean increase, ConsumableItem.Targets target, int amount) {
 		this.increase = increase;
 		this.target = target;
 		this.amount = amount;

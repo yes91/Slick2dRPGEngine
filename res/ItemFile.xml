@@ -1,11 +1,16 @@
 <ItemList>
-	<!-- <weapons>
+	<weapons>
 		<swords>
 			<item>
 				<type>weapon</type>
 				<name>Gestalt Sword</name>
-				<subtype>sword</subtype>
-				<dmg>10</dmg>
+				<classname>engine.Sword</classname>
+				<effect>
+					<increase>true</increase>
+					<classname>engine.AttackStatEffect</classname>
+					<amount>10</amount>
+					<target>Single Player</target>
+				</effect>
 				<gid>1</gid>
 			</item>
 			<item>
@@ -117,11 +122,11 @@
 				<type>weapon</type>
 				<classname>sword</classname>
 				<name>Neo Platinar12</name>
-				<dmg>40</dmg> What does the damage mean?
+				<dmg>40</dmg>
 				<gid>4</gid>
 			</item>
 		</swords>
-	</weapons> -->
+	</weapons>
 	<consumables>
 		<item>
 			<type>consumable</type>

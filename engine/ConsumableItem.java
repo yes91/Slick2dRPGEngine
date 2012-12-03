@@ -8,6 +8,8 @@ import org.reflections.Reflections;
 
 public class ConsumableItem extends Item implements Consumable {
     public HashMap<String, StatEffect> effects;
+	public static enum Targets {SINGLE_PLAYER, WHOLE_PARTY, SINGLE_ENEMY, WHOLE_ENEMY_PARTY}
+
 	
 	public ConsumableItem(String name) {
 		this(name, true);

@@ -83,18 +83,18 @@ public void consumablesInit(List<Element> list) {
 					 String finalClassName = s.substring(mid);
 					if(m.getName().equals("get" + finalClassName + "Instance")) {
 						boolean increase = Boolean.parseBoolean(node.getChild("effect").getChildText("increase"));
-						Item.Targets target;	
+						ConsumableItem.Targets target;	
 						switch(node.getChild("effect").getChildText("target")) {
 						case "Whole Party":
-							target = Item.Targets.WHOLE_PARTY;
+							target = ConsumableItem.Targets.WHOLE_PARTY;
 							break;
 						case "Single Enemy":
-							target = Item.Targets.SINGLE_ENEMY;
+							target = ConsumableItem.Targets.SINGLE_ENEMY;
 							break;
 						case "Whole Enemy Party":
-							target = Item.Targets.WHOLE_ENEMY_PARTY;
+							target = ConsumableItem.Targets.WHOLE_ENEMY_PARTY;
 						default:
-							target = Item.Targets.SINGLE_PLAYER;
+							target = ConsumableItem.Targets.SINGLE_PLAYER;
 							break;
 						}
 						int amount = Integer.parseInt(node.getChild("effect").getChildText("amount"));
@@ -130,7 +130,7 @@ public void consumablesInit(List<Element> list) {
 	}
 	
 	@SuppressWarnings("unused")
-	private AttackStatEffect getAttackStatEffectInstance(boolean increase, Item.Targets target, int amount) {
+	private AttackStatEffect getAttackStatEffectInstance(boolean increase, ConsumableItem.Targets target, int amount) {
 		return new AttackStatEffect(increase, target, amount);
 	}
 

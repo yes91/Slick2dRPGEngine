@@ -10,14 +10,11 @@ public class Potion extends ConsumableItem {
 
 	@Override
 	public void propertyChange(PropertyChangeEvent arg0) {
-		// TODO Auto-generated method stub
 
 	}
 
 	@Override
 	public void consume(GameObject target, Inventory inv) {
-		// TODO Auto-generated method stub
-
 	}
 
 }

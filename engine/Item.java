@@ -6,7 +6,6 @@ import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 
 public abstract class Item implements PropertyChangeListener {
-	public static enum Targets {SINGLE_PLAYER, WHOLE_PARTY, SINGLE_ENEMY, WHOLE_ENEMY_PARTY}
     
     private boolean useable;
     private Image image;
