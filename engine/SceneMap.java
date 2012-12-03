@@ -105,6 +105,7 @@ public class SceneMap extends SceneBase {
             container.exit();
         }
         if (input.isKeyPressed(Input.KEY_0)) {
+            ((SceneBattle)sbg.getState(3)).setBattleBack(Cache.getRes("Cobblestones3.png"));
             sbg.enterState(3);
         }
         if (input.isKeyPressed(Input.KEY_F4)) {

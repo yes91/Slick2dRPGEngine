@@ -19,6 +19,7 @@ public class SceneMenu extends SceneBase {
     public static Image back;
     private WindowCommand command;
     private WindowItem inventory;
+    private WindowHelp invHelp;
     private Window activeWindow;
     //private Input input;
     public int stateID = -1;
@@ -43,7 +44,8 @@ public class SceneMenu extends SceneBase {
         coms[4] = "Save";
         coms[5] = "Options";
         command = new WindowCommand(120, coms, 1, 0);
-        inventory = new WindowItem(command.x, command.y, SceneMap.B_WIDTH, SceneMap.B_HEIGHT, worldPlayer.getInv());
+        invHelp = new WindowHelp();
+        inventory = new WindowItem(command.x, command.y + invHelp.height, SceneMap.B_WIDTH, SceneMap.B_HEIGHT - invHelp.height, worldPlayer.getInv());
         activeWindow = command;
     }
 
@@ -51,6 +53,9 @@ public class SceneMenu extends SceneBase {
     public void render(GameContainer gc, StateBasedGame sbg, Graphics grphcs) throws SlickException {
         grphcs.drawImage(back, 0, 0);
         if (activeWindow != null) {
+            if(activeWindow.equals(inventory)){
+                invHelp.render(grphcs, sbg);
+            }
             activeWindow.render(grphcs, sbg);
         }
     }
@@ -66,6 +71,9 @@ public class SceneMenu extends SceneBase {
                     }
                     break;
             }
+        }
+        else if(activeWindow.equals(inventory)){
+            invHelp.setText(worldPlayer.getInv().items.get(inventory.index).getDesc());
         }
         if (inputp.isCommandControlPressed(cancel)) {
             if (activeWindow.equals(command)) {

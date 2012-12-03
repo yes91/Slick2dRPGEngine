@@ -10,6 +10,7 @@ public abstract class Item {
     private static Image image = Cache.getImage("IconSet.png");
     private boolean useable;
     private String name;
+    private String desc;
     private int price;
     private int gid;
 
@@ -20,9 +21,11 @@ public abstract class Item {
       this.name = name;
       this.useable = use;
       this.price = 0;
+      this.desc = "Default item description.";
         
     }
 
+    @Deprecated
     public void render(Graphics g2d, Inventory inv, float x, float y) throws SlickException{ 
         Sprite.drawSpriteFrame(image, g2d, x, y, 16, gid, 24, 24);
         Cache.getFont().drawString(x+24, y, name);
@@ -44,6 +47,14 @@ public abstract class Item {
     public boolean isUseable(){
      
         return useable;
+    }
+
+    public String getDesc() {
+        return desc;
+    }
+
+    public void setDesc(String desc) {
+        this.desc = desc;
     }
     
     public int getIndex(){

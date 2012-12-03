@@ -39,6 +39,7 @@ public class ItemReader {
                        
                        Item item = new Weapon(node.getChildText("name"));
                        ((Weapon)item).setDmg(Integer.parseInt(node.getChildText("dmg")));
+                       item.setDesc(node.getChildText("desc"));
                        item.setIndex(Integer.parseInt(node.getChildText("gid")));
                        items.add(item);
                        
@@ -47,6 +48,7 @@ public class ItemReader {
                        
                        Item item = new Consumable(node.getChildText("name"),node.getChildText("subtype"));
                        ((Consumable)item).setEffect(node.getChildText("effect"));
+                       item.setDesc(node.getChildText("desc"));
                        item.setIndex(Integer.parseInt(node.getChildText("gid")));
                        items.add(item);
                        

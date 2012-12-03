@@ -39,15 +39,18 @@ public class SceneBattle extends SceneBase{
     @Override
     public void render(GameContainer gc, StateBasedGame sbg, Graphics g) throws SlickException {
         if(battleBack != null){
-        g.drawImage(battleBack, 0, 0);
+            battleBack.draw(0, 0, 1280, 720, 0, 0, 580, 444);
         }
+        
         
     }
 
     @Override
     public void update(GameContainer gc, StateBasedGame sbg, int i) throws SlickException {
-        if(!BGM.playing()){
-            BGM.loop();
+        if(BGM != null){
+            if(!BGM.playing()){
+                BGM.loop();
+            }
         }
     }
 
