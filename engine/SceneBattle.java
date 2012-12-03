@@ -55,8 +55,8 @@ public class SceneBattle extends SceneBase{
         return BGM;
     }
 
-    public static void setBGM(String BGM) {
-        //SceneBattle.BGM = Cache.getRes(BGM + ".wav");
+    public static void setBGM(String music) {
+        BGM = Sounds.getMusic(music);
     }
     
     public void setBattleBack(Image b){
