@@ -17,7 +17,9 @@ import org.newdawn.slick.state.StateBasedGame;
 public class SceneMenu extends SceneBase{
     
     public static Image back;
-    private WindowCommand wind;
+    private WindowCommand command;
+    private WindowItem inventory;
+    private Window activeWindow;
     //private Input input;
     
     public int stateID = -1;
@@ -44,19 +46,35 @@ public class SceneMenu extends SceneBase{
                 coms[3] = "Status";
                 coms[4] = "Save";
                 coms[5] = "Options";
-                wind = new WindowCommand(120,coms, 1, 0);
+                command = new WindowCommand(120,coms, 1, 0);
+                inventory = new WindowItem(command.x + command.width, command.y, SceneMap.B_WIDTH - command.width, SceneMap.B_HEIGHT, worldPlayer.getInv());
     }
 
     @Override
     public void render(GameContainer gc, StateBasedGame sbg, Graphics grphcs) throws SlickException {
         grphcs.drawImage(back, 0, 0);
-        wind.render(grphcs,sbg);
+        command.render(grphcs,sbg);
+        if(activeWindow != null){
+        activeWindow.render(grphcs, sbg);
+        }
     }
 
     @Override
     public void update(GameContainer gc, StateBasedGame sbg, int delta) throws SlickException {
-        ((WindowSelectable)wind).update(inputp);
-        if(inputp.isCommandControlPressed(cancel)){
+        if(activeWindow != null){
+        ((WindowSelectable)activeWindow).update(inputp);
+        }
+        else{
+            ((WindowSelectable)command).update(inputp);
+            switch(command.index){
+            case 0: 
+                if(inputp.isCommandControlPressed(action)){
+                    activeWindow = inventory;
+                }
+                break;
+        }
+        }
+        if(inputp.isCommandControlPressed(cancel) && activeWindow == null){
             Sounds.cancel.play();
             input.clearKeyPressedRecord();
             input.clearControlPressedRecord();

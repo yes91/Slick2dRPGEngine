@@ -12,8 +12,8 @@ import org.newdawn.slick.Image;
  */
 public class NPC extends Event{
     
-    Image image;
-    int frame;
+    private Image image;
+    private int frame;
     
     public NPC(float x, float y, int width, int height, String dg, Image i){
         super(x, y, width, height, "Npc", dg, null, null);

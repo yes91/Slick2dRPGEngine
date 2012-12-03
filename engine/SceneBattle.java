@@ -7,6 +7,7 @@ package engine;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
+import org.newdawn.slick.Music;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.StateBasedGame;
 
@@ -18,6 +19,7 @@ public class SceneBattle extends SceneBase{
     
     private int stateID = -1;
     private static Image battleBack;
+    private static Music BGM;
     
     public SceneBattle(int stateID){
         this.stateID = stateID;
@@ -31,6 +33,7 @@ public class SceneBattle extends SceneBase{
     @Override
     public void init(GameContainer gc, StateBasedGame sbg) throws SlickException {
         battleBack = null;
+        BGM = null;
     }
 
     @Override
@@ -43,7 +46,17 @@ public class SceneBattle extends SceneBase{
 
     @Override
     public void update(GameContainer gc, StateBasedGame sbg, int i) throws SlickException {
-        
+        if(!BGM.playing()){
+            BGM.loop();
+        }
+    }
+
+    public static Music getBGM() {
+        return BGM;
+    }
+
+    public static void setBGM(String BGM) {
+        //SceneBattle.BGM = Cache.getRes(BGM + ".wav");
     }
     
     public void setBattleBack(Image b){

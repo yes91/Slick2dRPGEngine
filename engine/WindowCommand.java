@@ -35,13 +35,16 @@ public class WindowCommand extends WindowSelectable{
         for(int i = 0; i < itemMax; i++){
             drawItem(i);
         }
+        if(itemMax > 0){
+        drawCursorRect(g);
+        }
     }
     
     public void drawItem(int ind){
         Rectangle rect = getItemRect(ind);
         rect.setX(rect.getX() + 4);
         rect.setWidth(rect.getX() - 8);
-        Cache.getFont().drawString(x+16+rect.getX()+8, y+16+rect.getY()+4, commands[ind]);
+        Cache.getFont().drawString(x+16+rect.getX()+8, y+16+rect.getY(), commands[ind]);
     }
     
 }

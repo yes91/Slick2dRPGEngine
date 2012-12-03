@@ -5,10 +5,7 @@
 package engine;
 
 import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import org.newdawn.slick.Graphics;
-import org.newdawn.slick.SlickException;
 
 /**
  *
@@ -19,16 +16,13 @@ public class Inventory {
     public static final int INV_SIZE = 50;
     public static final int MAX_AMOUNT = 99;
     public ArrayList<Item> items;
-    //public ArrayList<Armor> inven4;
     private int[] amounts;
-    private int yOrigin;
     
-    Inventory(){
+    public Inventory(){
         
         items = new ArrayList<>();
         amounts = new int[INV_SIZE];
         initInv();
-        yOrigin = 0;
     }
     
   public boolean add(Item item, int a){
@@ -59,14 +53,16 @@ public class Inventory {
                     items.remove(item);
                 }
             }
-            else return false;
+            else {
+            return false;
+        }
         return true;
     }
     
     @Deprecated
     public void render(Graphics g2d, Window w, int spacing, int x, int y, String sort){
         
-        if((getCurrLength() > 0)) {
+        /*if((getCurrLength() > 0)) {
         int itConst = spacing;
         for(int iter = yOrigin; iter < yOrigin+1;){
         g2d.setClip(w.getX()+6-(int)Camera.viewPort.getX(), w.getY()+6-(int)Camera.viewPort.getY(), w.getWidth()-6, w.getHeight()-12);
@@ -84,7 +80,7 @@ public class Inventory {
             }
         }
         g2d.clearClip();
-        }
+        }*/
     }
     
     public int getCurrLength() {
@@ -95,16 +91,6 @@ public class Inventory {
         for(int i = 0; i < amounts.length; i++){
             amounts[i] = 0;
         }  
-    }
-    
-    public void scroll(int dy){
-    
-    yOrigin += dy;
-    }
-    
-    public void setY(int y){
-        
-        yOrigin = y;
     }
     
     public int getItemAmount(Item item){

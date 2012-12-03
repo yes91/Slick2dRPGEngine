@@ -226,6 +226,25 @@ public class SceneMap extends SceneBase {
     }
     
     public void makeMenuBack(GameContainer gc){
+        Graphics.setCurrent(bg);
+        map.camera.translate(bg);
+        map.render(worldPlayer, bg);
+        Collections.sort(map.objs, depthComp);
+        for(GameObject go: map.objs) {
+            go.render(bg);
+        }
+        bg.flush();
+        s.startShader();
+        bg.drawImage(buffer, 0, 0);
+        bg.flush();
+        Shader.forceFixedShader();
+        s2.startShader();
+        bg.drawImage(buffer, 0, 0);
+        Shader.forceFixedShader();
+        
+        SceneMenu.back = buffer.copy();
+        Graphics.setCurrent(gc.getGraphics());
+            
         /*try {
             gc.pause();
             buffer.getGraphics().clearAlphaMap();
@@ -256,7 +275,7 @@ public class SceneMap extends SceneBase {
         } catch (SlickException ex) {
             Logger.getLogger(SceneMap.class.getName()).log(Level.SEVERE, null, ex);
         }*/
-            map.camera.translate(bg);
+            /*map.camera.translate(bg);
             map.render(worldPlayer, bg);
             Collections.sort(map.objs, depthComp);
             for(GameObject go: map.objs) {
@@ -277,6 +296,7 @@ public class SceneMap extends SceneBase {
                 Logger.getLogger(SceneMap.class.getName()).log(Level.SEVERE, null, ex);
             }
                 SceneMenu.back = buffer;
+                * */
     }
 
     @Override
