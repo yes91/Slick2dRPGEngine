@@ -1,64 +1,3 @@
-<<<<<<< HEAD
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-package engine;
-
-import org.newdawn.slick.GameContainer;
-import org.newdawn.slick.Graphics;
-import org.newdawn.slick.Image;
-import org.newdawn.slick.SlickException;
-import org.newdawn.slick.state.StateBasedGame;
-
-/**
- *
- * @author Kieran
- */
-public class SceneBattle extends SceneBase{
-    
-    private int stateID = -1;
-    private static Image battleBack;
-    
-    public SceneBattle(int stateID){
-        this.stateID = stateID;
-    }
-
-    @Override
-    public int getID() {
-        return stateID;
-    }
-
-    @Override
-    public void init(GameContainer gc, StateBasedGame sbg) throws SlickException {
-        battleBack = null;
-    }
-
-    @Override
-    public void render(GameContainer gc, StateBasedGame sbg, Graphics g) throws SlickException {
-        if(battleBack != null){
-        g.drawImage(battleBack, 0, 0);
-        }
-        
-    }
-
-    @Override
-    public void update(GameContainer gc, StateBasedGame sbg, int i) throws SlickException {
-        
-    }
-    
-    public void setBattleBack(Image b){
-        battleBack = b;
-    }
-    
-    public Image getBattleBack(){
-        return battleBack;
-    }
-    
-    
-    
-}
-=======
 /*
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
@@ -131,4 +70,3 @@ public class SceneBattle extends SceneBase{
     
     
 }
->>>>>>> upstream/master

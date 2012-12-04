@@ -45,11 +45,6 @@ public class Weapon extends Item { // Weapons are items
     public int getDmg(){
         return damage;
     }
-    
-    public String getSubtype(){
-        return subtype;   
-    }    
-
     @Override
     public void propertyChange(PropertyChangeEvent pce) {
     }
