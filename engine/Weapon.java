@@ -5,6 +5,7 @@
 package engine;
 
 import java.beans.PropertyChangeEvent;
+import java.util.ArrayList;
 
 /**
  *
@@ -13,12 +14,28 @@ import java.beans.PropertyChangeEvent;
 public class Weapon extends Item { // Weapons are items
     
     private int damage;
-    private String subtype;
+    private ArrayList<Element> elements;
+    private float hitPercent;
     
-    public Weapon(String name,String type) {
+    public Weapon(String name){
         super(name, false);
-        this.subtype = type;
-        super.setType("weapon");
+        elements = new ArrayList<>();
+    }
+
+    public Element[] getElements() {
+        return elements.toArray(new Element[]{});
+    }
+
+    public void addElement(Element e) {
+        this.elements.add(e);
+    }
+
+    public float getHitPercent() {
+        return hitPercent;
+    }
+
+    public void setHitPercent(float hitPercent) {
+        this.hitPercent = hitPercent;
     }
     
     public void setDmg(int d){ 
@@ -36,4 +53,4 @@ public class Weapon extends Item { // Weapons are items
     @Override
     public void propertyChange(PropertyChangeEvent pce) {
     }
-}
+ } 

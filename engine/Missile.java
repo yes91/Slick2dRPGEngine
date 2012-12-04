@@ -5,6 +5,7 @@ import java.util.logging.Logger;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 
+@Deprecated
 public class Missile {
 
     private int x, y;

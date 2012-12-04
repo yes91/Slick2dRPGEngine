@@ -64,7 +64,7 @@ public class ItemReader {
 
 public void weaponsInit(List<Element> list) {
 	for (Element node : list) {
-		Item item = new Weapon(node.getChildText("name"), node.getChildText("subtype"));
+		Item item = new Weapon(node.getChildText("name"));
 		((Weapon)item).setDmg(Integer.parseInt(node.getChildText("dmg")));
 		item.setIndex(Integer.parseInt(node.getChildText("gid")));
 		items.add(item);

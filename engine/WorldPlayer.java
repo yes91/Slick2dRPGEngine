@@ -2,6 +2,7 @@ package engine;
 
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
+import org.newdawn.slick.Input;
 import org.newdawn.slick.command.InputProvider;
 import org.newdawn.slick.geom.Rectangle;
 import org.newdawn.slick.tiled.TiledMap;
@@ -142,15 +143,12 @@ public class WorldPlayer extends GameObject {
         }*/
         
         //Debug Command
-        /*if(input.isKeyPressed(Input.KEY_U)){
->>>>>>> upstream/master
-            
+        if(input.isCommandControlPressed(SceneBase.sprint)){
             for(Item item : ItemReader.getItems()){
                 giveItem(item, 1);
             }
-<<<<<<< HEAD
         }
-        
+        /*
         if (input.isKeyPressed(Input.KEY_R)) {
             
             currentHP -= 10;
@@ -216,18 +214,6 @@ public class WorldPlayer extends GameObject {
         
         }
         else {action = false; dx = 0; dy = 0;}
-    }
-    
-    public void equip(Item i){
-        if(!i.isUseable()){
-          if(i.getType().equals("weapon")){
-              hand = i;
-              System.out.println(hand.toString());
-          }
-        }
-        if(hand != null){
-            maxATK = baseATK + ((Weapon)hand).getDmg();
-        }
     }
     
     public int getFrame()

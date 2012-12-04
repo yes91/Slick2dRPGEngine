@@ -31,9 +31,6 @@ public class WindowSelectable extends Window{
     @Override
     public void render(Graphics g, StateBasedGame sbg){
         super.render(g, sbg);
-        if(itemMax > 0){
-        drawCursorRect(g);
-        }
     }
     
     public void setCursorPos(int id){
