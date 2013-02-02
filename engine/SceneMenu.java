@@ -18,6 +18,7 @@ public class SceneMenu extends SceneBase {
 
     public static Image back;
     private WindowCommand command;
+    private Window menuStatus;
     private WindowItem inventory;
     private WindowHelp invHelp;
     private Window activeWindow;

@@ -32,9 +32,9 @@ public class Map {
     public int boundsY;
     
     public Map(TiledMap mp, WorldPlayer p){
-        events = new ArrayList<Event>();
-        listRect = new ArrayList<Rectangle>();
-        objs = new ArrayList<GameObject>();
+        events = new ArrayList<>();
+        listRect = new ArrayList<>();
+        objs = new ArrayList<>();
         map = mp;
         camera = new Camera(map, map.getWidth()*map.getTileWidth(),map.getHeight()*map.getTileHeight());
         boundsX = map.getWidth()*map.getTileWidth();
@@ -130,6 +130,7 @@ public class Map {
                         if(p.getFrame() == 0){
                         ((NPC)e).setFrame(4);
                         }
+                        ((NPC)e).activate();
                     }
                 break;
                 }

@@ -14,23 +14,20 @@ public abstract class GameBattler {
     
     private final int HP_LIMIT = 999999;
     public Image battleSprite;
+    public BattleStats stats;
     public int currentHP;
     public int currentMP;
-    public int baseHP;
     public int HPplus;
-    public int baseMP;
     public int MPplus;
-    public int baseATK;
     public int ATKplus;
-    private int ATK;
-    public int baseMATK;
     public int MATKplus;
-    public int baseDEF;
     public int DEFplus;
-    public int baseMDEF;
     public int MDEFplus;
-    public int baseSPD;
     public int SPDplus;
+    
+    public void updateLevel(){
+        stats.updateLevel();
+    }
     
     public void clearExtraValues(){
         HPplus = 0;
@@ -43,45 +40,87 @@ public abstract class GameBattler {
     }
     
     public int getMaxHP(){
-        return Math.min(Math.max(baseHP + HPplus, 1), HP_LIMIT);
+        return Math.min(Math.max(stats.getBaseHP() + HPplus, 1), HP_LIMIT);
     }
     
     public int getMaxMP(){
-        return Math.min(Math.max(baseMP + MPplus, 1), 9999);
+        return Math.min(Math.max(stats.getBaseMP() + MPplus, 1), 9999);
     }
     
     public int getMaxATK(){
-        return Math.min(Math.max(baseATK + ATKplus, 1), 999);
+        return Math.min(Math.max(stats.getBaseATK() + ATKplus, 1), 999);
     }
     
     public int getMaxMATK(){
-        return Math.min(Math.max(baseMATK + MATKplus, 1), 999);
+        return Math.min(Math.max(stats.getBaseMATK() + MATKplus, 1), 999);
     }
     
     public int getMaxDEF(){
-        return Math.min(Math.max(baseDEF + DEFplus, 1), 999);
+        return Math.min(Math.max(stats.getBaseDEF() + DEFplus, 1), 999);
     }
     
     public int getMaxMDEF(){
-        return Math.min(Math.max(baseMDEF + MDEFplus, 1), 999);
+        return Math.min(Math.max(stats.getBaseMDEF() + MDEFplus, 1), 999);
     }
     
     public int getMaxSPD(){
-        return Math.min(Math.max(baseSPD + SPDplus, 1), 999);
+        return Math.min(Math.max(stats.getBaseSPD() + SPDplus, 1), 999);
+    }
+    
+    public int getATKplus() {
+        return ATKplus;
+    }
+    
+    public void setATKplus(int aTK) {
+        ATKplus = aTK;
     }
 
-	/**
-	 * @return the aTK
-	 */
-	public int getATK() {
-		return ATK;
-	}
+    public int getHPplus() {
+        return HPplus;
+    }
 
-	/**
-	 * @param aTK the aTK to set
-	 */
-	public void setATK(int aTK) {
-		ATK = aTK;
-	}
+    public void setHPplus(int HPplus) {
+        this.HPplus = HPplus;
+    }
+
+    public int getMPplus() {
+        return MPplus;
+    }
+
+    public void setMPplus(int MPplus) {
+        this.MPplus = MPplus;
+    }
+
+    public int getMATKplus() {
+        return MATKplus;
+    }
+
+    public void setMATKplus(int MATKplus) {
+        this.MATKplus = MATKplus;
+    }
+
+    public int getDEFplus() {
+        return DEFplus;
+    }
+
+    public void setDEFplus(int DEFplus) {
+        this.DEFplus = DEFplus;
+    }
+
+    public int getMDEFplus() {
+        return MDEFplus;
+    }
+
+    public void setMDEFplus(int MDEFplus) {
+        this.MDEFplus = MDEFplus;
+    }
+
+    public int getSPDplus() {
+        return SPDplus;
+    }
+
+    public void setSPDplus(int SPDplus) {
+        this.SPDplus = SPDplus;
+    }
 
 }

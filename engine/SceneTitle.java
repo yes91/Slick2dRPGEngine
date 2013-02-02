@@ -158,6 +158,7 @@ public class SceneTitle extends SceneBase{
                 
             }
         };
+        //gc.getGraphics().setFont(Cache.getFont());
         input = gc.getInput();
         input.addKeyListener(klistener);
         input.addControllerListener(clistener);
@@ -181,15 +182,23 @@ public class SceneTitle extends SceneBase{
         uielements = new ArrayList<>();
         fin = new CameraFadeInTransition();
         back = Cache.getRes("TitleBack.png");
-        String[] coms = new String[]{"New Game","Continue","Options","Exit"};
+        String[] coms = new String[]{"New Game","Continue","Option","Exit"};
         wind = new WindowCommand(160, coms, 1, 0);
-        gameMessage.texts.push("Hello, this is a test of the message system");
-        gameMessage.texts.push("This is a new line. This is still the same line");
-        gameMessage.texts.push("Habla espanol por favor, senor. No hablo ingles.");
-        gameMessage.texts.push("Goody gumdrop trincket tucker pie jammer.");
+        String text = "Hello, \\C[1]this\\R is a test of the message system.\n"
+        + "This is a new line. This is still the same line.\n"
+        + "Habla espanol por favor, senor. No hablo ingles.\n"
+        + "For sooth, this is yet another line!~\n"
+        + "This is a fifth line, woot! YEAH!\n"
+        + "This is a sixth line, it ~should work.\n"
+        + "This is a seventh line, I really hope it works.\n"
+        + "This is an eight line, the line after this better work.\n"
+        + "Line #9 and it better work.\n"
+        + "Ok, clearly it works no matter what.";
+        gameMessage.setText(text);
         test = new WindowMessage();
         wind.initX = (1280/2) - 80;
         wind.initY = 500;
+        System.out.println(Cache.getFont().getLineHeight());
     }
 
     @Override
@@ -221,7 +230,8 @@ public class SceneTitle extends SceneBase{
                         input.clearControlPressedRecord();
                         sbg.enterState(1, new FadeOutTransition(), fin); break;
                     case 1: lastAdded = test;
-                        uielements.add(lastAdded); break;
+                        uielements.add(lastAdded); 
+                        test.startMessage(); break;
                     case 2:
                         lastAdded = new WindowSystem(2, 1);
                         uielements.add(lastAdded); break;

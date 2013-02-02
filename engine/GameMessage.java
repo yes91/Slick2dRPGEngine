@@ -4,7 +4,8 @@
  */
 package engine;
 
-import java.util.Stack;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  *
@@ -14,23 +15,50 @@ public class GameMessage {
     
     public final int MAX_LINE = 4;
     
-    public Stack<String> texts;
+    public String[] texts;
+    public String[][] pages;
     
     public GameMessage(){
         clear();
     }
     
     public final void clear(){
-        texts = new Stack();
+        texts = new String[]{};
     }
     
     public boolean busy(){
-        return texts.size() > 0;
+        return texts.length > 0;
     }
     
     public void newPage(){
-        while(texts.size() % MAX_LINE > 0){
-            texts.push("");
+        /*while(texts.length % MAX_LINE > 0){
+            texts.;
+        }*/
+    }
+    
+    public void setText(String in){
+        in = in.replaceAll("\\\\C\\[([0-9]+)\\]", "\u0001");
+        in = in.replaceAll("\\\\R", "\u0002");
+        String[] lines = in.split("\n");
+        pages = transform(lines, 4);
+    }
+    
+    public String[][] transform(String[] arr, int N) {
+        int M = (arr.length + N - 1) / N;
+        String[][] mat = new String[M][];
+        int start = 0;
+        for (int r = 0; r < M; r++) {
+            int L = MAX_LINE;//Math.min(N, arr.length - start);
+            mat[r] = java.util.Arrays.copyOfRange(arr, start, start + L);
+            start += L;
         }
+        for (String[] s : mat) {
+            for (int i = 0; i < s.length; i++) {
+                if (s[i] == null) {
+                    s[i] = "";
+                }
+            }
+        }
+        return mat;
     }
 }

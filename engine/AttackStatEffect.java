@@ -9,9 +9,9 @@ import java.util.List;
  * temporarily.
  *
  */
-public class AttackStatEffect extends StatEffect {
+public class AttackStatEffect /*extends StatEffect*/ {
 	
-	private boolean increase;
+	/*private boolean increase;
 	private int amount;
 	
 	public AttackStatEffect(boolean increase, Item.Targets target, int amount) {
@@ -34,6 +34,7 @@ public class AttackStatEffect extends StatEffect {
 	 * Activates the AttackStatEffect
 	 * @param targets The targets of the activation
 	 */
+        /*
 	public void activate(List<GameBattler> targets) { 
 		if(!this.isActivated()) {
 			if(this.increase) {
@@ -59,6 +60,7 @@ public class AttackStatEffect extends StatEffect {
 	 * Deactivates the AttackStatEffect for the specified targets
 	 * @param targets
 	 */
+    /*
 	public void deactivate(List<GameBattler> targets) {
 		if(this.isActivated()) {
 			if(this.increase) {
@@ -78,9 +80,10 @@ public class AttackStatEffect extends StatEffect {
 	/**
 	 * Sets activated to false
 	 */
+    /*
 	@Override
 	public void deactivate() {
 		setActivated(false);
 	}
-
+        */
 }

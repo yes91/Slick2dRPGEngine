@@ -7,7 +7,7 @@ import org.newdawn.slick.SlickException;
 public abstract class Item {
     
     public static enum Targets {SINGLE_PLAYER, WHOLE_PARTY, SINGLE_ENEMY, WHOLE_ENEMY_PARTY}
-    private static Image image = Cache.getImage("IconSet.png");
+    private static Image image = Cache.getSystemImage("IconSet.png");
     private boolean useable;
     private String name;
     private String desc;

@@ -25,7 +25,7 @@ public class ItemReader {
           SAXBuilder builder = new SAXBuilder();
  
 	  try {
-              InputStream is = ItemReader.class.getClassLoader().getResourceAsStream("res/ItemFile.xml");
+              InputStream is = ItemReader.class.getClassLoader().getResourceAsStream("res/data/ItemFile.xml");
  
 		Document document = (Document) builder.build(is);
 		Element rootNode = document.getRootElement();
@@ -56,10 +56,8 @@ public class ItemReader {
  
 		}
  
-	  } catch (IOException io) {
+	  } catch (IOException | JDOMException io) {
 		System.out.println(io.getMessage());
-	  } catch (JDOMException jdomex) {
-		System.out.println(jdomex.getMessage());
 	  }
 }
     public static ArrayList<Item> getItems(){

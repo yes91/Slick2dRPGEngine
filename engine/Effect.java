@@ -2,10 +2,10 @@ package engine;
 
 public abstract class Effect {
 	
-	Item.Targets target; // The target of the Effect
+	//Item.Targets target; // The target of the Effect
 	private boolean activated; // Whether or not the Effect is activated
 	
-	public abstract void activate();
+	public abstract void activate(Object target);
 	public abstract void deactivate();
 
 	/**

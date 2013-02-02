@@ -17,12 +17,7 @@ public class WindowCommand extends WindowSelectable{
     public String[] commands;
     
     public WindowCommand(int width, String[] coms, int cMax, int rMax){
-        super(0,0,0,0);
-        if(rMax == 0){
-            rMax = (coms.length + cMax - 1) / cMax;
-        }
-        super.width = width;
-        super.height = rMax * WINDOW_LINE_HEIGHT + 32;
+        super(0,0,width,(rMax == 0 ? ((coms.length + cMax - 1) / cMax):rMax) * 24 + 32);
         commands = coms;
         itemMax = commands.length;
         columnMax = cMax;
@@ -31,7 +26,9 @@ public class WindowCommand extends WindowSelectable{
     
     @Override
     public void render(Graphics g,StateBasedGame sbg){
+        //Graphics.setCurrent(g);
         super.render(g,sbg);
+        //cg.clear();
         for(int i = 0; i < itemMax; i++){
             drawItem(i);
         }
@@ -44,7 +41,10 @@ public class WindowCommand extends WindowSelectable{
         Rectangle rect = getItemRect(ind);
         rect.setX(rect.getX() + 4);
         rect.setWidth(rect.getX() - 8);
-        Cache.getFont().drawString(x+16+rect.getX()+8, y+16+rect.getY(), commands[ind]);
+        //Graphics.setCurrent(cg);
+        //for(int i = 0; i < 10; i++){
+        Cache.getFont().drawString(x+16+rect.getX()+8, y+16+rect.getY()+2, commands[ind]);
+        //}
     }
     
 }

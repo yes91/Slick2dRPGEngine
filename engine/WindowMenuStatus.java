@@ -11,24 +11,17 @@ import org.newdawn.slick.state.StateBasedGame;
  *
  * @author redblast71
  */
-public class WindowHelp extends Window {
+public class WindowMenuStatus extends WindowSelectable{
     
-    public String text;
-    
-    public WindowHelp(){
-        super(0,0,SceneMap.B_WIDTH, 24 + 32);
+    public WindowMenuStatus(int x, int y){
+        super(x, y, SceneMap.B_WIDTH - x, SceneMap.B_HEIGHT - y);
+        this.index = -1;
     }
     
     @Override
     public void render(Graphics g, StateBasedGame sbg){
         super.render(g, sbg);
-        if(text != null){
-            Cache.getFont().drawString(x+16, y+16, text);
-        }
-    }
-    
-    public void setText(String text){
-        this.text = text;
+        
     }
     
 }

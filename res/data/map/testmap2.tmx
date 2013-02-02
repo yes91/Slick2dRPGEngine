@@ -4,7 +4,7 @@
   <property name="startPosx" value="24"/>
   <property name="startPosy" value="25"/>
  </properties>
-s <tileset firstgid="1" name="Outside_A2" tilewidth="64" tileheight="64">
+ <tileset firstgid="1" name="Outside_A2" tilewidth="64" tileheight="64">
   <image source="Outside_A2.png" width="1024" height="960"/>
  </tileset>
  <tileset firstgid="241" name="metatiles" tilewidth="64" tileheight="64">
@@ -17,7 +17,7 @@ s <tileset firstgid="1" name="Outside_A2" tilewidth="64" tileheight="64">
  </tileset>
  <layer name="Tile Layer 1" width="50" height="50">
   <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAAC+3SQQqAIBCFYSXmBHX/uxTUuZogF0mEkdFL/sUHMS56zzGGECIA4KArnCnZ8tn+bR/8v9Y9X52r7yA5u3/L5uo7uptPeTcpm2WzP+2jxo4UlLwT5bfUYu5Wu/RuEMjx1OgmgRz0oIciemihhxZ64A2zWwRyAAAAAAAAlFgBCEnkrhAnAAA=
+   H4sIAAAAAAAAC+3SWwqAIBSEYSVcQJf976Ug15WBPRQRhoaT/A8fxemhGY/WGGMBACdd4kzJns/Fd1fh/6XO+em7+g4Od+fvLnP1Hb3Np7ybI5u7zP60jxI7UpByT5TvUou5W+0yBpNAjlxzsAjkoAc9FNFDCz200ANfWAMvkCOXb6BHHw3xWTtPjiGqnYMeAAAAANCeDfqjta0QJwAA
   </data>
  </layer>
  <layer name="Tile Layer 2" width="50" height="50">

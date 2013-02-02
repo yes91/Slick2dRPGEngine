@@ -8,10 +8,10 @@ package engine;
  *
  * @author redblast71
  */
-
-public class GameActor extends GameBattler{   
+public class Skill {
     
     public String name;
-    public GameClass gClass;
+    public String desc;
+    
     
 }

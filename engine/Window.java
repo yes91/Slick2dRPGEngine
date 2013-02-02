@@ -1,7 +1,10 @@
 package engine;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
+import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Rectangle;
 import org.newdawn.slick.state.StateBasedGame;
 
@@ -18,35 +21,46 @@ public class Window {
     public int oy;
     public Image skin;
     public Image contents;
+    public Graphics cg;
     public Rectangle cursorRect;
     private double time;
     
-    public Window(int x1, int y1, int w, int h) {
+    public Window(int x, int y, int w, int h) {
         
-        skin = Cache.getImage("Window.png");
-        cursorRect = new Rectangle(0,0,0,0);
-        x = x1;
-        y = y1;
-        initX = x;
-        initY = y;
-        oy = y;
-        time = 0;
-        width = w;
-        height = h;
+        this.cursorRect = new Rectangle(0,0,0,0);
+        this.x = x;
+        this.y = y;
+        this.initX = x;
+        this.initY = y;
+        this.oy = y;
+        this.time = 0;
+        this.width = w;
+        this.height = h;
+        try {
+            contents = new Image(width, height);
+        } catch (SlickException ex) {
+            Logger.getLogger(Window.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        skin = Cache.getSystemImage("Window.png");
+        try {
+            cg = contents.getGraphics();
+            cg.setFont(Cache.getFont());
+        } catch (SlickException ex) {
+            Logger.getLogger(Window.class.getName()).log(Level.SEVERE, null, ex);   
+        }
     }
     
     public void render(Graphics g2d, StateBasedGame sbg){
-        if(sbg.getCurrentStateID() == 0){
-        x = initX+(int)Camera.viewPort.getX();
-        y = initY+(int)Camera.viewPort.getY();
+        if(sbg.getCurrentStateID() == 1){
+            x = initX+(int)Camera.viewPort.getX();
+            y = initY+(int)Camera.viewPort.getY();
         }
         else{
-        x = initX;
-        y = initY;
+            x = initX;
+            y = initY;
         }
         
-        
-        skin.setAlpha(0.6f);
+        skin.setAlpha(0.7f);
         skin.draw(x+4, y+4, x-4+width, y-4+height, 0, 0, 64, 64);
         skin.setAlpha(100f);
         
@@ -94,6 +108,7 @@ public class Window {
             Sprite.drawSpriteFrame(skin, g2d, x+(width)-16, y+(l*16)+16, 8, 15, 16, 16);
         }
         }
+        g2d.drawImage(contents, x+16, y+16);
     }
     
     public void drawCursorRect(Graphics g2d){
@@ -104,7 +119,7 @@ public class Window {
         }
         time += .1;
         skin.setAlpha(Math.max(Math.abs((float)Math.sin(time)), 0.1f));
-        skin.draw(u+8+cursorRect.getX(), v+8+cursorRect.getY(), u-8+cursorRect.getWidth()+cursorRect.getX(), v-8+cursorRect.getHeight()+cursorRect.getY(), 72, 72, 80, 80);
+        g2d.drawImage(skin, u+8+cursorRect.getX(), v+8+cursorRect.getY(), u-8+cursorRect.getWidth()+cursorRect.getX(), v-8+cursorRect.getHeight()+cursorRect.getY(), 72, 72, 80, 80);
         Sprite.drawSpriteFrame(skin, g2d, u+cursorRect.getX(), v+cursorRect.getY(), 16, 136, 8, 8);
         if((cursorRect.getWidth() % 8) == 0){
         for(int i = 0; i<((cursorRect.getWidth()/8)-2); i++){
@@ -150,6 +165,7 @@ public class Window {
         }
         }
         skin.setAlpha(100f);
+        g2d.flush();
     }
     
     public int getWidth(){

@@ -4,15 +4,12 @@
  */
 package engine;
 
-import java.awt.Color;
-import java.awt.Font;
+import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.newdawn.slick.AngelCodeFont;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
-import org.newdawn.slick.UnicodeFont;
-import org.newdawn.slick.font.effects.ColorEffect;
-import org.newdawn.slick.font.effects.ShadowEffect;
 
 /**
  *
@@ -20,17 +17,35 @@ import org.newdawn.slick.font.effects.ShadowEffect;
  */
 public class Cache {
     
-    private static UnicodeFont font;
+    //private static UnicodeFont font;
+    private static AngelCodeFont font;
+    private static HashMap<String, Image> images = new HashMap<>();
     
     public static Image getImage(String filename){
-        try {
-            return new Image("/src/engine/"+filename); 
-        } catch (SlickException ex) {
-            Logger.getLogger(Cache.class.getName()).log(Level.SEVERE, null, ex);
+        Image result = images.get(filename);
+        if(result == null){
+            try {
+                result = new Image("/src/res/"+filename);
+                images.put(filename, result);
+            } catch (SlickException ex) {
+                Logger.getLogger(Cache.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
-        return null;
+        return result;
     }
     
+    public static Image getSystemImage(String filename){
+        Image result = images.get(filename);
+        if(result == null){
+            try {
+                result = new Image("src/res/system/"+filename);
+                images.put(filename, result);
+            } catch (SlickException ex) {
+                Logger.getLogger(Cache.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        return result;
+    }
 
     public static Image getRes(String filename){
         try {
@@ -41,19 +56,24 @@ public class Cache {
         return null;
     }
     
-    public static UnicodeFont getFont(){
+    public static AngelCodeFont getFont(){
         
         if(font == null){
-                font = new UnicodeFont(new Font("VL Gothic Regular",Font.PLAIN,17));
-                font.addAsciiGlyphs();   //Add Glyphs
-                font.addGlyphs(400, 600); //Add Glyphs //Add Effects
-                font.getEffects().add(new ShadowEffect(Color.BLACK,1,1,0.9f));
-                font.getEffects().add(new ColorEffect(Color.WHITE));
-        try {
-            font.loadGlyphs();  //Load Glyphs
-        } catch (SlickException ex) {
-            Logger.getLogger(Cache.class.getName()).log(Level.SEVERE, null, ex);
-        }
+            try {
+                font = new AngelCodeFont("src/res/system/umeplusbold.fnt","src/res/system/umeplusbold.png");
+                    /*font = new UnicodeFont(new Font("VL Gothic Regular",Font.PLAIN,17));
+                    font.addAsciiGlyphs();   //Add Glyphs
+                    font.addGlyphs(400, 600); //Add Glyphs //Add Effects
+                    font.getEffects().add(new ShadowEffect(Color.BLACK,1,1,0.9f));
+                    font.getEffects().add(new ColorEffect(Color.WHITE));
+            try {
+                font.loadGlyphs();  //Load Glyphs
+            } catch (SlickException ex) {
+                Logger.getLogger(Cache.class.getName()).log(Level.SEVERE, null, ex);
+            }*/
+            } catch (SlickException ex) {
+                Logger.getLogger(Cache.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
                 return font;
     }
