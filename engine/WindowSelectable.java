@@ -5,6 +5,7 @@
 package engine;
 
 import org.newdawn.slick.Graphics;
+import org.newdawn.slick.SlickException;
 import org.newdawn.slick.command.InputProvider;
 import org.newdawn.slick.geom.Rectangle;
 import org.newdawn.slick.state.StateBasedGame;
@@ -20,7 +21,7 @@ public class WindowSelectable extends Window{
     public int index;
     private int spacing;
     
-    public WindowSelectable(int x, int y, int width, int height){
+    public WindowSelectable(int x, int y, int width, int height) throws SlickException{
     super(x, y, width, height);
     itemMax = 1;
     columnMax = 1;

@@ -5,6 +5,7 @@
 package engine;
 
 import org.newdawn.slick.Graphics;
+import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.StateBasedGame;
 
 /**
@@ -15,7 +16,7 @@ public class WindowHelp extends Window {
     
     public String text;
     
-    public WindowHelp(){
+    public WindowHelp() throws SlickException{
         super(0,0,SceneMap.B_WIDTH, 24 + 32);
     }
     

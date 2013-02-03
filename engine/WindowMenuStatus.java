@@ -5,6 +5,7 @@
 package engine;
 
 import org.newdawn.slick.Graphics;
+import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.StateBasedGame;
 
 /**
@@ -13,7 +14,7 @@ import org.newdawn.slick.state.StateBasedGame;
  */
 public class WindowMenuStatus extends WindowSelectable{
     
-    public WindowMenuStatus(int x, int y){
+    public WindowMenuStatus(int x, int y) throws SlickException{
         super(x, y, SceneMap.B_WIDTH - x, SceneMap.B_HEIGHT - y);
         this.index = -1;
     }

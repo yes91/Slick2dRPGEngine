@@ -4,10 +4,9 @@
  */
 package engine;
 
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
+import org.newdawn.slick.SlickException;
 import org.newdawn.slick.command.InputProvider;
 import org.newdawn.slick.state.StateBasedGame;
 
@@ -20,32 +19,36 @@ public class WindowMessage extends WindowSelectable {
     private GameMessage gameMessage;
     public final int MAX_LINE = 4;
     private Color currentColor = Color.white;
-    public static int scrollSpeed = 30;
-    private int waitCount;
-    private String[] texts;
+    public static int TYPE_DELAY = 20;
     public boolean isTalking;
     private boolean isScrolling;
     private int currentPage;
+    private int currentLine;
+    private int currentChar;
+    private int time = TYPE_DELAY;
     private String drawChar = "";
     private int contX = 0;
     private int contY = 0;
 
-    public WindowMessage() {
+    public WindowMessage() throws SlickException {
         super(0, (int) (SceneMap.B_HEIGHT * 0.85), SceneMap.B_WIDTH, (int) (SceneMap.B_HEIGHT * 0.15));
         this.index = -1;
         this.itemMax = 0;
         this.gameMessage = SceneBase.gameMessage;
-        this.texts = new String[]{"", "", "", ""};
     }
 
     public void startMessage() {
-        texts = new String[]{"", "", "", ""};
         this.currentPage = 0;
+        this.currentLine = 0;
+        this.currentChar = 0;
+        currentColor = Color.white;
         contX = 0;
         contY = 0;
         this.isTalking = true;
+        isScrolling = true;
         SceneMap.allowClose = false;
         convertSpecialChars();
+        drawChar = "";
         cg.clear();
         updateMessage();
     }
@@ -54,119 +57,79 @@ public class WindowMessage extends WindowSelectable {
     public void render(Graphics g, StateBasedGame sbg) {
         super.render(g, sbg);
         cg.setColor(currentColor);
-        /*for (int i = 0; i < MAX_LINE; i++) {
-            cg.drawString(texts[i],x + 0, y + (16 * (i)));
-        }*/
         cg.drawString(drawChar, contX, contY);
         cg.flush();
     }
 
     @Override
     public void update(InputProvider input) {
+        time -= 16;
         super.update(input);
         if (isTalking) {
             if (input.isCommandControlPressed(SceneBase.down)) {
                 if (isScrolling) {
-                    //texts = gameMessage.pages[currentPage];
+                    //Do somethig to print all.
                     //isScrolling = false;
                 } else {
                     if ((currentPage < gameMessage.pages.length - 1)) {
-                        texts = new String[]{"", "", "", ""};
+                        drawChar = "";
                         currentPage++;
                         cg.clear();
-                        updateMessage();
+                        isScrolling = true;
+                        //updateMessage();
                     } else {
                         currentPage = 0;
                         //texts = new String[]{"", "", "", ""};
                         isTalking = false;
-                        scroller = null;
                         SceneMap.allowClose = true;
                     }
                 }
             }
+            updateMessage();
         }
     }
-    
-    public void convertSpecialChars(){
-        
-    }
-    
-    private Thread scroller = new Thread() {
-            @Override
-            public void run() {
-                isScrolling = true;
-                int startPage = currentPage;
-                for (int j = 0; j < 4; j++) {
-                    for (int i = 0; i < gameMessage.pages[currentPage][j].length(); i++) {
-                        if (isScrolling && currentPage == startPage) {
-                            switch(gameMessage.pages[currentPage][j].charAt(i)){
-                                case '\u0001': currentColor = Color.red; break;
-                                case '\u0002': currentColor = Color.white; break;
-                            }
-                            drawChar = ""+gameMessage.pages[currentPage][j].charAt(i);
-                            switch(drawChar){
-                                case " ": contX += Cache.getFont().getWidth("_"); break;
-                                default: contX += Cache.getFont().getWidth(drawChar);
-                            } 
-                            contY = 16*j;
-                            //texts[j] = displayText;
-                            try {
-                                sleep(1000 / scrollSpeed);
-                            } catch (InterruptedException ex) {
-                                Logger.getLogger(WindowMessage.class.getName()).log(Level.SEVERE, null, ex);
-                            }
-                        } else {
-                            return;
-                        }
-                    }
-                    if(isScrolling && currentPage == startPage){
-                        contX = 0;
-                    }
-                }
 
-                isScrolling = false;
-            }
-        };
+    public void convertSpecialChars() {
+    }
 
     private void updateMessage() {
-        scroller = new Thread() {
-            @Override
-            public void run() {
-                isScrolling = true;
-                int startPage = currentPage;
-                for (int j = 0; j < 4; j++) {
-                    for (int i = 0; i < gameMessage.pages[currentPage][j].length(); i++) {
-                        if (isScrolling && currentPage == startPage) {
-                            switch(gameMessage.pages[currentPage][j].charAt(i)){
-                                case '\u0001': currentColor = Color.red; break;
-                                case '\u0002': currentColor = Color.white; break;
-                            }
-                            drawChar = ""+gameMessage.pages[currentPage][j].charAt(i);
-                            switch(drawChar){
-                                case " ": contX += Cache.getFont().getWidth("_"); break;
-                                default: contX += Cache.getFont().getWidth(drawChar);
-                            } 
-                            contY = 16*j;
-                            //texts[j] = displayText;
-                            try {
-                                sleep(1000 / scrollSpeed);
-                            } catch (InterruptedException ex) {
-                                Logger.getLogger(WindowMessage.class.getName()).log(Level.SEVERE, null, ex);
-                            }
-                        } else {
-                            scroller = null;
-                            return;
-                        }
-                    }
-                    if(isScrolling && currentPage == startPage){
-                        contX = 0;
-                    }
-                }
-
-                isScrolling = false;
-                scroller = null;
+        int startPage = currentPage;
+        if (isScrolling && currentPage == startPage && time <= 0) {
+            time = TYPE_DELAY;
+            if (currentChar > gameMessage.pages[currentPage][currentLine].length() - 1) {
+                contY += 16;
+                currentLine++;
+                contX = 0;
+                currentChar = 0;
+                drawChar = "";
             }
-        };
-        scroller.start();
+            if (isScrolling && currentPage == startPage && currentLine < 4 && !(currentChar > gameMessage.pages[currentPage][currentLine].length() - 1)) {
+                switch (gameMessage.pages[currentPage][currentLine].charAt(currentChar)) {
+                    case '\u0001':
+                        currentColor = Color.red;
+                        break;
+                    case '\u0002':
+                        currentColor = Color.white;
+                        break;
+                }
+                drawChar = "" + gameMessage.pages[currentPage][currentLine].charAt(currentChar);
+                switch (drawChar) {
+                    case " ":
+                        contX += Cache.getFont().getWidth("_");
+                        break;
+                    default:
+                        contX += Cache.getFont().getWidth(drawChar);
+                }
+                currentChar++;
+            } else {
+                return;
+            }
+        }
+        if (currentLine > 3) {
+            contY = 0;
+            currentLine = 0;
+            drawChar = "";
+            isScrolling = false;
+        }
     }
 }

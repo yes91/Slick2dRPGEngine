@@ -31,8 +31,10 @@ public class SceneTitle extends SceneBase{
     private ControllerListener clistener;
     private Image back;
     private WindowCommand wind;
+    private WindowSystem options;
     private WindowMessage test;
     private int keyPressed;
+    private boolean fullscreen;
     private char repChar;
     private int controller;
     private int buttonPressed;
@@ -57,7 +59,7 @@ public class SceneTitle extends SceneBase{
             
             @Override
             public void keyPressed(int index, char c){
-            keyPressed = index; repChar = c;
+                keyPressed = index; repChar = c;
             }
             
             @Override
@@ -182,6 +184,7 @@ public class SceneTitle extends SceneBase{
         uielements = new ArrayList<>();
         fin = new CameraFadeInTransition();
         back = Cache.getRes("TitleBack.png");
+        options = new WindowSystem(2, 1);
         String[] coms = new String[]{"New Game","Continue","Option","Exit"};
         wind = new WindowCommand(160, coms, 1, 0);
         String text = "Hello, \\C[1]this\\R is a test of the message system.\n"
@@ -219,6 +222,15 @@ public class SceneTitle extends SceneBase{
 
     @Override
     public void update(GameContainer gc, StateBasedGame sbg, int delta) throws SlickException {
+        if (input.isKeyDown(Input.KEY_RALT) && input.isKeyPressed(Input.KEY_ENTER)) {
+            fullscreen = gc.isFullscreen();
+            gc.pause();
+            gc.setFullscreen(!fullscreen);
+            gc.resume();
+        }
+        if (input.isKeyPressed(Input.KEY_ESCAPE)) {
+            gc.exit();
+        }
         if(!inSubMenu){
         ((WindowSelectable)wind).update(inputp);
             if(inputp.isCommandControlDown(action)){
@@ -233,7 +245,7 @@ public class SceneTitle extends SceneBase{
                         uielements.add(lastAdded); 
                         test.startMessage(); break;
                     case 2:
-                        lastAdded = new WindowSystem(2, 1);
+                        lastAdded = options;
                         uielements.add(lastAdded); break;
                     case 3: gc.exit(); break;
                 }

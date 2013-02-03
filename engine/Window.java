@@ -20,12 +20,12 @@ public class Window {
     public int initY;
     public int oy;
     public Image skin;
-    public Image contents;
-    public Graphics cg;
+    public final Image contents;
+    public final Graphics cg;
     public Rectangle cursorRect;
     private double time;
     
-    public Window(int x, int y, int w, int h) {
+    public Window(int x, int y, int w, int h) throws SlickException {
         
         this.cursorRect = new Rectangle(0,0,0,0);
         this.x = x;
@@ -36,18 +36,10 @@ public class Window {
         this.time = 0;
         this.width = w;
         this.height = h;
-        try {
-            contents = new Image(width, height);
-        } catch (SlickException ex) {
-            Logger.getLogger(Window.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        contents = new Image(width, height);
         skin = Cache.getSystemImage("Window.png");
-        try {
-            cg = contents.getGraphics();
-            cg.setFont(Cache.getFont());
-        } catch (SlickException ex) {
-            Logger.getLogger(Window.class.getName()).log(Level.SEVERE, null, ex);   
-        }
+        cg = contents.getGraphics();
+        cg.setFont(Cache.getFont());
     }
     
     public void render(Graphics g2d, StateBasedGame sbg){

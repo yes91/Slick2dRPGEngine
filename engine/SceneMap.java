@@ -38,6 +38,7 @@ public class SceneMap extends SceneBase {
     public static boolean uiFocus;
     private Music music;
     public static Window lastAdded;
+    public static WindowMessage message;
     private Image testbattler;
     //WorldPlayer worldPlayer;
     Camera camera;
@@ -70,12 +71,13 @@ public class SceneMap extends SceneBase {
         worldPlayer = new WorldPlayer(new Image("/src/engine/craft.png"));
         s = Shader.makeShader("/src/engine/blur.vrt", "/src/engine/blur.frg");
         s2 = Shader.makeShader("/src/engine/blur2.vrt", "/src/engine/blur2.frg");
+        message = new WindowMessage();
         uielements = new ArrayList<>();
         //uielements.add(wind);
         EnemyReader.populateEnemies();
         map = new Map(new TiledMap("/src/res/data/map/testmap2.tmx", "/src/res/data/map"), worldPlayer);
         uiFocus = false;
-        //music = new Music("/src/res/fatefulencounter.wav");
+        music = new Music("/src/res/fatefulencounter.wav");
         //isPlaying = true;
         //music.loop();
         items = new Image("/src/res/system/IconSet.png");

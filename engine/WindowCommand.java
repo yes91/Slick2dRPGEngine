@@ -5,6 +5,7 @@
 package engine;
 
 import org.newdawn.slick.Graphics;
+import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Rectangle;
 import org.newdawn.slick.state.StateBasedGame;
 
@@ -16,7 +17,7 @@ public class WindowCommand extends WindowSelectable{
     
     public String[] commands;
     
-    public WindowCommand(int width, String[] coms, int cMax, int rMax){
+    public WindowCommand(int width, String[] coms, int cMax, int rMax) throws SlickException{
         super(0,0,width,(rMax == 0 ? ((coms.length + cMax - 1) / cMax):rMax) * 24 + 32);
         commands = coms;
         itemMax = commands.length;

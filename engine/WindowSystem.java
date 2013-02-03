@@ -5,6 +5,7 @@
 package engine;
 
 import org.newdawn.slick.Graphics;
+import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.StateBasedGame;
 
 /**
@@ -13,7 +14,7 @@ import org.newdawn.slick.state.StateBasedGame;
  */
 public class WindowSystem extends WindowSelectable{
     
-    public WindowSystem(int cMax, int rMax){
+    public WindowSystem(int cMax, int rMax) throws SlickException{
         super(0,0,SceneMap.B_WIDTH,SceneMap.B_HEIGHT);
         itemMax = 1;
         columnMax = cMax;
