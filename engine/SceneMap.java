@@ -126,25 +126,8 @@ public class SceneMap extends SceneBase {
             input.clearControlPressedRecord();
             sbg.getState(2).update(container, sbg, delta);
             sbg.enterState(2);
-            //activeMenu = new Menu(worldPlayer);
-            //uiFocus = true;
-            //inMenu = true;
         }
-        //Old menu
-                /*if(inMenu==true){
-         >>>>>>> upstream/master
-         activeMenu.update(input);
-         if((input.isKeyPressed(Input.KEY_K)) && activeMenu.getNotSub()){ 
-         activeMenu.destroy();
-         Sounds.cancel.play();
-         inMenu = false;
-         activeMenu = null;
-         uiFocus = false;
-         }
-         <<<<<<< HEAD
-         }
-         =======
-         }*/
+        
         if (uiFocus == true) {
             if (input.isKeyDown(Input.KEY_K) && allowClose) {
                 uielements.remove(lastAdded);
@@ -190,12 +173,7 @@ public class SceneMap extends SceneBase {
             w.render(g, sbg);
             map.renderUI(worldPlayer);
         }
-
-        //Old menu
-        /*if(inMenu == true){
-            
-         activeMenu.render(g);
-         }*/
+        
     }
 
     private void tpPlayer(int tileX, int tileY, WorldPlayer p) {
