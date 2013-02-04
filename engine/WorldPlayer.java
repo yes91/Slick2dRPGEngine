@@ -2,7 +2,7 @@ package engine;
 
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
-import org.newdawn.slick.Input;
+import org.newdawn.slick.SpriteSheet;
 import org.newdawn.slick.command.InputProvider;
 import org.newdawn.slick.geom.Rectangle;
 import org.newdawn.slick.tiled.TiledMap;
@@ -14,7 +14,7 @@ public class WorldPlayer extends GameObject {
     private float lastX;
     private float lastY;
     private float frame;
-    private Image image;
+    private SpriteSheet image;
     private int lastFrame;
     private Inventory inven;
     private boolean action;
@@ -33,7 +33,7 @@ public class WorldPlayer extends GameObject {
     public int maxDEF;
 
     public WorldPlayer(Image i) {
-        image = i;
+        image = new SpriteSheet(i, 64, 96);
         inven = new Inventory();
         pos.x = 40;
         pos.y = 60;
@@ -71,10 +71,10 @@ public class WorldPlayer extends GameObject {
         }
         }
      if(!SceneMap.blocked){
-     Sprite.drawSpriteFrame(getImage(), g2d, (int)pos.x, (int)pos.y, 4, getFrame()+(int)frame, 64, 96);
+        Sprite.drawSpriteFrame(getImage(), g2d, (int)pos.x, (int)pos.y, 4, getFrame()+(int)frame, 64, 96);
      }
      else{
-     Sprite.drawSpriteFrame(getImage(), g2d, (int)lastX, (int)lastY, 4, getFrame()+(int)frame, 64, 96);
+        Sprite.drawSpriteFrame(getImage(), g2d, (int)lastX, (int)lastY, 4, getFrame()+(int)frame, 64, 96);
      }
      //Sprite.animateSprite(image, g2d, x, y, 64, 96, 4, getFrame(), getFrame()+4, .125f, isMoving());
         

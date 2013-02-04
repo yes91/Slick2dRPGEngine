@@ -129,7 +129,7 @@ public class SceneMap extends SceneBase {
         }
         
         if (uiFocus == true) {
-            if (input.isKeyDown(Input.KEY_K) && allowClose) {
+            if (inputp.isCommandControlDown(cancel) && allowClose) {
                 uielements.remove(lastAdded);
                 uiFocus = false;
             }

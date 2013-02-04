@@ -6,6 +6,7 @@ package engine;
 
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
+import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.command.InputProvider;
 import org.newdawn.slick.state.StateBasedGame;
@@ -19,6 +20,7 @@ public class WindowMessage extends WindowSelectable {
     private GameMessage gameMessage;
     public final int MAX_LINE = 4;
     private Color currentColor = Color.white;
+    private Image face;
     public static int TYPE_DELAY = 20;
     public boolean isTalking;
     private boolean isScrolling;
@@ -32,6 +34,7 @@ public class WindowMessage extends WindowSelectable {
 
     public WindowMessage() throws SlickException {
         super(0, (int) (SceneMap.B_HEIGHT * 0.85), SceneMap.B_WIDTH, (int) (SceneMap.B_HEIGHT * 0.15));
+        face = Cache.getRes("People1.png");
         this.index = -1;
         this.itemMax = 0;
         this.gameMessage = SceneBase.gameMessage;
@@ -56,8 +59,9 @@ public class WindowMessage extends WindowSelectable {
     @Override
     public void render(Graphics g, StateBasedGame sbg) {
         super.render(g, sbg);
+        Sprite.drawSpriteFrame(face, g, x + 8, y + 6, 4, 2, 96, 96);
         cg.setColor(currentColor);
-        cg.drawString(drawChar, contX, contY);
+        cg.drawString(drawChar, contX + 97, contY);
         cg.flush();
     }
 

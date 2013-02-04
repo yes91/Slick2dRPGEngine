@@ -18,12 +18,12 @@
  </layer>
  <layer name="Tile Layer 2" width="25" height="25">
   <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAAC2NgGAWjYBSMglEw2MGngXbAKBgFo2DQAQCeidLvxAkAAA==
+   H4sIAAAAAAAAC2NgGAWjYBSMgpEDeIeoHZ/oYAc6ANnBT0PzdYFYD4jn09COUTAKhjMAAIrUDxTECQAA
   </data>
  </layer>
  <layer name="Collisions" width="25" height="25" opacity="0.48">
   <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAAC2NgGAWjYBSMglEw2MHHgXbAKBgFo2DQAQCGxv5KxAkAAA==
+   H4sIAAAAAAAAC2NgGAWjYBSMgpEDPg5RO9DNHKr+QDcfhkfBKBgFpAMATczMpsQJAAA=
   </data>
  </layer>
  <objectgroup name="Event" width="25" height="25">

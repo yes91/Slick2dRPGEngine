@@ -30,7 +30,7 @@ public class NPC extends Event{
     public void activate(){
         String words = "Hey, I'm an NPC. I'm aware I just broke the fourth wall,\n"
                                     + "but why does that matter in a tech demo? Kieran's pretty talented\n"
-                                    + "for a novice programmer, eh? You know, he did spend far too long on \n"
+                                    + "for a \\C[0]novice programmer\\R, eh? You know, he did spend far too long on \n"
                                     + "this particular feature, though. I'm having a really nice time on this \n"
                                     + "grassy field. How are you?";
         SceneBase.gameMessage.setText(words);
