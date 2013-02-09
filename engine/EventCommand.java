@@ -10,7 +10,14 @@ package engine;
  */
 public class EventCommand {
     
-    public EventCommand(String params[], String indent[]){
-
+    public int code;
+    public Object[] parameters;
+    public int indent;
+    
+    
+    public EventCommand(Object[] params, int code, int indent){
+        this.parameters = params;
+        this.code = code;
+        this.indent = indent;
     }
 }

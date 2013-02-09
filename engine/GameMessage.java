@@ -14,6 +14,11 @@ public class GameMessage {
     
     public String[] texts;
     public String[][] pages;
+    public String faceName;
+    public int faceIndex;
+    public int background;
+    public int position;
+    
     
     public GameMessage(){
         clear();

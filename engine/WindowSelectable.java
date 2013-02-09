@@ -119,7 +119,7 @@ public class WindowSelectable extends Window{
         }
     }
     
-    public void update(InputProvider input){
+    public void update(InputProvider input, int delta){
         if(itemMax > 0){
         int lastIndex = index;
         if(input.isCommandControlPressed(SceneBase.down)){

@@ -24,10 +24,11 @@ import shaderutil.Shader;
 public class SceneMap extends SceneBase {
 
     int stateID = -1;
-    Shader s;
-    Shader s2;
+    private Shader s;
+    private Shader s2;
     public static final int B_WIDTH = 1280;
     public static final int B_HEIGHT = 720;
+    public static GameInterpreter interpreter;
     public static boolean allowClose;
     public static DepthCompare depthComp = new DepthCompare();
     public static int deltaG;
@@ -62,6 +63,7 @@ public class SceneMap extends SceneBase {
 
         fire1 = Cache.getRes("fire1.png");
         fire2 = Cache.getRes("fire2.png");
+        interpreter = new GameInterpreter(0, true);
         ImageBuffer scratch = new ImageBuffer(B_WIDTH, B_HEIGHT);
         buffer = scratch.getImage();
         allowClose = false;
@@ -75,7 +77,7 @@ public class SceneMap extends SceneBase {
         uielements = new ArrayList<>();
         //uielements.add(wind);
         EnemyReader.populateEnemies();
-        map = new Map(new TiledMap("/src/res/data/map/testmap2.tmx", "/src/res/data/map"), worldPlayer);
+        map = new Map(new TiledMapExtra("/src/res/data/map/testmap2.tmx", "/src/res/data/map"), worldPlayer);
         uiFocus = false;
         music = new Music("/src/res/fatefulencounter.wav");
         //isPlaying = true;
@@ -137,9 +139,10 @@ public class SceneMap extends SceneBase {
         map.update(container, worldPlayer);
         for (Window w : uielements) {
             if (w instanceof WindowSelectable) {
-                ((WindowSelectable) w).update(inputp);
+                ((WindowSelectable) w).update(inputp, delta);
             }
         }
+        interpreter.update();
     }
 
     @Override

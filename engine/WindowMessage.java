@@ -33,14 +33,14 @@ public class WindowMessage extends WindowSelectable {
     private int contY = 0;
 
     public WindowMessage() throws SlickException {
-        super(0, (int) (SceneMap.B_HEIGHT * 0.85), SceneMap.B_WIDTH, (int) (SceneMap.B_HEIGHT * 0.15));
-        face = Cache.getRes("People1.png");
+        super(0, (int) (SceneMap.B_HEIGHT * 0.82), SceneMap.B_WIDTH, (int) (SceneMap.B_HEIGHT * 0.18));
         this.index = -1;
         this.itemMax = 0;
         this.gameMessage = SceneBase.gameMessage;
     }
 
     public void startMessage() {
+        face = Cache.getRes(gameMessage.faceName+".png");
         this.currentPage = 0;
         this.currentLine = 0;
         this.currentChar = 0;
@@ -59,16 +59,16 @@ public class WindowMessage extends WindowSelectable {
     @Override
     public void render(Graphics g, StateBasedGame sbg) {
         super.render(g, sbg);
-        Sprite.drawSpriteFrame(face, g, x + 8, y + 6, 4, 2, 96, 96);
+        Sprite.drawSpriteFrame(face, g, x + 16, y + 16, 4, gameMessage.faceIndex, 96, 96);
         cg.setColor(currentColor);
         cg.drawString(drawChar, contX + 97, contY);
         cg.flush();
     }
 
     @Override
-    public void update(InputProvider input) {
-        time -= 16;
-        super.update(input);
+    public void update(InputProvider input, int delta) {
+        time -= delta;
+        super.update(input, delta);
         if (isTalking) {
             if (input.isCommandControlPressed(SceneBase.down)) {
                 if (isScrolling) {

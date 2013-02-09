@@ -232,7 +232,7 @@ public class SceneTitle extends SceneBase{
             gc.exit();
         }
         if(!inSubMenu){
-        ((WindowSelectable)wind).update(inputp);
+        ((WindowSelectable)wind).update(inputp, delta);
             if(inputp.isCommandControlDown(action)){
                 switch(wind.index){
                     case 0:
@@ -255,7 +255,7 @@ public class SceneTitle extends SceneBase{
         else{
             for(Window w: uielements){
                 if(w instanceof WindowSelectable){
-                    ((WindowSelectable)w).update(inputp);
+                    ((WindowSelectable)w).update(inputp, delta);
                 }
             }
             if(inputp.isCommandControlDown(cancel)){

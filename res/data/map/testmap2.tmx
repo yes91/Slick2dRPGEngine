@@ -50,4 +50,17 @@
    </properties>
   </object>
  </objectgroup>
+ <eventgroup name ="Event Layer" width="50" height="50" >
+     <event index="0">
+         <list>
+         <command code="0">
+             <param type="string" value="People1"/>
+             <param type="int" value="0"/>
+             <param type="string" value="normal"/>
+             <param type="string" value="top"/>
+             <param type="string" value="Hey there, \C[0]buddy\R. How's life?"/>
+         </command>
+         </list>
+     </event>
+ </eventgroup>
 </map>

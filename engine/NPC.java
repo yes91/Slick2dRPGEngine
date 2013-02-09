@@ -28,6 +28,8 @@ public class NPC extends Event{
     }
     
     public void activate(){
+        SceneBase.gameMessage.faceName = "People1";
+        SceneBase.gameMessage.faceIndex = 5;
         String words = "Hey, I'm an NPC. I'm aware I just broke the fourth wall,\n"
                                     + "but why does that matter in a tech demo? Kieran's pretty talented\n"
                                     + "for a \\C[0]novice programmer\\R, eh? You know, he did spend far too long on \n"
@@ -39,6 +41,7 @@ public class NPC extends Event{
         SceneMap.addUIElement(SceneMap.message);
         SceneMap.message.startMessage();
         SceneMap.uiFocus = true;
+        //SceneMap.interpreter.setup(list, 0);
     }
     
     public void setFrame(int f){

@@ -63,7 +63,7 @@ public class SceneMenu extends SceneBase {
 
     @Override
     public void update(GameContainer gc, StateBasedGame sbg, int delta) throws SlickException {
-        ((WindowSelectable) activeWindow).update(inputp);
+        ((WindowSelectable) activeWindow).update(inputp, delta);
         if (activeWindow.equals(command)) {
             switch (command.index) {
                 case 0:
