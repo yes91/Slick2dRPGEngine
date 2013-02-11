@@ -1,16 +1,23 @@
+#version 400
 
-varying vec4 v_color;
 uniform sampler2D src_tex_unit0;
 uniform int choice;
-uniform vec2 mouse;
-uniform vec3 lightColor = vec3(1.0, 0.5, 0.2);
-uniform vec3 lightAttenuation = vec3(0.4, 3.0, 20.0);
-uniform float lightIntesity = 0.5; //Percentage from 0(0.0f) to 100(1.0f)
-uniform vec3 ambientColor = vec3(1.0, 1.0, 1.0);
-uniform vec3 ambientIntensity = 0.7; //Percentage from 0(0.0f) to 100(1.0f)
+struct Light
+{
+    vec2 pos;
+    vec4 color;
+    vec3 attenuation;
+    float intensity;
+};
+//uniform vec4 lightColor = vec4(1.0, 0.5, 0.2, 1.0);
+//uniform vec3 lightAttenuation = vec3(0.4, 3.0, 20.0); 
+//uniform float lightIntesity = 0.5; //Percentage from 0(0.0f) to 100(1.0f)
+uniform vec4 ambientColor = vec4(1.0, 1.0, 1.0, 1.0);
+uniform float ambientIntensity = 0.5; //Percentage from 0(0.0f) to 100(1.0f)
 uniform bool isLit = true;
 const int MAX_LIGHTS = 10;
-uniform vec3[MAX_LIGHTS] lights;
+//uniform vec3[MAX_LIGHTS] lights;
+uniform Light[MAX_LIGHTS] lights;
 const vec2 resolution = vec2(1280.0, 1280.0);
 
 vec4 grayscale(vec4 src_color){
@@ -27,13 +34,13 @@ vec4 lighting(vec4 src_color){
     vec3 deltaPos = vec3(0.0);
     float d = 0.0;
     float att = 0.0;
-    vec3 result = ambientColor * ambientIntensity;
+    vec3 result = ambientColor.rgb * ambientIntensity;
     for(int i = 0; i < MAX_LIGHTS; i++){
-        if(lights[i].x > 0.0 && isLit){
-            deltaPos = vec3( (lights[i].xy - gl_FragCoord.xy) / resolution.xy, lights[i].z );
+        if(lights[i].pos.x > 0.0 && lights[i].pos.y > 0.0 && isLit){
+            deltaPos = vec3( (lights[i].pos.xy - gl_FragCoord.xy) / resolution.xy, 0.0 );
             d = sqrt(dot(deltaPos, deltaPos));
-            att = 1.0 / ( lightAttenuation.x + (lightAttenuation.y*d) + (lightAttenuation.z*d*d) );
-            result += (lightColor.rgb * lightIntesity) * att;
+            att = 1.0 / ( lights[i].attenuation.x + (lights[i].attenuation.y*d) + (lights[i].attenuation.z*d*d) );
+            result += (lights[i].color.rgb * lights[i].intensity) * att;
         }
     }
 
@@ -44,8 +51,6 @@ vec4 lighting(vec4 src_color){
 void main(void){
   // get the location of the current pixel
   // in the input texture
-  vec3 lightPos = vec3(mouse, 0.0);
-  lights[0] = lightPos;
   vec2 tex_coord = gl_TexCoord[0].st;
 
   // read the color of the current pixel out of the

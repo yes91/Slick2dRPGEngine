@@ -73,7 +73,7 @@ public class SceneMenu extends SceneBase {
                     break;
             }
         }
-        else if(activeWindow.equals(inventory)){
+        else if(activeWindow.equals(inventory) && !worldPlayer.getInv().items.isEmpty()){
             invHelp.setText(worldPlayer.getInv().items.get(inventory.index).getDesc());
         }
         if (inputp.isCommandControlPressed(cancel)) {

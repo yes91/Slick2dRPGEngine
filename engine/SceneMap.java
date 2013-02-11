@@ -7,7 +7,7 @@ package engine;
 import effectutil.ShaderProgram;
 import java.util.ArrayList;
 import java.util.Collections;
-import org.lwjgl.opengl.GL20;
+import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
@@ -184,10 +184,18 @@ public class SceneMap extends SceneBase {
     @Override
     public void render(GameContainer container, StateBasedGame sbg, Graphics g) throws SlickException {
         effect.bind();
-        effect.setUniform2f("mouse", (float)input.getMouseX(), (float)720 - input.getMouseY());
+        //effect.setUniform2f("mouse", (float)input.getMouseX(), (float)720 - input.getMouseY());
         //effect.setUniform3f("lights[3]", 0f, 0f, 0f);
         //effect.setUniform3f("lights[2]", 1280f-100f, 100f, 0);
-        effect.setUniform3fArray("lights", vec3Array);
+        //effect.setUniform3fArray("lights", vec3Array);
+        effect.setUniform2f("lights[0].pos", (float)input.getMouseX(), (float)720 - input.getMouseY());
+        effect.setUniform4f("lights[0].color", Color.magenta);
+        effect.setUniform3f("lights[0].attenuation", 0.4f, 3.0f, 20.0f);
+        effect.setUniform1f("lights[0].intensity", 0.5f);
+        effect.setUniform2f("lights[1].pos", 100f, 720f - 100f);
+        effect.setUniform4f("lights[1].color", Color.yellow);
+        effect.setUniform3f("lights[1].attenuation", 0.4f, 3.0f, 20.0f);
+        effect.setUniform1f("lights[1].intensity", 0.5f);
         if(shaderOption != lastOption){
             effect.setUniform1i("choice", shaderOption);
             lastOption = shaderOption;

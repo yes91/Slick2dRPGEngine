@@ -21,7 +21,7 @@ public class WindowMessage extends WindowSelectable {
     public final int MAX_LINE = 4;
     private Color currentColor = Color.white;
     private Image face;
-    public static int TYPE_DELAY = 20;
+    public static int TYPE_DELAY = 50;
     public boolean isTalking;
     private boolean isScrolling;
     private int currentPage;
@@ -100,6 +100,7 @@ public class WindowMessage extends WindowSelectable {
         int startPage = currentPage;
         if (isScrolling && currentPage == startPage && time <= 0) {
             time = TYPE_DELAY;
+            
             if (currentChar > gameMessage.pages[currentPage][currentLine].length() - 1) {
                 contY += 16;
                 currentLine++;
