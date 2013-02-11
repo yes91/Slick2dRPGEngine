@@ -29,7 +29,7 @@ public class NPC extends Event{
     
     public void activate(){
         SceneBase.gameMessage.faceName = "People1";
-        SceneBase.gameMessage.faceIndex = 5;
+        SceneBase.gameMessage.faceIndex = 2;
         String words = "Hey, I'm an NPC. I'm aware I just broke the fourth wall,\n"
                                     + "but why does that matter in a tech demo? Kieran's pretty talented\n"
                                     + "for a \\C[0]novice programmer\\R, eh? You know, he did spend far too long on \n"

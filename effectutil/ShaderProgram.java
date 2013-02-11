@@ -429,7 +429,7 @@ public class ShaderProgram {
 		int location = locI==null ? -1 : locI.intValue();
 		if (location!=-1)
 			return location;
-		location = ARBShaderObjects.glGetUniformLocationARB(program, name);
+		location = GL20.glGetUniformLocation(getID(), name);
 		if (location == -1 && strict)
 			throw new IllegalArgumentException("no active uniform by name '"+name+"' (disable strict compiling to suppress warnings)");
 		uniforms.put(name, location); 
@@ -799,6 +799,17 @@ public class ShaderProgram {
 		if (id==-1) return;
 		ARBShaderObjects.glUniform4iARB(id, a, b, c, d);
 	}
+        
+        public void setUniform3fArray(String name, float[][] vec3Array){
+            for(int i = 0; i < vec3Array.length; i++){
+                int loc = GL20.glGetUniformLocation(getID(), name + "[" + i + "]");
+                    if(loc == -1){
+                        return;
+                    }
+                float[] vec3 = vec3Array[i];
+                GL20.glUniform3f(loc, vec3[0], vec3[1], vec3[2]);
+            }
+        }
 	
 	/**
 	 * Sets a uniform matrix2 with the given name and transpose.

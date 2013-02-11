@@ -4,8 +4,10 @@
  */
 package engine;
 
+import effectutil.ShaderProgram;
 import java.util.ArrayList;
 import java.util.Collections;
+import org.lwjgl.opengl.GL20;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
@@ -14,8 +16,6 @@ import org.newdawn.slick.Input;
 import org.newdawn.slick.Music;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.StateBasedGame;
-import org.newdawn.slick.tiled.TiledMap;
-import shaderutil.Shader;
 
 /**
  *
@@ -24,8 +24,13 @@ import shaderutil.Shader;
 public class SceneMap extends SceneBase {
 
     int stateID = -1;
-    private Shader s;
-    private Shader s2;
+    private ShaderProgram blurH;
+    private ShaderProgram blurV;
+    private ShaderProgram lighting;
+    private ShaderProgram effect;
+    private int lastOption;
+    private int shaderOption;
+    private float[][] vec3Array;
     public static final int B_WIDTH = 1280;
     public static final int B_HEIGHT = 720;
     public static GameInterpreter interpreter;
@@ -67,12 +72,25 @@ public class SceneMap extends SceneBase {
         ImageBuffer scratch = new ImageBuffer(B_WIDTH, B_HEIGHT);
         buffer = scratch.getImage();
         allowClose = false;
-        container.setShowFPS(false);
         //container.setMaximumLogicUpdateInterval(60);
         testbattler = new Image("/src/res/yuan_3.png");
         worldPlayer = new WorldPlayer(new Image("/src/engine/craft.png"));
-        s = Shader.makeShader("/src/engine/blur.vrt", "/src/engine/blur.frg");
-        s2 = Shader.makeShader("/src/engine/blur2.vrt", "/src/engine/blur2.frg");
+        blurH = ShaderProgram.loadProgram("/src/engine/blurH.vert", "/src/engine/blurH.frag");
+        blurV = ShaderProgram.loadProgram("/src/engine/blurV.vert", "/src/engine/blurV.frag");
+        effect = ShaderProgram.loadProgram("/src/engine/oilpaint.vert", "/src/engine/oilpaint.frag");
+        lighting = ShaderProgram.loadProgram("/src/engine/lightV.glsl", "/src/engine/lightF.glsl");
+        vec3Array = new float[][]{
+        {0, 0, 0},
+        {1280f-100f, 100f, 0},
+        {100f, 720f-100f, 0},
+        {100f, 100f, 0},
+        {-1f, -1f, 0},
+        {-1f, -1f, 0},
+        {-1f, -1f, 0},
+        {-1f, -1f, 0},
+        {-1f, -1f, 0},
+        {-1f, -1f, 0}
+        };
         message = new WindowMessage();
         uielements = new ArrayList<>();
         //uielements.add(wind);
@@ -107,6 +125,24 @@ public class SceneMap extends SceneBase {
         if (input.isKeyPressed(Input.KEY_0)) {
             ((SceneBattle)sbg.getState(3)).setBattleBack(Cache.getRes("Cobblestones3.png"));
             sbg.enterState(3);
+        }
+        if(input.isKeyPressed(Input.KEY_1)){
+            shaderOption = 0;
+        }
+        if(input.isKeyPressed(Input.KEY_2)){
+            shaderOption = 1;
+        }
+        if(input.isKeyPressed(Input.KEY_3)){
+            shaderOption = 2;
+        }
+        if(input.isKeyPressed(Input.KEY_4)){
+            shaderOption = 3;
+        }
+        if(input.isKeyPressed(Input.KEY_5)){
+            shaderOption = 4;
+        }
+        if(input.isKeyPressed(Input.KEY_6)){
+            shaderOption = 5;
         }
         if (input.isKeyPressed(Input.KEY_F4)) {
             map.camera.setTarget(map.objs.get(0));
@@ -147,6 +183,15 @@ public class SceneMap extends SceneBase {
 
     @Override
     public void render(GameContainer container, StateBasedGame sbg, Graphics g) throws SlickException {
+        effect.bind();
+        effect.setUniform2f("mouse", (float)input.getMouseX(), (float)720 - input.getMouseY());
+        //effect.setUniform3f("lights[3]", 0f, 0f, 0f);
+        //effect.setUniform3f("lights[2]", 1280f-100f, 100f, 0);
+        effect.setUniform3fArray("lights", vec3Array);
+        if(shaderOption != lastOption){
+            effect.setUniform1i("choice", shaderOption);
+            lastOption = shaderOption;
+        }
         map.camera.translate(g);
         map.render(worldPlayer, g);
         //Sprite.animateSprite(testbattler, g, 200, 200, 423, 270, 4, 0, 4, 0, true);
@@ -170,8 +215,8 @@ public class SceneMap extends SceneBase {
 
         //light.draw(0, 0, 1280, 720);
 
-
-
+        ShaderProgram.unbind();
+        
         for (Window w : uielements) {
             w.render(g, sbg);
             map.renderUI(worldPlayer);
@@ -215,14 +260,14 @@ public class SceneMap extends SceneBase {
         g.flush();
         g.copyArea(buffer, 0, 0);
         gc.pause();
-        s.startShader();
+        blurH.bind();
         g.drawImage(buffer, 0, 0);
         g.flush();
-        Shader.forceFixedShader();
+        ShaderProgram.unbind();
         g.copyArea(buffer, 0, 0);
-        s2.startShader();
+        blurV.bind();
         g.drawImage(buffer, 0, 0);
-        Shader.forceFixedShader();
+        ShaderProgram.unbind();
         g.copyArea(buffer, 0, 0);
         SceneMenu.back = buffer.copy();
         gc.resume();
@@ -236,50 +281,7 @@ public class SceneMap extends SceneBase {
          Collections.sort(map.objs, depthComp);
          for(GameObject go: map.objs) {
          go.render(buffer.getGraphics());
-         }
-         buffer.getGraphics().flush();
-         //s.setUniformFloatVariable("width", (float)B_WIDTH);
-         s.startShader();
-         buffer.setAlpha(100f);
-         buffer.getGraphics().drawImage(buffer, 0, 0);
-         buffer.getGraphics().clearAlphaMap();
-         buffer.getGraphics().flush();
-         s.stopShader();
-         //s2.setUniformFloatVariable("height", (float)B_HEIGHT);
-         s2.startShader();
-         buffer.setAlpha(100f);
-         buffer.getGraphics().drawImage(buffer, 0, 0);
-         buffer.getGraphics().clearAlphaMap();
-         buffer.getGraphics().flush();
-         s2.stopShader();
-         buffer.setAlpha(100f);
-         SceneMenu.back = buffer;
-         gc.resume();
-         } catch (SlickException ex) {
-         Logger.getLogger(SceneMap.class.getName()).log(Level.SEVERE, null, ex);
          }*/
-        /*map.camera.translate(bg);
-         map.render(worldPlayer, bg);
-         Collections.sort(map.objs, depthComp);
-         for(GameObject go: map.objs) {
-         go.render(bg);
-         }
-         bg.flush();
-         for(int x = 0; x < buffer.getWidth();x++ ){
-         for(int y = 0; y < buffer.getHeight();y++){
-         org.newdawn.slick.Color c = buffer.getColor(x, y);
-         awtBuffer.setRGB(x, y, (c.getAlpha()<<24)+(c.getRed()<<16)+(c.getGreen()<<8)+c.getBlue());
-         }
-         }
-            
-         gfilter.filter(awtBuffer, awtBuffer);
-         try {
-         buffer.setTexture(BufferedImageUtil.getTexture(null, awtBuffer));
-         } catch (IOException ex) {
-         Logger.getLogger(SceneMap.class.getName()).log(Level.SEVERE, null, ex);
-         }
-         SceneMenu.back = buffer;
-         * */
     }
 
     @Override
