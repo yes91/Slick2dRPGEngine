@@ -14,7 +14,7 @@ struct Light
 //uniform vec4 lightColor = vec4(1.0, 0.5, 0.2, 1.0);
 //uniform vec3 lightAttenuation = vec3(0.4, 3.0, 20.0); 
 //uniform float lightIntesity = 0.5; //Percentage from 0(0.0f) to 100(1.0f)
-uniform vec4 ambientColor = vec4(1.0, 1.0, 1.0, 1.0);
+uniform vec4 ambientColor = vec4(1.0, 1.0, 1.0, 1.0); //vec4(0.5, 0.5, 1.1, 1.0); Night color
 uniform float ambientIntensity = 0.5; //Percentage from 0(0.0f) to 100(1.0f)
 uniform bool isLit = true;
 const int MAX_LIGHTS = 10;
@@ -42,11 +42,13 @@ vec4 lighting(vec4 src_color){
             deltaPos = vec3( (lights[i].pos.xy - gl_FragCoord.xy) / resolution.xy, 0.0 );
             d = sqrt(dot(deltaPos, deltaPos)) * lights[i].scale;
             att = 1.0 / ( lights[i].attenuation.x + (lights[i].attenuation.y*d) + (lights[i].attenuation.z*d*d) );
-            result += (lights[i].color.rgb * lights[i].intensity) * att;
+            result += (lights[i].color.rgb * lights[i].intensity ) * att;
         }
     }
 
-    result *= src_color.rgb;
+    result = result * src_color.rgb;
+    //result = ((result - vec3(1.0, 1.0, 1.0)) + (src_color.rgb)); //I rather like the way 
+    //this preserves the color of lights, but the ambient color has issues
     return vec4(result, src_color.a);
 }
 

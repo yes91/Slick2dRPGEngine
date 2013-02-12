@@ -27,7 +27,6 @@ public class SceneMap extends SceneBase {
     int stateID = -1;
     private ShaderProgram blurH;
     private ShaderProgram blurV;
-    private ShaderProgram lighting;
     private LightShader effect;
     private int lastOption;
     private int shaderOption;
@@ -81,12 +80,14 @@ public class SceneMap extends SceneBase {
         blurH = ShaderProgram.loadProgram("/src/engine/blurH.vert", "/src/engine/blurH.frag");
         blurV = ShaderProgram.loadProgram("/src/engine/blurV.vert", "/src/engine/blurV.frag");
         effect = new LightShader("/src/engine/oilpaint.vert", "/src/engine/oilpaint.frag");
-        mouseLight = new Light(500f, 2400f, 1f, 0.5f, Color.magenta);
+        mouseLight = new Light(500f, 2400f, 1f, 0.5f, new Color(105,150,50));
         lightArray = new Light[]{
             mouseLight,
             new Light(100f, 100f, 2f, 0.5f, Color.cyan),
-            new Light(1280f, 720f, 1f, 0.5f, Color.red),
-            new Light(2048f, 2048f, 0.9f, 0.3f, Color.green)
+            new Light(1280f, 720f, 1f, 0.8f, Color.red),
+            new Light(2048f, 2048f, 0.9f, 0.5f, Color.green),
+            new Light(2800f, 2800f, 0.9f, 0.8f, new Color(240, 100, 10)),
+            new Light(24*64f+32, 27*64f+32, 1f, 0.7f, new Color(255, 80, 10))
         };
         message = new WindowMessage();
         uielements = new ArrayList<>();
@@ -183,9 +184,10 @@ public class SceneMap extends SceneBase {
     public void render(GameContainer container, StateBasedGame sbg, Graphics g) throws SlickException {
         effect.bind();
         
-        //mouseLight.x = worldPlayer.getX();//(float)input.getMouseX() + Camera.viewPort.getX();
-        //mouseLight.y = worldPlayer.getY();//(float)input.getMouseY() + Camera.viewPort.getY();
+        mouseLight.x = (float)input.getMouseX() + Camera.viewPort.getX();
+        mouseLight.y = (float)input.getMouseY() + Camera.viewPort.getY();
         mouseLight.scale = 1f + 2f*Math.abs((float)Math.sin(elapsed /1000f));
+        lightArray[5].scale = 2f + 2f*Math.abs((float)Math.sin(elapsed /1000f));
         effect.setUniformLightArray("lights", lightArray);   
         if(shaderOption != lastOption){
             effect.setUniform1i("choice", shaderOption);

@@ -69,7 +69,9 @@ public class WindowMessage extends WindowSelectable {
             skip = false;
             isScrolling = false;
         } else { 
-            cg.drawString(drawChar, contX + 97, contY);
+            for(int i = 0; i < 4; i++){
+                cg.drawString(drawChar, contX + 97, contY);
+            }
         }
         cg.flush();
     }
