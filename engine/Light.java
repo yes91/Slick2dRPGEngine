@@ -5,6 +5,7 @@
 package engine;
 
 import org.newdawn.slick.Color;
+import org.newdawn.slick.geom.Rectangle;
 
 /**
  *
@@ -12,30 +13,46 @@ import org.newdawn.slick.Color;
  */
 public class Light {
 		/** The position of the light */
-		float x, y;
+		public float x, y;
 		/** The RGB tint of the light, alpha is ignored */
-		Color tint; 
+		public Color tint; 
 		/** The alpha value of the light, default 1.0 (100%) */
-		float alpha;
+		public float intensity;
 		/** The amount to scale the light (use 1.0 for default size). */
 		public float scale;
+                
+                public final float[] attenuation = new float[]{ 0.4f, 3.0f, 20.0f};
 		//original scale
-		private float scaleOrig;
  
-		public Light(float x, float y, float scale, Color tint) {
+		public Light(float x, float y, float scale, float intensity, Color tint) {
 			this.x = x;
 			this.y = y;
-			this.scale = scaleOrig = scale;
-			this.alpha = 1f;
+			this.scale = scale;
+			this.intensity = intensity;
 			this.tint = tint;
 		}
  
 		public Light(float x, float y, float scale) {
-			this(x, y, scale, Color.white);
+			this(x, y, scale, 1f, Color.white);
 		}
- 
-		public void update(float time) {
-			//effect: scale the light slowly using a sin func
-			scale = scaleOrig + 1f + .5f*(float)Math.sin(time);
-		}
+                
+                public float screenX(){
+                    return x - Camera.viewPort.getX();
+                }
+                
+                public float screenY(){
+                    return (Camera.viewPort.getHeight() - y) + Camera.viewPort.getY();
+                }
+                
+               /* public boolean isVisible(){
+                    return (new Rectangle(Camera.viewPort.getX() 
+                            - 20, Camera.viewPort.getY() 
+                            - 20, Camera.viewPort.getWidth() 
+                            + 40, Camera.viewPort.getHeight() 
+                            + 40)).intersects(this.getBounds());
+                }
+                
+                public Rectangle getBounds(){
+                    return new Rectangle(x - 10, y - 10, 20, 20);
+                }*/
 	}

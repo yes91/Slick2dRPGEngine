@@ -88,8 +88,8 @@ public class Map {
                             }
 	        }
                 objs.add(p);
-                p.setX(Float.parseFloat(map.getMapProperty("startPosx", "1"))*64);
-                p.setY(Float.parseFloat(map.getMapProperty("startPosy", "1"))*64);
+                p.setX(Float.parseFloat(map.getMapProperty("startPosx", "1"))*64 + 32);
+                p.setY(Float.parseFloat(map.getMapProperty("startPosy", "1"))*64 + 48);
         
     }
     

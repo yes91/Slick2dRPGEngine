@@ -21,13 +21,14 @@ public class WindowMessage extends WindowSelectable {
     public final int MAX_LINE = 4;
     private Color currentColor = Color.white;
     private Image face;
-    public static int TYPE_DELAY = 50;
+    public static float TYPE_DELAY = 10f;
     public boolean isTalking;
     private boolean isScrolling;
+    private boolean skip;
     private int currentPage;
     private int currentLine;
     private int currentChar;
-    private int time = TYPE_DELAY;
+    private float time = TYPE_DELAY;
     private String drawChar = "";
     private int contX = 0;
     private int contY = 0;
@@ -49,8 +50,10 @@ public class WindowMessage extends WindowSelectable {
         contY = 0;
         this.isTalking = true;
         isScrolling = true;
+        skip = false;
         SceneMap.allowClose = false;
         convertSpecialChars();
+        time = TYPE_DELAY;
         drawChar = "";
         cg.clear();
         updateMessage();
@@ -61,19 +64,24 @@ public class WindowMessage extends WindowSelectable {
         super.render(g, sbg);
         Sprite.drawSpriteFrame(face, g, x + 16, y + 16, 4, gameMessage.faceIndex, 96, 96);
         cg.setColor(currentColor);
-        cg.drawString(drawChar, contX + 97, contY);
+        if(skip){
+            drawAll();
+            skip = false;
+            isScrolling = false;
+        } else { 
+            cg.drawString(drawChar, contX + 97, contY);
+        }
         cg.flush();
     }
 
     @Override
     public void update(InputProvider input, int delta) {
-        time -= delta;
+        time -= (5f/16f)*delta;
         super.update(input, delta);
         if (isTalking) {
             if (input.isCommandControlPressed(SceneBase.down)) {
                 if (isScrolling) {
-                    //Do somethig to print all.
-                    //isScrolling = false;
+                    skip = true;
                 } else {
                     if ((currentPage < gameMessage.pages.length - 1)) {
                         drawChar = "";
@@ -95,12 +103,50 @@ public class WindowMessage extends WindowSelectable {
 
     public void convertSpecialChars() {
     }
+    
+    private void drawAll(){
+        for(; currentLine < MAX_LINE; currentLine++){
+            for(; currentChar < gameMessage.pages[currentPage][currentLine].length() - 1; currentChar++){
+
+                switch (gameMessage.pages[currentPage][currentLine].charAt(currentChar)) {
+                    case '\u0001':
+                        cg.setColor(Color.red);
+                        break;
+                    case '\u0002':
+                        cg.setColor(Color.white);
+                        break;
+                }
+                drawChar = "" + gameMessage.pages[currentPage][currentLine].charAt(currentChar);
+                switch (drawChar) {
+                    case " ":
+                        contX += Cache.getFont().getWidth("_");
+                        break;
+                    default:
+                        contX += Cache.getFont().getWidth(drawChar);
+                        break;
+                }
+                for(int z = 0; z < 4; z++){
+                    cg.drawString(drawChar, contX + 97, contY);
+                }
+            }
+            contY += 16;        
+            contX = 0;
+            currentChar = 0;
+            drawChar = "";
+        }
+    }
 
     private void updateMessage() {
         int startPage = currentPage;
+        if (currentLine > MAX_LINE - 1) {
+            contY = 0;
+            contX = 0;
+            currentLine = 0;
+            drawChar = "";
+            isScrolling = false;
+        }
         if (isScrolling && currentPage == startPage && time <= 0) {
             time = TYPE_DELAY;
-            
             if (currentChar > gameMessage.pages[currentPage][currentLine].length() - 1) {
                 contY += 16;
                 currentLine++;
@@ -108,7 +154,7 @@ public class WindowMessage extends WindowSelectable {
                 currentChar = 0;
                 drawChar = "";
             }
-            if (isScrolling && currentPage == startPage && currentLine < 4 && !(currentChar > gameMessage.pages[currentPage][currentLine].length() - 1)) {
+            if (isScrolling && currentPage == startPage && currentLine < MAX_LINE && !(currentChar > gameMessage.pages[currentPage][currentLine].length() - 1)) {
                 switch (gameMessage.pages[currentPage][currentLine].charAt(currentChar)) {
                     case '\u0001':
                         currentColor = Color.red;
@@ -129,12 +175,6 @@ public class WindowMessage extends WindowSelectable {
             } else {
                 return;
             }
-        }
-        if (currentLine > 3) {
-            contY = 0;
-            currentLine = 0;
-            drawChar = "";
-            isScrolling = false;
         }
     }
 }

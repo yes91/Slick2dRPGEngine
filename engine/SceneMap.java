@@ -4,6 +4,7 @@
  */
 package engine;
 
+import effectutil.LightShader;
 import effectutil.ShaderProgram;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -27,10 +28,12 @@ public class SceneMap extends SceneBase {
     private ShaderProgram blurH;
     private ShaderProgram blurV;
     private ShaderProgram lighting;
-    private ShaderProgram effect;
+    private LightShader effect;
     private int lastOption;
     private int shaderOption;
-    private float[][] vec3Array;
+    private Light[] lightArray;
+    private Light mouseLight;
+    private long elapsed;
     public static final int B_WIDTH = 1280;
     public static final int B_HEIGHT = 720;
     public static GameInterpreter interpreter;
@@ -77,19 +80,13 @@ public class SceneMap extends SceneBase {
         worldPlayer = new WorldPlayer(new Image("/src/engine/craft.png"));
         blurH = ShaderProgram.loadProgram("/src/engine/blurH.vert", "/src/engine/blurH.frag");
         blurV = ShaderProgram.loadProgram("/src/engine/blurV.vert", "/src/engine/blurV.frag");
-        effect = ShaderProgram.loadProgram("/src/engine/oilpaint.vert", "/src/engine/oilpaint.frag");
-        lighting = ShaderProgram.loadProgram("/src/engine/lightV.glsl", "/src/engine/lightF.glsl");
-        vec3Array = new float[][]{
-        {0, 0, 0},
-        {1280f-100f, 100f, 0},
-        {100f, 720f-100f, 0},
-        {100f, 100f, 0},
-        {-1f, -1f, 0},
-        {-1f, -1f, 0},
-        {-1f, -1f, 0},
-        {-1f, -1f, 0},
-        {-1f, -1f, 0},
-        {-1f, -1f, 0}
+        effect = new LightShader("/src/engine/oilpaint.vert", "/src/engine/oilpaint.frag");
+        mouseLight = new Light(500f, 2400f, 1f, 0.5f, Color.magenta);
+        lightArray = new Light[]{
+            mouseLight,
+            new Light(100f, 100f, 2f, 0.5f, Color.cyan),
+            new Light(1280f, 720f, 1f, 0.5f, Color.red),
+            new Light(2048f, 2048f, 0.9f, 0.3f, Color.green)
         };
         message = new WindowMessage();
         uielements = new ArrayList<>();
@@ -111,6 +108,7 @@ public class SceneMap extends SceneBase {
     public void update(GameContainer container, StateBasedGame sbg, int delta) throws SlickException {
         //System.out.println(delta);
         deltaG = delta;
+        elapsed += delta;
         if (input.isKeyPressed(Input.KEY_F10)) {
             if (isPlaying) {
                 music.pause();
@@ -184,18 +182,11 @@ public class SceneMap extends SceneBase {
     @Override
     public void render(GameContainer container, StateBasedGame sbg, Graphics g) throws SlickException {
         effect.bind();
-        //effect.setUniform2f("mouse", (float)input.getMouseX(), (float)720 - input.getMouseY());
-        //effect.setUniform3f("lights[3]", 0f, 0f, 0f);
-        //effect.setUniform3f("lights[2]", 1280f-100f, 100f, 0);
-        //effect.setUniform3fArray("lights", vec3Array);
-        effect.setUniform2f("lights[0].pos", (float)input.getMouseX(), (float)720 - input.getMouseY());
-        effect.setUniform4f("lights[0].color", Color.magenta);
-        effect.setUniform3f("lights[0].attenuation", 0.4f, 3.0f, 20.0f);
-        effect.setUniform1f("lights[0].intensity", 0.5f);
-        effect.setUniform2f("lights[1].pos", 100f, 720f - 100f);
-        effect.setUniform4f("lights[1].color", Color.yellow);
-        effect.setUniform3f("lights[1].attenuation", 0.4f, 3.0f, 20.0f);
-        effect.setUniform1f("lights[1].intensity", 0.5f);
+        
+        //mouseLight.x = worldPlayer.getX();//(float)input.getMouseX() + Camera.viewPort.getX();
+        //mouseLight.y = worldPlayer.getY();//(float)input.getMouseY() + Camera.viewPort.getY();
+        mouseLight.scale = 1f + 2f*Math.abs((float)Math.sin(elapsed /1000f));
+        effect.setUniformLightArray("lights", lightArray);   
         if(shaderOption != lastOption){
             effect.setUniform1i("choice", shaderOption);
             lastOption = shaderOption;
@@ -224,6 +215,12 @@ public class SceneMap extends SceneBase {
         //light.draw(0, 0, 1280, 720);
 
         ShaderProgram.unbind();
+        
+        /*g.setColor(Color.yellow);
+        g.drawRect(Camera.viewPort.getX() + 5, 
+        * Camera.viewPort.getY() + 5, 
+        * Camera.viewPort.getWidth() - 10, 
+        * Camera.viewPort.getHeight() - 10);*/
         
         for (Window w : uielements) {
             w.render(g, sbg);

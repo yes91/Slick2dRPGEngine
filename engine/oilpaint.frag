@@ -1,4 +1,4 @@
-#version 400
+#version 120
 
 uniform sampler2D src_tex_unit0;
 uniform int choice;
@@ -8,6 +8,8 @@ struct Light
     vec4 color;
     vec3 attenuation;
     float intensity;
+    float scale;
+    bool visible;
 };
 //uniform vec4 lightColor = vec4(1.0, 0.5, 0.2, 1.0);
 //uniform vec3 lightAttenuation = vec3(0.4, 3.0, 20.0); 
@@ -36,9 +38,9 @@ vec4 lighting(vec4 src_color){
     float att = 0.0;
     vec3 result = ambientColor.rgb * ambientIntensity;
     for(int i = 0; i < MAX_LIGHTS; i++){
-        if(lights[i].pos.x > 0.0 && lights[i].pos.y > 0.0 && isLit){
+        if(lights[i].visible){
             deltaPos = vec3( (lights[i].pos.xy - gl_FragCoord.xy) / resolution.xy, 0.0 );
-            d = sqrt(dot(deltaPos, deltaPos));
+            d = sqrt(dot(deltaPos, deltaPos)) * lights[i].scale;
             att = 1.0 / ( lights[i].attenuation.x + (lights[i].attenuation.y*d) + (lights[i].attenuation.z*d*d) );
             result += (lights[i].color.rgb * lights[i].intensity) * att;
         }

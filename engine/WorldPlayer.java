@@ -35,7 +35,7 @@ public class WorldPlayer extends GameObject {
     public WorldPlayer(Image i) {
         image = new SpriteSheet(i, 64, 96);
         inven = new Inventory();
-        pos.x = 40;
+        pos.x = 50;
         pos.y = 60;
         baseHP = 100;
         maxHP = baseHP;
@@ -71,10 +71,10 @@ public class WorldPlayer extends GameObject {
         }
         }
      if(!SceneMap.blocked){
-        Sprite.drawSpriteFrame(getImage(), g2d, (int)pos.x, (int)pos.y, 4, getFrame()+(int)frame, 64, 96);
+        Sprite.drawSpriteFrame(getImage(), g2d, (int)pos.x - 32, (int)pos.y - 48 , 4, getFrame()+(int)frame, 64, 96);
      }
      else{
-        Sprite.drawSpriteFrame(getImage(), g2d, (int)lastX, (int)lastY, 4, getFrame()+(int)frame, 64, 96);
+        Sprite.drawSpriteFrame(getImage(), g2d, (int)lastX - 32, (int)lastY - 48, 4, getFrame()+(int)frame, 64, 96);
      }
      //Sprite.animateSprite(image, g2d, x, y, 64, 96, 4, getFrame(), getFrame()+4, .125f, isMoving());
         
@@ -252,7 +252,7 @@ public class WorldPlayer extends GameObject {
     
     @Override
      public Rectangle getBounds() {
-     return new Rectangle(pos.x+10, pos.y+40, 52, 52);
+     return new Rectangle((pos.x - 32)+10, (pos.y - 48)+40, 52, 52);
  }
      public Inventory getInv(){
      
