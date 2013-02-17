@@ -181,6 +181,8 @@ public class SceneTitle extends SceneBase{
         inputp.bindCommand(new ControllerButtonControl(0, 2), cancel);
         inputp.bindCommand(new KeyControl(Input.KEY_LSHIFT), sprint);
         inputp.bindCommand(new KeyControl(Input.KEY_J), action);
+        inputp.bindCommand(new KeyControl(Input.KEY_R), pUp);
+        inputp.bindCommand(new KeyControl(Input.KEY_L), pDown);
         uielements = new ArrayList<>();
         fin = new CameraFadeInTransition();
         back = Cache.getRes("TitleBack.png");

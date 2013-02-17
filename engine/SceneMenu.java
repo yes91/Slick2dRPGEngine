@@ -37,13 +37,14 @@ public class SceneMenu extends SceneBase {
     @Override
     public void init(GameContainer gc, StateBasedGame sbg) throws SlickException {
         input = gc.getInput();
-        String[] coms = new String[6];
-        coms[0] = "Item";
-        coms[1] = "Skill";
-        coms[2] = "Equip";
-        coms[3] = "Status";
-        coms[4] = "Save";
-        coms[5] = "Options";
+        String[] coms = new String[]{
+            "Item",
+            "Skill",
+            "Equip",
+            "Status",
+            "Save",
+            "Options"
+        };
         command = new WindowCommand(120, coms, 1, 0);
         invHelp = new WindowHelp();
         inventory = new WindowItem(command.x, command.y + invHelp.height, SceneMap.B_WIDTH, SceneMap.B_HEIGHT - invHelp.height, worldPlayer.getInv());

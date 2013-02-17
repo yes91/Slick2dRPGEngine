@@ -133,7 +133,7 @@ public class GameData {
             GameActor actor = new GameActor();
             actor.stats = new BattleStats(actorData.readInt(), actorData.readInt(), actorData.readInt());
             actor.name = actorData.readUTF();
-            actor.gClass = classes.get(actorData.readInt());
+            actor.classID = actorData.readInt();
             actor.currentHP = actor.getMaxHP();
             actor.currentMP = actor.getMaxMP();
             actor.stats.EXP = actor.stats.getEXP(actor.stats.level);

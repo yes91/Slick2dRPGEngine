@@ -22,8 +22,8 @@ public class Sounds {
     
     public static void load(){
         try {
-            cursor = new Sound("/src/res/Cursor2.wav");
-            cancel = new Sound("/src/res/Cancel2.wav");  
+            cursor = new Sound("res/Cursor2.wav");
+            cancel = new Sound("res/Cancel2.wav");  
         } catch (SlickException ex) {
             Logger.getLogger(Sounds.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -31,7 +31,7 @@ public class Sounds {
     
     public static Music getMusic(String name){
         try {
-            return new Music("/src/res/"+name); 
+            return new Music("res/"+name); 
         } catch (SlickException ex) {
             Logger.getLogger(Cache.class.getName()).log(Level.SEVERE, null, ex);
         }

@@ -18,6 +18,7 @@ public class GameMessage {
     public int faceIndex;
     public int background;
     public int position;
+    public Callback proc;
     
     
     public GameMessage(){

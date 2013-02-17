@@ -75,17 +75,17 @@ public class SceneMap extends SceneBase {
         buffer = scratch.getImage();
         allowClose = false;
         //container.setMaximumLogicUpdateInterval(60);
-        testbattler = new Image("/src/res/yuan_3.png");
-        worldPlayer = new WorldPlayer(new Image("/src/engine/craft.png"));
-        blurH = ShaderProgram.loadProgram("/src/engine/blurH.vert", "/src/engine/blurH.frag");
-        blurV = ShaderProgram.loadProgram("/src/engine/blurV.vert", "/src/engine/blurV.frag");
-        effect = new LightShader("/src/engine/oilpaint.vert", "/src/engine/oilpaint.frag");
+        testbattler = new Image("res/yuan_3.png");
+        worldPlayer = new WorldPlayer(new Image("engine/craft.png"));
+        blurH = ShaderProgram.loadProgram("engine/blurH.vert", "engine/blurH.frag");
+        blurV = ShaderProgram.loadProgram("engine/blurV.vert", "engine/blurV.frag");
+        effect = new LightShader("engine/oilpaint.vert", "engine/oilpaint.frag");
         mouseLight = new Light(500f, 2400f, 1f, 0.5f, new Color(105,150,50));
         lightArray = new Light[]{
             mouseLight,
             new Light(100f, 100f, 2f, 0.5f, Color.cyan),
             new Light(1280f, 720f, 1f, 0.8f, Color.red),
-            new Light(2048f, 2048f, 0.9f, 0.5f, Color.green),
+            new Light(2048f, 2048f, 0.9f, 0.45f, Color.green),
             new Light(2800f, 2800f, 0.9f, 0.8f, new Color(240, 100, 10)),
             new Light(24*64f+32, 27*64f+32, 1f, 0.7f, new Color(255, 80, 10))
         };
@@ -93,13 +93,13 @@ public class SceneMap extends SceneBase {
         uielements = new ArrayList<>();
         //uielements.add(wind);
         EnemyReader.populateEnemies();
-        map = new Map(new TiledMapExtra("/src/res/data/map/testmap2.tmx", "/src/res/data/map"), worldPlayer);
+        map = new Map(new TiledMapExtra("res/data/map/testmap2.tmx", "res/data/map"), worldPlayer);
         uiFocus = false;
-        music = new Music("/src/res/fatefulencounter.wav");
+        music = new Music("res/fatefulencounter.wav");
         //isPlaying = true;
         //music.loop();
-        items = new Image("/src/res/system/IconSet.png");
-        light = new Image("/src/res/LightRays.png");
+        items = new Image("res/system/IconSet.png");
+        light = new Image("res/LightRays.png");
         ItemReader.populateItems();
         //System.out.println(new GameBattler().stat.getBaseHP());
 
@@ -279,7 +279,6 @@ public class SceneMap extends SceneBase {
         SceneMenu.back = buffer.copy();
         gc.resume();
         
-
         /*try {
          gc.pause();
          buffer.getGraphics().clearAlphaMap();

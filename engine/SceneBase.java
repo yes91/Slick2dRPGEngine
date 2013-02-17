@@ -23,8 +23,11 @@ public abstract class SceneBase extends BasicGameState{
     public static BasicCommand action = new BasicCommand("Action");
     public static BasicCommand cancel = new BasicCommand("Cancel");
     public static BasicCommand menu = new BasicCommand("Menu");
+    public static BasicCommand pUp = new BasicCommand("Page Up");
+    public static BasicCommand pDown = new BasicCommand("Page Down");
     public static InputProvider inputp;
     public static WorldPlayer worldPlayer;
     public static GameMessage gameMessage = new GameMessage();
+    public static GameParty gameParty;
     
 }

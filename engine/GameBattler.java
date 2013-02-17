@@ -25,6 +25,10 @@ public abstract class GameBattler {
     public int MDEFplus;
     public int SPDplus;
     
+    public GameBattler(){
+        stats = new BattleStats();
+    }
+    
     public void updateLevel(){
         stats.updateLevel();
     }
@@ -37,6 +41,10 @@ public abstract class GameBattler {
         DEFplus = 0;
         MDEFplus = 0;
         SPDplus = 0;
+    }
+    
+    public boolean isDead(){
+        return currentHP <= 0;
     }
     
     public int getMaxHP(){

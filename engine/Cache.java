@@ -17,15 +17,15 @@ import org.newdawn.slick.SlickException;
  */
 public class Cache {
     
-    //private static UnicodeFont font;
     private static AngelCodeFont font;
+    //private static AngelCodeFont font;
     private static HashMap<String, Image> images = new HashMap<>();
     
     public static Image getImage(String filename){
         Image result = images.get(filename);
         if(result == null){
             try {
-                result = new Image("/src/res/"+filename);
+                result = new Image("res/"+filename);
                 images.put(filename, result);
             } catch (SlickException ex) {
                 Logger.getLogger(Cache.class.getName()).log(Level.SEVERE, null, ex);
@@ -38,7 +38,7 @@ public class Cache {
         Image result = images.get(filename);
         if(result == null){
             try {
-                result = new Image("src/res/system/"+filename);
+                result = new Image("res/system/"+filename);
                 images.put(filename, result);
             } catch (SlickException ex) {
                 Logger.getLogger(Cache.class.getName()).log(Level.SEVERE, null, ex);
@@ -49,7 +49,7 @@ public class Cache {
 
     public static Image getRes(String filename){
         try {
-            return new Image("/src/res/"+filename); 
+            return new Image("res/"+filename); 
         } catch (SlickException ex) {
             Logger.getLogger(Cache.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -60,17 +60,15 @@ public class Cache {
         
         if(font == null){
             try {
-                font = new AngelCodeFont("src/res/system/umeplusbold.fnt","src/res/system/umeplusbold.png");
-                    /*font = new UnicodeFont(new Font("VL Gothic Regular",Font.PLAIN,17));
+                font = new AngelCodeFont("res/system/umeplusbold.fnt","res/system/umeplusbold.png");
+                    /*font = new UnicodeFont(new Font("VL Gothic Regular",Font.PLAIN,18));
                     font.addAsciiGlyphs();   //Add Glyphs
                     font.addGlyphs(400, 600); //Add Glyphs //Add Effects
                     font.getEffects().add(new ShadowEffect(Color.BLACK,1,1,0.9f));
                     font.getEffects().add(new ColorEffect(Color.WHITE));
+                    System.out.println(font.getLineHeight());
             try {
-                font.loadGlyphs();  //Load Glyphs
-            } catch (SlickException ex) {
-                Logger.getLogger(Cache.class.getName()).log(Level.SEVERE, null, ex);
-            }*/
+                font.loadGlyphs();  //Load Glyphs*/
             } catch (SlickException ex) {
                 Logger.getLogger(Cache.class.getName()).log(Level.SEVERE, null, ex);
             }

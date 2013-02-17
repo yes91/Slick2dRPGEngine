@@ -6,8 +6,8 @@ package engine;
 
 /**
  *
- * @author Kieran
+ * @author redblast71
  */
-public class TypeWriter extends Thread{
+public class GameTroop extends GameUnit{
     
 }

@@ -23,6 +23,13 @@ public class WindowCommand extends WindowSelectable{
         itemMax = commands.length;
         columnMax = cMax;
         index = 0;
+        SceneBase.gameMessage.proc = new Callback(){
+            @Override
+            public Object call(){
+                itemMax = 4;
+                return this;
+            }
+        };
     }
     
     @Override
@@ -33,8 +40,8 @@ public class WindowCommand extends WindowSelectable{
         for(int i = 0; i < itemMax; i++){
             drawItem(i);
         }
-        if(itemMax > 0){
-        drawCursorRect(g);
+        if(itemMax > 0 && index >= 0){
+            drawCursorRect(g);
         }
     }
     

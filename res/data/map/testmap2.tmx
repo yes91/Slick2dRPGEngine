@@ -33,15 +33,15 @@
  <objectgroup color="#a45849" name="Event" width="50" height="50">
   <object name="Rea" type="Npc" x="1728" y="1280" width="64" height="96">
    <properties>
-    <property name="image" value="/src/res/003-Fighter03.png"/>
+    <property name="image" value="res/003-Fighter03.png"/>
     <property name="script" value=""/>
     <property name="text" value="Hello Atticus!"/>
    </properties>
   </object>
   <object name="Event3" type="Teleport" x="1914" y="1466" width="74" height="74">
    <properties>
-    <property name="map" value="/src/res/data/map/testmap3.tmx"/>
-    <property name="map2" value="/src/res/data/map/"/>
+    <property name="map" value="res/data/map/testmap3.tmx"/>
+    <property name="map2" value="res/data/map"/>
    </properties>
   </object>
   <object name="Slime" type="Enemy" x="1476" y="1281" width="96" height="96">
@@ -50,17 +50,4 @@
    </properties>
   </object>
  </objectgroup>
- <eventgroup name ="Event Layer" width="50" height="50" >
-     <event index="0">
-         <list>
-         <command code="0">
-             <param type="string" value="People1"/>
-             <param type="int" value="0"/>
-             <param type="string" value="normal"/>
-             <param type="string" value="top"/>
-             <param type="string" value="Hey there, \C[0]buddy\R. How's life?"/>
-         </command>
-         </list>
-     </event>
- </eventgroup>
 </map>

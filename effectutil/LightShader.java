@@ -25,7 +25,6 @@ public class LightShader extends ShaderProgram {
                 setUniform3f(name + "[" + i + "].attenuation", light.attenuation[0], light.attenuation[1], light.attenuation[2]);
                 setUniform1f(name + "[" + i + "].intensity", light.intensity);
                 setUniform1f(name + "[" + i + "].scale", light.scale);
-                setUniform1i(name + "[" + i + "].visible", 1);
             }
     }
     

@@ -13,7 +13,15 @@ public class Demo {
      * I will use for prototyping.
      */
     public static GameActor battleTester;
-    static{
-        
+    public static void init(){
+        battleTester = new GameActor();
+        battleTester.name = "TestDude";
+        battleTester.faceName = "People1";
+        battleTester.faceIndex = 2;
+        battleTester.stats.level = 5;
+        battleTester.stats.EXP = battleTester.stats.getEXP(5);
+        battleTester.currentHP = battleTester.getMaxHP();
+        battleTester.currentMP = battleTester.getMaxMP();
     }
+    
 }

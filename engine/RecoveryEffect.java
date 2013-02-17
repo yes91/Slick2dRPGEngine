@@ -4,7 +4,6 @@
  */
 package engine;
 
-import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -27,7 +26,7 @@ public class RecoveryEffect extends Effect{
 
     @Override
     public void activate(Object targets) {
-        if(targets.getClass().equals(LinkedList.class)){
+        if(targets instanceof List){
         for(GameBattler b: (List<GameBattler>)targets){
             b.currentHP += hp;
             b.currentHP += (int)((float)b.currentHP * hpRate);
@@ -41,7 +40,7 @@ public class RecoveryEffect extends Effect{
             }
         }
         }
-        else if(targets.getClass().equals(GameBattler.class)){
+        else if(targets instanceof GameBattler){
             GameBattler b = (GameBattler)targets;
             b.currentHP += hp;
             b.currentHP += (int)((float)b.currentHP * hpRate);

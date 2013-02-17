@@ -7,6 +7,7 @@ package engine;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
+import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.command.InputProvider;
 import org.newdawn.slick.state.StateBasedGame;
@@ -24,7 +25,6 @@ public class WindowMessage extends WindowSelectable {
     public static float TYPE_DELAY = 10f;
     public boolean isTalking;
     private boolean isScrolling;
-    private boolean skip;
     private int currentPage;
     private int currentLine;
     private int currentChar;
@@ -50,30 +50,16 @@ public class WindowMessage extends WindowSelectable {
         contY = 0;
         this.isTalking = true;
         isScrolling = true;
-        skip = false;
         SceneMap.allowClose = false;
-        convertSpecialChars();
         time = TYPE_DELAY;
         drawChar = "";
         cg.clear();
-        updateMessage();
     }
 
     @Override
     public void render(Graphics g, StateBasedGame sbg) {
         super.render(g, sbg);
         Sprite.drawSpriteFrame(face, g, x + 16, y + 16, 4, gameMessage.faceIndex, 96, 96);
-        cg.setColor(currentColor);
-        if(skip){
-            drawAll();
-            skip = false;
-            isScrolling = false;
-        } else { 
-            for(int i = 0; i < 4; i++){
-                cg.drawString(drawChar, contX + 97, contY);
-            }
-        }
-        cg.flush();
     }
 
     @Override
@@ -83,23 +69,22 @@ public class WindowMessage extends WindowSelectable {
         if (isTalking) {
             if (input.isCommandControlPressed(SceneBase.down)) {
                 if (isScrolling) {
-                    skip = true;
+                    drawAll();
                 } else {
                     if ((currentPage < gameMessage.pages.length - 1)) {
                         drawChar = "";
                         currentPage++;
                         cg.clear();
                         isScrolling = true;
-                        //updateMessage();
                     } else {
                         currentPage = 0;
-                        //texts = new String[]{"", "", "", ""};
                         isTalking = false;
                         SceneMap.allowClose = true;
                     }
                 }
             }
             updateMessage();
+            cg.flush();
         }
     }
 
@@ -108,8 +93,8 @@ public class WindowMessage extends WindowSelectable {
     
     private void drawAll(){
         for(; currentLine < MAX_LINE; currentLine++){
-            for(; currentChar < gameMessage.pages[currentPage][currentLine].length() - 1; currentChar++){
-
+            for(; currentChar < gameMessage.pages[currentPage][currentLine].length(); currentChar++){
+                drawChar = "" + gameMessage.pages[currentPage][currentLine].charAt(currentChar);
                 switch (gameMessage.pages[currentPage][currentLine].charAt(currentChar)) {
                     case '\u0001':
                         cg.setColor(Color.red);
@@ -117,10 +102,7 @@ public class WindowMessage extends WindowSelectable {
                     case '\u0002':
                         cg.setColor(Color.white);
                         break;
-                }
-                drawChar = "" + gameMessage.pages[currentPage][currentLine].charAt(currentChar);
-                switch (drawChar) {
-                    case " ":
+                    case ' ':
                         contX += Cache.getFont().getWidth("_");
                         break;
                     default:
@@ -131,11 +113,12 @@ public class WindowMessage extends WindowSelectable {
                     cg.drawString(drawChar, contX + 97, contY);
                 }
             }
-            contY += 16;        
+            contY += WINDOW_LINE_HEIGHT;        
             contX = 0;
             currentChar = 0;
             drawChar = "";
         }
+        isScrolling = false;
     }
 
     private void updateMessage() {
@@ -150,30 +133,32 @@ public class WindowMessage extends WindowSelectable {
         if (isScrolling && currentPage == startPage && time <= 0) {
             time = TYPE_DELAY;
             if (currentChar > gameMessage.pages[currentPage][currentLine].length() - 1) {
-                contY += 16;
+                contY += WINDOW_LINE_HEIGHT;
                 currentLine++;
                 contX = 0;
                 currentChar = 0;
                 drawChar = "";
             }
             if (isScrolling && currentPage == startPage && currentLine < MAX_LINE && !(currentChar > gameMessage.pages[currentPage][currentLine].length() - 1)) {
+                drawChar = "" + gameMessage.pages[currentPage][currentLine].charAt(currentChar);
                 switch (gameMessage.pages[currentPage][currentLine].charAt(currentChar)) {
                     case '\u0001':
-                        currentColor = Color.red;
+                        cg.setColor(Color.red);
                         break;
                     case '\u0002':
-                        currentColor = Color.white;
+                        cg.setColor(Color.white);
                         break;
-                }
-                drawChar = "" + gameMessage.pages[currentPage][currentLine].charAt(currentChar);
-                switch (drawChar) {
-                    case " ":
+                    case ' ':
                         contX += Cache.getFont().getWidth("_");
                         break;
                     default:
                         contX += Cache.getFont().getWidth(drawChar);
+                        break;
                 }
-                currentChar++;
+                for(int z = 0; z < 4; z++){
+                    cg.drawString(drawChar, contX + 97, contY);
+                }
+                currentChar++;  
             } else {
                 return;
             }

@@ -7,7 +7,7 @@
     <def>10</def>
     <matk>2</matk>
     <mdef>5</mdef>
-    <image>/src/res/092-Monster06.png</image>
+    <image>res/092-Monster06.png</image>
   </enemy>
   <enemy>
     <name>Gargoyle</name>
@@ -17,6 +17,6 @@
     <def>10</def>
     <matk>2</matk>
     <mdef>5</mdef>
-    <image>/src/res/092-Monster06.png</image>
+    <image>res/092-Monster06.png</image>
   </enemy>
 </EnemyList>
