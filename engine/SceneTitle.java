@@ -189,6 +189,8 @@ public class SceneTitle extends SceneBase{
         options = new WindowSystem(2, 1);
         String[] coms = new String[]{"New Game","Continue","Option","Exit"};
         wind = new WindowCommand(160, coms, 1, 0);
+        gameMessage.faceName = "People1";
+        gameMessage.faceIndex = 4;
         String text = "Hello, \\C[1]this\\R is a test of the message system.\n"
         + "This is a new line. This is still the same line.\n"
         + "Habla espanol por favor, senor. No hablo ingles.\n"
@@ -199,7 +201,8 @@ public class SceneTitle extends SceneBase{
         + "This is an eight line, the line after this better work.\n"
         + "Line #9 and it better work.\n"
         + "Ok, clearly it works no matter what.";
-        gameMessage.setText(text);
+        String pattern = "\\C[10]";
+        gameMessage.setText(pattern);
         test = new WindowMessage();
         wind.initX = (1280/2) - 80;
         wind.initY = 500;

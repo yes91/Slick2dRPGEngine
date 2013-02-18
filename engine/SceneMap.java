@@ -7,6 +7,7 @@ package engine;
 import effectutil.LightShader;
 import effectutil.ShaderProgram;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
@@ -30,7 +31,7 @@ public class SceneMap extends SceneBase {
     private LightShader effect;
     private int lastOption;
     private int shaderOption;
-    private Light[] lightArray;
+    private ArrayList<Light> lightArray;
     private Light mouseLight;
     private long elapsed;
     public static final int B_WIDTH = 1280;
@@ -81,14 +82,14 @@ public class SceneMap extends SceneBase {
         blurV = ShaderProgram.loadProgram("engine/blurV.vert", "engine/blurV.frag");
         effect = new LightShader("engine/oilpaint.vert", "engine/oilpaint.frag");
         mouseLight = new Light(500f, 2400f, 1f, 0.5f, new Color(105,150,50));
-        lightArray = new Light[]{
+        lightArray = new ArrayList(Arrays.asList(new Light[]{
             mouseLight,
             new Light(100f, 100f, 2f, 0.5f, Color.cyan),
             new Light(1280f, 720f, 1f, 0.8f, Color.red),
             new Light(2048f, 2048f, 0.9f, 0.45f, Color.green),
             new Light(2800f, 2800f, 0.9f, 0.8f, new Color(240, 100, 10)),
             new Light(24*64f+32, 27*64f+32, 1f, 0.7f, new Color(255, 80, 10))
-        };
+        }));
         message = new WindowMessage();
         uielements = new ArrayList<>();
         //uielements.add(wind);
@@ -187,8 +188,8 @@ public class SceneMap extends SceneBase {
         mouseLight.x = (float)input.getMouseX() + Camera.viewPort.getX();
         mouseLight.y = (float)input.getMouseY() + Camera.viewPort.getY();
         mouseLight.scale = 1f + 2f*Math.abs((float)Math.sin(elapsed /1000f));
-        lightArray[5].scale = 2f + 2f*Math.abs((float)Math.sin(elapsed /1000f));
-        effect.setUniformLightArray("lights", lightArray);   
+        lightArray.get(5).scale = 2f + 2f*Math.abs((float)Math.sin(elapsed /1000f));
+        effect.setUniformLightArray("lights", lightArray);
         if(shaderOption != lastOption){
             effect.setUniform1i("choice", shaderOption);
             lastOption = shaderOption;

@@ -5,6 +5,7 @@
 package effectutil;
 
 import engine.Light;
+import java.util.List;
 import org.newdawn.slick.SlickException;
 
 /**
@@ -17,9 +18,9 @@ public class LightShader extends ShaderProgram {
         super(readFile(vertFile), readFile(fragFile));
     }
     
-    public void setUniformLightArray(String name, Light[] lights){
-        for(int i = 0; i < lights.length; i++){
-                Light light = lights[i];
+    public void setUniformLightArray(String name, List<Light> lights){
+        for(int i = 0; i < lights.size(); i++){
+                Light light = lights.get(i);
                 setUniform2f(name + "[" + i + "].pos", light.screenX(), light.screenY());
                 setUniform4f(name + "[" + i + "].color", light.tint);
                 setUniform3f(name + "[" + i + "].attenuation", light.attenuation[0], light.attenuation[1], light.attenuation[2]);

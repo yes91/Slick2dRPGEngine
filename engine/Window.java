@@ -34,7 +34,7 @@ public class Window {
         this.time = 0;
         this.width = w;
         this.height = h;
-        contents = new Image(width, height);
+        contents = new Image(width - 32, height - 32);
         skin = Cache.getSystemImage("Window.png");
         cg = contents.getGraphics();
         cg.setFont(Cache.getFont());
@@ -164,6 +164,14 @@ public class Window {
     public int getY() {
         return y;
     }
+    
+    public void drawFace(String faceName, int faceIndex, float x, float y){
+        Sprite.drawSpriteFrame(Cache.getRes(faceName+".png"), cg, x, y, 4, faceIndex, 96, 96);
+    }
+    
+    public void drawActorFace(GameActor actor, float x, float y){
+        drawFace(actor.faceName, actor.faceIndex, x , y);
+    }
 
     public void drawActorHPGuage(GameActor actor, float x, float y) {
         float gw = 120 * ((float) actor.currentHP / (float) actor.getMaxHP());
@@ -172,7 +180,33 @@ public class Window {
             cg.drawLine(x + (10 - i), y + i, x + 120 + (10 - i), y + i);
             cg.drawGradientLine(x + (10 - i), y + i, Color.orange, x + gw + (10 - i), y + i, Color.red);
         }
-        cg.flush();
+    }
+    
+    public void drawActorHP(GameActor actor, float x, float y){
+        drawActorHPGuage(actor, x, y);
+        float xr = x + 120;
+        for(int i = 0; i < 4; i++){
+            cg.setColor(systemColor());
+            cg.drawString("HP", x, y - 10);
+            cg.setColor(hpColor(actor));
+            cg.drawString(""+actor.currentHP, xr - 88, y - 10);
+            cg.setColor(normalColor());
+            cg.drawString("/", xr - 44, y - 10);
+            cg.drawString(""+actor.getMaxHP(), xr - 33, y - 10);
+        }
+    }
+    
+    public void drawActorMP(GameActor actor, float x, float y){
+        drawActorMPGuage(actor, x, y);
+        float xr = x + 120;
+        for(int i = 0; i < 4; i++){
+            cg.setColor(systemColor());
+            cg.drawString("MP", x, y - 10);
+            cg.setColor(normalColor());
+            cg.drawString(""+actor.currentMP, xr - 88, y - 10);
+            cg.drawString("/", xr - 44, y - 10);
+            cg.drawString(""+actor.getMaxMP(), xr - 33, y - 10);
+        }
     }
 
     public void drawActorMPGuage(GameActor actor, float x, float y) {
@@ -182,6 +216,28 @@ public class Window {
             cg.drawLine(x + (10 - i), y + i, x + 120 + (10 - i), y + i);
             cg.drawGradientLine(x + (10 - i), y + i, Color.cyan, x + gw + (10 - i), y + i, Color.blue);
         }
-        cg.flush();
+    }
+    
+    public Color textColor(int n){
+        int cx = 64 + (n % 8) * 8;
+        int cy = 96 + (n / 8) * 8;
+        return skin.getColor(cx, cy);
+    }
+    
+    public Color normalColor(){
+        return textColor(0);
+    }
+    
+    public Color systemColor(){
+        return textColor(16);
+    }
+    
+    public Color hpColor(GameActor actor){
+        if(actor.currentHP <= 0){
+            return textColor(18);
+        } else if(actor.currentHP < actor.getMaxHP()/3f){
+            return textColor(17);
+        }
+        return normalColor();
     }
 }

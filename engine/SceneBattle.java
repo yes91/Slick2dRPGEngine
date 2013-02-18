@@ -22,10 +22,10 @@ public class SceneBattle extends SceneBase{
     private int stateID = -1;
     private static Image battleBack;
     private static Music BGM;
+    private int xOffset = 0;
     private int currentActor;
-    private boolean isPlayerTurn;
-    private WindowCommand fightFlee;
-    private WindowCommand command;
+    private WindowCommand partyCommand;
+    private WindowCommand actorCommand;
     private WindowCommand activeWindow;
     private Window canvas;
     //private WindowBattleStatus stat;
@@ -47,23 +47,27 @@ public class SceneBattle extends SceneBase{
     public void init(GameContainer gc, StateBasedGame sbg) throws SlickException {
         battleBack = null;
         BGM = null;
-        fightFlee = new WindowCommand(120, 
+        createInfoView();
+    }
+    
+    public void createInfoView() throws SlickException{
+        partyCommand = new WindowCommand(120, 
             new String[]{ "Fight",
                           "Escape"
         }, 1, 4);
-        fightFlee.initX = 280 - 120;
-        fightFlee.initY = 720 - fightFlee.height;
-        canvas = new Window(280, 720 - fightFlee.height, 1000 - 280, fightFlee.height);
-        command = new WindowCommand(120, 
+        partyCommand.initX = -120;
+        partyCommand.initY = 720 - partyCommand.height;
+        canvas = new Window(120, 720 - partyCommand.height, 1280 - 120 - 8, partyCommand.height);
+        actorCommand = new WindowCommand(120, 
             new String[]{ "Attack", 
                           "Guard", 
                           "Skill",
                           "Item"
         }, 1, 0);
-        command.initX = 1000;
-        command.initY = 720 - command.height;
-        command.index = -1;
-        activeWindow = fightFlee;
+        actorCommand.initX = 1000;
+        actorCommand.initY = 720 - actorCommand.height;
+        actorCommand.index = -1;
+        activeWindow = partyCommand;
     }
 
     @Override
@@ -71,10 +75,17 @@ public class SceneBattle extends SceneBase{
         if(battleBack != null){
             battleBack.draw(0, 0, 1280, 720, 0, 0, 580, 444);
         }
-        fightFlee.render(g, sbg);
-        command.render(g, sbg);
-        canvas.drawActorHPGuage(Demo.battleTester, 0, 32);
-        canvas.drawActorMPGuage(Demo.battleTester, 0, 32+16);
+        partyCommand.render(g, sbg);
+        actorCommand.render(g, sbg);
+        canvas.cg.clear();
+        int index = 0;
+        for(GameActor ga :Demo.testActors){
+            canvas.drawActorFace(ga, (120 * index) + 32*index, 0);
+            canvas.drawActorHP(ga, (120 * index) + 32*index, 2.8f * 24);
+            canvas.drawActorMP(ga, (120 * index)  + 32*index, 3.6f * 24);
+            index++;
+        }
+        canvas.cg.flush();
         canvas.render(g, sbg); 
     }
 
@@ -85,14 +96,20 @@ public class SceneBattle extends SceneBase{
                 BGM.loop();
             }
         }
+        canvas.initX = xOffset;
+        partyCommand.initX = xOffset - 120;
+        actorCommand.initX = canvas.width + xOffset;
         activeWindow.update(inputp, delta);
-        if(activeWindow.equals(fightFlee)){
-            switch(fightFlee.index){
+        if(activeWindow.equals(partyCommand)){
+            if(xOffset < 128){
+                xOffset += 16;
+            }
+            switch(partyCommand.index){
                 case 0: 
                     if(inputp.isCommandControlPressed(action)){
-                        command.index = 0;
-                        activeWindow = command;
-                        fightFlee.index = -1;
+                        actorCommand.index = 0;
+                        activeWindow = actorCommand;
+                        partyCommand.index = -1;
                     }
                     break;
                 case 1:
@@ -101,19 +118,23 @@ public class SceneBattle extends SceneBase{
                     }
                     break;
             }
-        } else if(activeWindow.equals(command)){
-            if(inputp.isCommandControlPressed(cancel)){
-                command.index = -1;
-                fightFlee.index = 0;
-                Demo.init();
-                activeWindow = fightFlee;
+        } else if(activeWindow.equals(actorCommand)){
+            if(xOffset > 0){
+                xOffset -= 16;
             }
-            switch(command.index){
+            
+            if(inputp.isCommandControlPressed(cancel)){
+                actorCommand.index = -1;
+                partyCommand.index = 0;
+                Demo.init();
+                activeWindow = partyCommand;
+            }
+            switch(actorCommand.index){
                 case 0: 
                     if(inputp.isCommandControlPressed(action)){
-                        Demo.battleTester.currentHP -= 50;
-                        if(Demo.battleTester.currentHP <= 0){
-                            Demo.battleTester.currentHP = 0;
+                        Demo.testActors.get(0).currentHP -= 50;
+                        if(Demo.testActors.get(0).currentHP <= 0){
+                            Demo.testActors.get(0).currentHP = 0;
                         }
                     }
                     break;

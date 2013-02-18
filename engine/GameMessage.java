@@ -4,6 +4,9 @@
  */
 package engine;
 
+import java.util.Scanner;
+import java.util.regex.Pattern;
+
 /**
  *
  * @author redblast71
@@ -40,8 +43,10 @@ public class GameMessage {
     }
     
     public void setText(String in){
-        in = in.replaceAll("\\\\C\\[([0-9]+)\\]", "\u0001");
-        in = in.replaceAll("\\\\R", "\u0002");
+        in = in.replaceAll("\\\\C\\[([0-9]+)\\]", "\u0001[$1]");
+        in = in.replaceAll(Pattern.quote("\\."), "\u0003");
+        in = in.replaceAll(Pattern.quote("\\|"), "\u0004");
+        in = in.replaceAll(".{115}", "$0\n");
         String[] lines = in.split("\n");
         pages = transform(lines, 4);
     }

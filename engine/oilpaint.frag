@@ -2,6 +2,7 @@
 
 uniform sampler2D src_tex_unit0;
 uniform int choice;
+
 struct Light
 {
     vec2 pos;
@@ -10,12 +11,12 @@ struct Light
     float intensity;
     float scale;
 };
+
 //uniform vec4 lightColor = vec4(1.0, 0.5, 0.2, 1.0);
 //uniform vec3 lightAttenuation = vec3(0.4, 3.0, 20.0); 
 //uniform float lightIntesity = 0.5; //Percentage from 0(0.0f) to 100(1.0f)
 uniform vec4 ambientColor = vec4(1.0, 1.0, 1.0, 1.0); //vec4(0.5, 0.5, 1.1, 1.0); Night color
 uniform float ambientIntensity = 0.5; //Percentage from 0(0.0f) to 100(1.0f)
-uniform bool isLit = true;
 const int MAX_LIGHTS = 10;
 //uniform vec3[MAX_LIGHTS] lights;
 uniform Light[MAX_LIGHTS] lights;
@@ -37,10 +38,12 @@ vec4 lighting(vec4 src_color){
     float att = 0.0;
     vec3 result = ambientColor.rgb * ambientIntensity;
     for(int i = 0; i < MAX_LIGHTS; i++){
-            deltaPos = vec3( (lights[i].pos.xy - gl_FragCoord.xy) / resolution.xy, 0.0 );
-            d = sqrt(dot(deltaPos, deltaPos)) * lights[i].scale;
-            att = 1.0 / ( lights[i].attenuation.x + (lights[i].attenuation.y*d) + (lights[i].attenuation.z*d*d) );
-            result += (lights[i].color.rgb * lights[i].intensity ) * att;
+            if(length(lights[i].pos) > 0){
+                deltaPos = vec3( (lights[i].pos.xy - gl_FragCoord.xy) / resolution.xy, 0.0 );
+                d = sqrt(dot(deltaPos, deltaPos)) * lights[i].scale;
+                att = 1.0 / ( lights[i].attenuation.x + (lights[i].attenuation.y*d) + (lights[i].attenuation.z*d*d) );
+                result += (lights[i].color.rgb * lights[i].intensity ) * att;
+            }
     }
 
     result = result * src_color.rgb;
