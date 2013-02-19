@@ -35,7 +35,7 @@ public class Window {
         this.width = w;
         this.height = h;
         contents = new Image(width - 32, height - 32);
-        skin = Cache.getSystemImage("Window.png");
+        skin = Cache.getSystemImage("Neo Classic.png");
         cg = contents.getGraphics();
         cg.setFont(Cache.getFont());
     }
@@ -50,9 +50,10 @@ public class Window {
         }
 
         skin.setAlpha(0.7f);
+        g2d.fillRect(x, y, width, height, skin.getSubImage(0, 64, 64, 64), 0, 0);
         skin.draw(x + 4, y + 4, x - 4 + width, y - 4 + height, 0, 0, 64, 64);
         skin.setAlpha(100f);
-
+        
         Sprite.drawSpriteFrame(skin, g2d, x, y, 8, 4, 16, 16);
         if ((width % 16) == 0) {
             for (int i = 0; i < ((width / 16) - 2); i++) {
@@ -103,7 +104,7 @@ public class Window {
             time = 0;
         }
         time += .1;
-        skin.setAlpha(Math.max(Math.abs((float) Math.sin(time)), 0.1f));
+        skin.setAlpha(Math.max(Math.abs((float) Math.sin(time)*0.8f), 0.1f));
         g2d.drawImage(skin, u + 8 + cursorRect.getX(), v + 8 + cursorRect.getY(), u - 8 + cursorRect.getWidth() + cursorRect.getX(), v - 8 + cursorRect.getHeight() + cursorRect.getY(), 72, 72, 80, 80);
         Sprite.drawSpriteFrame(skin, g2d, u + cursorRect.getX(), v + cursorRect.getY(), 16, 136, 8, 8);
         if ((cursorRect.getWidth() % 8) == 0) {
@@ -145,7 +146,6 @@ public class Window {
                 Sprite.drawSpriteFrame(skin, g2d, u + (cursorRect.getWidth()) - 8 + cursorRect.getX(), v + (l * 8) + 8 + cursorRect.getY(), 16, 155, 8, 8);
             }
         }
-        skin.setAlpha(100f);
         g2d.flush();
     }
 

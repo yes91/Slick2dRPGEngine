@@ -46,7 +46,7 @@ public class GameMessage {
         in = in.replaceAll("\\\\C\\[([0-9]+)\\]", "\u0001[$1]");
         in = in.replaceAll(Pattern.quote("\\."), "\u0003");
         in = in.replaceAll(Pattern.quote("\\|"), "\u0004");
-        in = in.replaceAll(".{115}", "$0\n");
+        //in = in.replaceAll(".{115}", "$0\n");
         String[] lines = in.split("\n");
         pages = transform(lines, 4);
     }

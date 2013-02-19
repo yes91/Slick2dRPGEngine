@@ -17,7 +17,7 @@ struct Light
 //uniform float lightIntesity = 0.5; //Percentage from 0(0.0f) to 100(1.0f)
 uniform vec4 ambientColor = vec4(1.0, 1.0, 1.0, 1.0); //vec4(0.5, 0.5, 1.1, 1.0); Night color
 uniform float ambientIntensity = 0.5; //Percentage from 0(0.0f) to 100(1.0f)
-const int MAX_LIGHTS = 10;
+const int MAX_LIGHTS = 100;
 //uniform vec3[MAX_LIGHTS] lights;
 uniform Light[MAX_LIGHTS] lights;
 const vec2 resolution = vec2(1280.0, 1280.0);
@@ -68,7 +68,7 @@ void main(void){
     case 1: gl_FragColor = grayscale(src_color); break;
     case 2: gl_FragColor = night(src_color); break;
     case 3: gl_FragColor = lighting(src_color); break;
-    case 4: gl_FragColor = lighting(night(src_color)); break;
+    case 4: gl_FragColor = lighting(src_color); break;
     case 5: gl_FragColor = lighting(grayscale(src_color)); break;
   }
 }

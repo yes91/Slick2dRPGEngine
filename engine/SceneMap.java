@@ -88,7 +88,8 @@ public class SceneMap extends SceneBase {
             new Light(1280f, 720f, 1f, 0.8f, Color.red),
             new Light(2048f, 2048f, 0.9f, 0.45f, Color.green),
             new Light(2800f, 2800f, 0.9f, 0.8f, new Color(240, 100, 10)),
-            new Light(24*64f+32, 27*64f+32, 1f, 0.7f, new Color(255, 80, 10))
+            new Light(24*64f+32, 27*64f+32, 1f, 0.7f, new Color(255, 80, 10)),
+            new Light(234, 567, 1f, 0.6f, new Color(59, 178, 30))
         }));
         message = new WindowMessage();
         uielements = new ArrayList<>();
@@ -289,6 +290,15 @@ public class SceneMap extends SceneBase {
          for(GameObject go: map.objs) {
          go.render(buffer.getGraphics());
          }*/
+    }
+    
+
+    @Override
+    public void mouseClicked(int button, int x, int y, int clickCount) {
+        if(lightArray.size() < 100){
+            lightArray.add(new Light(x + Camera.viewPort.getX(), y + Camera.viewPort.getY(), 1f, 0.6f, 
+            new Color((float)Math.random(), (float)Math.random(), (float)Math.random())));
+        }
     }
 
     @Override
