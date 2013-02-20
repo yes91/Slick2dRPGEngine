@@ -28,11 +28,11 @@ public class WindowItem extends WindowSelectable{
     public void render(Graphics g, StateBasedGame sbg){
         super.render(g, sbg);
         this.itemMax = inven.getCurrLength()-1;
-        for(int i = 0; i < itemMax; i++ ){
-            drawItem(i, g);
-        }
         if(itemMax > 0){
         drawCursorRect(g);
+        }
+        for(int i = 0; i < itemMax; i++ ){
+            drawItem(i, g);
         }
     }
     

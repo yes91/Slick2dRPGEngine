@@ -35,7 +35,7 @@ public class Window {
         this.width = w;
         this.height = h;
         contents = new Image(width - 32, height - 32);
-        skin = Cache.getSystemImage("Neo Classic.png");
+        skin = Cache.getSystemImage("Neo Classic Battle.png");
         cg = contents.getGraphics();
         cg.setFont(Cache.getFont());
     }
@@ -50,61 +50,40 @@ public class Window {
         }
 
         skin.setAlpha(0.7f);
-        g2d.fillRect(x, y, width, height, skin.getSubImage(0, 64, 64, 64), 0, 0);
-        skin.draw(x + 4, y + 4, x - 4 + width, y - 4 + height, 0, 0, 64, 64);
+        skin.draw(x + 4, y + 4, x - 4 + width, y - 2 + height, 2, 2, 62, 62);
+        g2d.fillRect(x + 4, y + 4, width - 4, height - 4, skin.getSubImage(0, 64, 64, 64), 0, 0);
         skin.setAlpha(100f);
         
         Sprite.drawSpriteFrame(skin, g2d, x, y, 8, 4, 16, 16);
-        if ((width % 16) == 0) {
-            for (int i = 0; i < ((width / 16) - 2); i++) {
-                Sprite.drawSpriteFrame(skin, g2d, x + (i * 16) + 16, y, 8, 5, 16, 16);
-            }
-        } else {
-            for (int i = 0; i < ((width / 16) - 1); i++) {
-                Sprite.drawSpriteFrame(skin, g2d, x + (i * 16) + 16, y, 8, 5, 16, 16);
-            }
-        }
+        g2d.fillRect(x + 16, y, width - 32, 16, skin.getSubImage(64+16, 0, 16, 16), 0, 0);
         Sprite.drawSpriteFrame(skin, g2d, x + (width) - 16, y, 8, 7, 16, 16);
-        if ((height % 16) == 0) {
-            for (int j = 0; j < ((height / 16) - 2); j++) {
-                Sprite.drawSpriteFrame(skin, g2d, x, y + (j * 16) + 16, 8, 12, 16, 16);
-            }
-        } else {
-            for (int j = 0; j < ((height / 16) - 1); j++) {
-                Sprite.drawSpriteFrame(skin, g2d, x, y + (j * 16) + 16, 8, 12, 16, 16);
-            }
-        }
+        g2d.fillRect(x, y + 16, 16, height - 32, skin.getSubImage(64, 32, 16, 16), 0, 0);
         Sprite.drawSpriteFrame(skin, g2d, x, y + (height) - 16, 8, 28, 16, 16);
-        if ((width % 16) == 0) {
-            for (int k = 0; k < ((width / 16) - 2); k++) {
-                Sprite.drawSpriteFrame(skin, g2d, x + (k * 16) + 16, y + (height) - 16, 8, 29, 16, 16);
-            }
-        } else {
-            for (int k = 0; k < ((width / 16) - 1); k++) {
-                Sprite.drawSpriteFrame(skin, g2d, x + (k * 16) + 16, y + (height) - 16, 8, 29, 16, 16);
-            }
-        }
+        g2d.fillRect(x + 16, y + height - 16, width - 32, 16, skin.getSubImage(64+16, 64-16, 16, 16), 0, 0);
         Sprite.drawSpriteFrame(skin, g2d, x + (width) - 16, y + (height) - 16, 8, 31, 16, 16);
-        if ((height % 16) == 0) {
-            for (int l = 0; l < ((height / 16) - 2); l++) {
-                Sprite.drawSpriteFrame(skin, g2d, x + (width) - 16, y + (l * 16) + 16, 8, 15, 16, 16);
-            }
-        } else {
-            for (int l = 0; l < ((height / 16) - 1); l++) {
-                Sprite.drawSpriteFrame(skin, g2d, x + (width) - 16, y + (l * 16) + 16, 8, 15, 16, 16);
-            }
-        }
+        g2d.fillRect(x + width - 16, y + 16, 16, height - 32, skin.getSubImage(128-16, 32, 16, 16), 0, 0);
         g2d.drawImage(contents, x + 16, y + 16);
     }
 
     public void drawCursorRect(Graphics g2d) {
-        int u = x + 16;
-        int v = y + 16;
+        float u = x + 16;//x + 16 + cursorRect.getX();
+        float v = y + 16;//y + 16 + cursorRect.getY();
+        //float cWidth = cursorRect.getWidth();
+        //float cHeight = cursorRect.getHeight();
         if (time > 12.5) {
             time = 0;
         }
         time += .1;
         skin.setAlpha(Math.max(Math.abs((float) Math.sin(time)*0.8f), 0.1f));
+        /*skin.getSubImage(64, 64, 2, 2).draw(u, v);
+        g2d.fillRect(u + 2, v, cWidth - 4, 2, skin.getSubImage(64+4, 64, 2, 2), 0, 0);
+        skin.getSubImage(64+32-2, 64, 2, 2).draw(u + cWidth - 4, v);
+        g2d.fillRect(u, v + 2, 2, cHeight - 4, skin.getSubImage(64, 64+4, 2, 2), 0, 0);
+        skin.getSubImage(64, 64+32-2, 2, 2).draw(u, v + cHeight - 4);
+        g2d.fillRect(u + 2, v + cHeight - 4, cWidth - 4, 2, skin.getSubImage(64+2, 64+32-2, 2, 2), 0, 0);
+        skin.getSubImage(64+32-2, 64+32-2, 2, 2).draw(u + cWidth - 4, v + cHeight - 4);
+        g2d.fillRect(u + cWidth - 4, v, 2, cHeight - 4, skin.getSubImage(64+32-2, 64+2, 2, 2), 0, 0);
+        g2d.drawImage(skin, u, v, u + cWidth, v + cHeight, 72, 72, 80, 80);*/
         g2d.drawImage(skin, u + 8 + cursorRect.getX(), v + 8 + cursorRect.getY(), u - 8 + cursorRect.getWidth() + cursorRect.getX(), v - 8 + cursorRect.getHeight() + cursorRect.getY(), 72, 72, 80, 80);
         Sprite.drawSpriteFrame(skin, g2d, u + cursorRect.getX(), v + cursorRect.getY(), 16, 136, 8, 8);
         if ((cursorRect.getWidth() % 8) == 0) {
