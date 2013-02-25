@@ -52,6 +52,7 @@ public class SceneMap extends SceneBase {
     //WorldPlayer worldPlayer;
     Camera camera;
     private Image buffer;
+    private Image lightBuffer;
     private Image fire1;
     private Image fire2;
     private float count;
@@ -73,6 +74,7 @@ public class SceneMap extends SceneBase {
         fire2 = Cache.getRes("fire2.png");
         interpreter = new GameInterpreter(0, true);
         ImageBuffer scratch = new ImageBuffer(B_WIDTH, B_HEIGHT);
+        lightBuffer = new Image(B_WIDTH, B_HEIGHT);
         buffer = scratch.getImage();
         allowClose = false;
         //container.setMaximumLogicUpdateInterval(60);
@@ -85,7 +87,7 @@ public class SceneMap extends SceneBase {
         lightArray = new ArrayList(Arrays.asList(new Light[]{
             mouseLight,
             new Light(100f, 100f, 2f, 0.5f, Color.cyan),
-            new Light(1280f, 720f, 1f, 0.8f, Color.red),
+            new Light(1280f, 720f, 8f, 1f, Color.red),
             new Light(2048f, 2048f, 0.9f, 0.45f, Color.green),
             new Light(2800f, 2800f, 0.9f, 0.8f, new Color(240, 100, 10)),
             new Light(24*64f+32, 27*64f+32, 1f, 0.7f, new Color(255, 80, 10)),
@@ -186,11 +188,10 @@ public class SceneMap extends SceneBase {
     public void render(GameContainer container, StateBasedGame sbg, Graphics g) throws SlickException {
         effect.bind();
         
-        mouseLight.x = (float)input.getMouseX() + Camera.viewPort.getX();
+        mouseLight.x = (float)input.getMouseX()+ Camera.viewPort.getX();
         mouseLight.y = (float)input.getMouseY() + Camera.viewPort.getY();
-        mouseLight.scale = 1f + 2f*Math.abs((float)Math.sin(elapsed /1000f));
-        lightArray.get(5).scale = 2f + 2f*Math.abs((float)Math.sin(elapsed /1000f));
-        effect.setUniformLightArray("lights", lightArray);
+        mouseLight.scale = 1f + Math.abs((float)Math.sin(elapsed /1000f));
+        lightArray.get(5).scale = 1f +  Math.abs((float)Math.sin(elapsed /1000f));
         if(shaderOption != lastOption){
             effect.setUniform1i("choice", shaderOption);
             lastOption = shaderOption;
@@ -204,6 +205,8 @@ public class SceneMap extends SceneBase {
         for (GameObject go : map.objs) {
             go.render(g);
         }
+        
+        
         
         if(count > 2){
             count = 0;
@@ -219,7 +222,19 @@ public class SceneMap extends SceneBase {
         //light.draw(0, 0, 1280, 720);
 
         ShaderProgram.unbind();
-        
+        Graphics lg = lightBuffer.getGraphics();
+        lg.clear();
+        lg.setColor(new Color(1f, 1f, 1f, 0.1f));
+        lg.fillRect(0, 0, B_WIDTH, B_HEIGHT);
+        for(Light l: lightArray){
+            if(l.isVisible()){
+                l.render(lg);
+            }
+        }
+        lg.flush();
+        g.setDrawMode(Graphics.MODE_COLOR_MULTIPLY);
+        lightBuffer.draw(Camera.viewPort.getX(), Camera.viewPort.getY());
+        g.setDrawMode(Graphics.MODE_NORMAL);
         /*g.setColor(Color.yellow);
         g.drawRect(Camera.viewPort.getX() + 5, 
         * Camera.viewPort.getY() + 5, 
@@ -230,7 +245,6 @@ public class SceneMap extends SceneBase {
             w.render(g, sbg);
             map.renderUI(worldPlayer);
         }
-        
     }
 
     private void tpPlayer(int tileX, int tileY, WorldPlayer p) {
@@ -295,8 +309,8 @@ public class SceneMap extends SceneBase {
 
     @Override
     public void mouseClicked(int button, int x, int y, int clickCount) {
-        if(lightArray.size() < 100){
-            lightArray.add(new Light(x + Camera.viewPort.getX(), y + Camera.viewPort.getY(), 1f, 0.6f, 
+        if(lightArray.size() < 1000){
+            lightArray.add(new Light(x + Camera.viewPort.getX(), y + Camera.viewPort.getY(), 3f*(float)Math.random(), 0.6f, 
             new Color((float)Math.random(), (float)Math.random(), (float)Math.random())));
         }
     }

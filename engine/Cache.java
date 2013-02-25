@@ -48,12 +48,15 @@ public class Cache {
     }
 
     public static Image getRes(String filename){
-        try {
-            return new Image("res/"+filename); 
-        } catch (SlickException ex) {
-            Logger.getLogger(Cache.class.getName()).log(Level.SEVERE, null, ex);
+        Image result = images.get(filename);
+        if(result == null){
+            try {
+                result = new Image("res/"+filename); 
+            } catch (SlickException ex) {
+                Logger.getLogger(Cache.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
-        return null;
+        return result;
     }
     
     public static AngelCodeFont getFont(){

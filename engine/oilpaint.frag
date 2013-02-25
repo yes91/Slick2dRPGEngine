@@ -16,7 +16,7 @@ struct Light
 //uniform vec3 lightAttenuation = vec3(0.4, 3.0, 20.0); 
 //uniform float lightIntesity = 0.5; //Percentage from 0(0.0f) to 100(1.0f)
 uniform vec4 ambientColor = vec4(1.0, 1.0, 1.0, 1.0); //vec4(0.5, 0.5, 1.1, 1.0); Night color
-uniform float ambientIntensity = 0.5; //Percentage from 0(0.0f) to 100(1.0f)
+uniform float ambientIntensity = 0.1; //Percentage from 0(0.0f) to 100(1.0f)
 const int MAX_LIGHTS = 100;
 //uniform vec3[MAX_LIGHTS] lights;
 uniform Light[MAX_LIGHTS] lights;
