@@ -83,7 +83,7 @@ public class SceneMap extends SceneBase {
         blurH = ShaderProgram.loadProgram("engine/blurH.vert", "engine/blurH.frag");
         blurV = ShaderProgram.loadProgram("engine/blurV.vert", "engine/blurV.frag");
         effect = new LightShader("engine/oilpaint.vert", "engine/oilpaint.frag");
-        mouseLight = new Light(500f, 2400f, 1f, 0.5f, new Color(105,150,50));
+        mouseLight = new Light(500f, 2400f, 1f, 0.5f, "test_light", new Color(105,150,50));
         lightArray = new ArrayList(Arrays.asList(new Light[]{
             mouseLight,
             new Light(100f, 100f, 2f, 0.5f, Color.cyan),
@@ -91,7 +91,8 @@ public class SceneMap extends SceneBase {
             new Light(2048f, 2048f, 0.9f, 0.45f, Color.green),
             new Light(2800f, 2800f, 0.9f, 0.8f, new Color(240, 100, 10)),
             new Light(24*64f+32, 27*64f+32, 1f, 0.7f, new Color(255, 80, 10)),
-            new Light(234, 567, 1f, 0.6f, new Color(59, 178, 30))
+            new Light(234, 567, 1f, 0.6f, new Color(59, 178, 30)),
+            new BeamLight(234, 567, 8f, 60f, 0.6f, "test_light",new Color(59, 178, 30))
         }));
         message = new WindowMessage();
         uielements = new ArrayList<>();
@@ -181,6 +182,9 @@ public class SceneMap extends SceneBase {
                 ((WindowSelectable) w).update(inputp, delta);
             }
         }
+        for(Light l: lightArray){
+            l.update(elapsed);
+        }
         interpreter.update();
     }
 
@@ -224,7 +228,7 @@ public class SceneMap extends SceneBase {
         ShaderProgram.unbind();
         Graphics lg = lightBuffer.getGraphics();
         lg.clear();
-        lg.setColor(new Color(1f, 1f, 1f, 0.1f));
+        lg.setColor(new Color(0.1f, 0.1f, 0.1f, 1f));
         lg.fillRect(0, 0, B_WIDTH, B_HEIGHT);
         for(Light l: lightArray){
             if(l.isVisible()){

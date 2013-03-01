@@ -19,7 +19,7 @@ import org.newdawn.slick.SlickException;
  */
 public class Light {
 
-    private final Image lightSprite = Cache.getRes("lighting_sprites.png");
+    protected final Image lightSprite;
     /**
      * The position of the light
      */
@@ -36,20 +36,28 @@ public class Light {
      * The amount to scale the light (use 1.0 for default size).
      */
     public float scale;
+    public final float scaleOrig;
     public final float[] attenuation = new float[]{0.4f, 3.0f, 20.0f};
     //original scale
 
     public Light(float x, float y, float scale, float intensity, Color tint) {
+        lightSprite = Cache.getRes("lighting_sprites.png");
         this.x = x;
         this.y = y;
         this.scale = scale;
+        this.scaleOrig = scale;
         this.intensity = intensity;
         this.tint = tint;
-        try {
-            lightSprite.setFilter(Image.FILTER_LINEAR);
-        } catch (SlickException ex) {
-            Logger.getLogger(Light.class.getName()).log(Level.SEVERE, null, ex);
-        }
+    }
+    
+    public Light(float x, float y, float scale, float intensity, String image, Color tint) {
+        this.lightSprite = Cache.getRes(image+".png");
+        this.x = x;
+        this.y = y;
+        this.scale = scale;
+        this.scaleOrig = scale;
+        this.intensity = intensity;
+        this.tint = tint;
     }
 
     public Light(float x, float y, float scale) {
@@ -57,12 +65,16 @@ public class Light {
     }
 
     public void render(Graphics g) {
-        GL14.glBlendColor(tint.r * intensity, tint.g * intensity, tint.b * intensity, intensity);
+        GL14.glBlendColor(tint.r * intensity, tint.g * intensity, tint.b * intensity, tint.a);
         GL11.glBlendFunc(GL11.GL_CONSTANT_COLOR, GL11.GL_SRC_ALPHA);
         GL11.glEnable(GL11.GL_BLEND);
         float xOff = lightSprite.getWidth() / 2f * scale;
         float yOff = lightSprite.getHeight() / 2f * scale;
         lightSprite.draw(screenX() - xOff, screenY() - yOff, scale);
+    }
+    
+    public void update(long elapsed){
+        scale = scaleOrig + 0.5f * (float)Math.sin(elapsed /1000f);
     }
 
     public float screenX() {
