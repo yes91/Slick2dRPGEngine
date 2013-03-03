@@ -21,37 +21,24 @@ public class Cache {
     //private static AngelCodeFont font;
     private static HashMap<String, Image> images = new HashMap<>();
     
-    public static Image getImage(String filename){
-        Image result = images.get(filename);
-        if(result == null){
-            try {
-                result = new Image("res/"+filename);
-                images.put(filename, result);
-            } catch (SlickException ex) {
-                Logger.getLogger(Cache.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        }
-        return result;
+    public static Image image(String filename){
+        return loadImage("res/", filename);
     }
     
-    public static Image getSystemImage(String filename){
-        Image result = images.get(filename);
-        if(result == null){
-            try {
-                result = new Image("res/system/"+filename);
-                images.put(filename, result);
-            } catch (SlickException ex) {
-                Logger.getLogger(Cache.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        }
-        return result;
+    public static Image system(String filename){
+        return loadImage("res/system/", filename);
     }
 
-    public static Image getRes(String filename){
-        Image result = images.get(filename);
+    public static Image res(String filename){
+        return loadImage("res/", filename);
+    }
+    
+    private static Image loadImage(String folderName, String fileName){
+        Image result = images.get(fileName);
         if(result == null){
             try {
-                result = new Image("res/"+filename); 
+                result = new Image(folderName+fileName); 
+                images.put(fileName, result);
             } catch (SlickException ex) {
                 Logger.getLogger(Cache.class.getName()).log(Level.SEVERE, null, ex);
             }

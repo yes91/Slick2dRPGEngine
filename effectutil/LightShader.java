@@ -19,13 +19,13 @@ public class LightShader extends ShaderProgram {
     }
     
     public void setUniformLightArray(String name, List<Light> lights){
-        for(int i = 0; i < lights.size(); i++){
-                Light light = lights.get(i);
-                setUniform2f(name + "[" + i + "].pos", light.screenX(), light.screenY());
-                setUniform4f(name + "[" + i + "].color", light.tint);
-                setUniform3f(name + "[" + i + "].attenuation", light.attenuation[0], light.attenuation[1], light.attenuation[2]);
-                setUniform1f(name + "[" + i + "].intensity", light.intensity);
-                setUniform1f(name + "[" + i + "].scale", light.scale);
+            for(Light light: lights){
+                setUniform2f(name + "[" + lights.indexOf(light) + "].pos", light.screenX(), light.screenY());
+                setUniform4f(name + "[" + lights.indexOf(light) + "].color", light.tint);
+                setUniform3f(name + "[" + lights.indexOf(light) + "].attenuation", light.attenuation[0], light.attenuation[1], light.attenuation[2]);
+                setUniform1f(name + "[" + lights.indexOf(light) + "].intensity", light.intensity);
+                setUniform1f(name + "[" + lights.indexOf(light) + "].scale", light.scale);
+                setUniform1i(name + "[" + lights.indexOf(light) + "].visible", light.isVisible() ? 1:0);
             }
     }
     

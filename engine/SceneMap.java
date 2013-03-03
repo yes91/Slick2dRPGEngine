@@ -70,8 +70,8 @@ public class SceneMap extends SceneBase {
     @Override
     public void init(GameContainer container, StateBasedGame sbg) throws SlickException {
 
-        fire1 = Cache.getRes("fire1.png");
-        fire2 = Cache.getRes("fire2.png");
+        fire1 = Cache.res("fire1.png");
+        fire2 = Cache.res("fire2.png");
         interpreter = new GameInterpreter(0, true);
         ImageBuffer scratch = new ImageBuffer(B_WIDTH, B_HEIGHT);
         lightBuffer = new Image(B_WIDTH, B_HEIGHT);
@@ -127,7 +127,7 @@ public class SceneMap extends SceneBase {
             container.exit();
         }
         if (input.isKeyPressed(Input.KEY_0)) {
-            ((SceneBattle)sbg.getState(3)).setBattleBack(Cache.getRes("Cobblestones3.png"));
+            ((SceneBattle)sbg.getState(3)).setBattleBack(Cache.res("Cobblestones3.png"));
             sbg.enterState(3);
         }
         if(input.isKeyPressed(Input.KEY_1)){
@@ -183,14 +183,16 @@ public class SceneMap extends SceneBase {
             }
         }
         for(Light l: lightArray){
-            l.update(elapsed);
+            if(!(l instanceof BeamLight)){
+                l.update(elapsed);
+            }
         }
         interpreter.update();
     }
 
     @Override
     public void render(GameContainer container, StateBasedGame sbg, Graphics g) throws SlickException {
-        effect.bind();
+        //effect.bind();
         
         mouseLight.x = (float)input.getMouseX()+ Camera.viewPort.getX();
         mouseLight.y = (float)input.getMouseY() + Camera.viewPort.getY();
@@ -211,7 +213,6 @@ public class SceneMap extends SceneBase {
         }
         
         
-        
         if(count > 2){
             count = 0;
         }
@@ -225,10 +226,10 @@ public class SceneMap extends SceneBase {
 
         //light.draw(0, 0, 1280, 720);
 
-        ShaderProgram.unbind();
+        //ShaderProgram.unbind();
         Graphics lg = lightBuffer.getGraphics();
         lg.clear();
-        lg.setColor(new Color(0.1f, 0.1f, 0.1f, 1f));
+        lg.setColor(new Color(0.0f, 0.0f, 0.0f, 1f));
         lg.fillRect(0, 0, B_WIDTH, B_HEIGHT);
         for(Light l: lightArray){
             if(l.isVisible()){
@@ -239,6 +240,7 @@ public class SceneMap extends SceneBase {
         g.setDrawMode(Graphics.MODE_COLOR_MULTIPLY);
         lightBuffer.draw(Camera.viewPort.getX(), Camera.viewPort.getY());
         g.setDrawMode(Graphics.MODE_NORMAL);
+        
         /*g.setColor(Color.yellow);
         g.drawRect(Camera.viewPort.getX() + 5, 
         * Camera.viewPort.getY() + 5, 
@@ -252,7 +254,7 @@ public class SceneMap extends SceneBase {
     }
 
     private void tpPlayer(int tileX, int tileY, WorldPlayer p) {
-
+        
         p.setX(tileX * map.map.getTileWidth());
         p.setY(tileY * map.map.getTileHeight());
 

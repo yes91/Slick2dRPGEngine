@@ -1,6 +1,7 @@
 #version 120
 
 uniform sampler2D src_tex_unit0;
+uniform sampler2D lightex;
 uniform int choice;
 
 struct Light
@@ -29,6 +30,11 @@ vec4 grayscale(vec4 src_color){
 
 vec4 night(vec4 src_color){
     return vec4(src_color.r/2.0, src_color.g/2.0, src_color.b*1.1, src_color.a);
+}
+
+vec4 imageLight(vec4 src_color){
+    vec2 tex_coord = gl_TexCoord[0].st;
+    return src_color * texture2D(lightex, tex_coord).rgba;
 }
 
 vec4 lighting(vec4 src_color){
@@ -68,7 +74,7 @@ void main(void){
     case 1: gl_FragColor = grayscale(src_color); break;
     case 2: gl_FragColor = night(src_color); break;
     case 3: gl_FragColor = lighting(src_color); break;
-    case 4: gl_FragColor = lighting(src_color); break;
+    case 4: gl_FragColor = imageLight(src_color); break;
     case 5: gl_FragColor = lighting(grayscale(src_color)); break;
   }
 }

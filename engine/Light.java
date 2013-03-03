@@ -4,14 +4,11 @@
  */
 package engine;
 
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL14;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
-import org.newdawn.slick.SlickException;
 
 /**
  *
@@ -41,7 +38,7 @@ public class Light {
     //original scale
 
     public Light(float x, float y, float scale, float intensity, Color tint) {
-        lightSprite = Cache.getRes("lighting_sprites.png");
+        lightSprite = Cache.res("lighting_sprites.png");
         this.x = x;
         this.y = y;
         this.scale = scale;
@@ -51,7 +48,7 @@ public class Light {
     }
     
     public Light(float x, float y, float scale, float intensity, String image, Color tint) {
-        this.lightSprite = Cache.getRes(image+".png");
+        this.lightSprite = Cache.res(image+".png");
         this.x = x;
         this.y = y;
         this.scale = scale;
@@ -68,6 +65,7 @@ public class Light {
         GL14.glBlendColor(tint.r * intensity, tint.g * intensity, tint.b * intensity, tint.a);
         GL11.glBlendFunc(GL11.GL_CONSTANT_COLOR, GL11.GL_SRC_ALPHA);
         GL11.glEnable(GL11.GL_BLEND);
+        lightSprite.setRotation(0);
         float xOff = lightSprite.getWidth() / 2f * scale;
         float yOff = lightSprite.getHeight() / 2f * scale;
         lightSprite.draw(screenX() - xOff, screenY() - yOff, scale);
@@ -86,8 +84,8 @@ public class Light {
     }
 
     public boolean isVisible() {
-        return x > Camera.viewPort.getX() - 512 && y > Camera.viewPort.getY() - 512
-                && x < Camera.viewPort.getX() + Camera.viewPort.getWidth() + 512
-                && y < Camera.viewPort.getY() + Camera.viewPort.getHeight() + 512;
+        return x > Camera.viewPort.getX() - 1024 && y > Camera.viewPort.getY() - 1024
+                && x < Camera.viewPort.getX() + Camera.viewPort.getWidth() + 1024
+                && y < Camera.viewPort.getY() + Camera.viewPort.getHeight() + 1024;
     }
 }

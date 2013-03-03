@@ -35,7 +35,7 @@ public class Window {
         this.width = w;
         this.height = h;
         contents = new Image(width - 32, height - 32);
-        skin = Cache.getSystemImage("Neo Classic Battle.png");
+        skin = Cache.system("Window.png");
         cg = contents.getGraphics();
         cg.setFont(Cache.getFont());
     }
@@ -54,7 +54,7 @@ public class Window {
         g2d.fillRect(x + 4, y + 4, width - 4, height - 4, skin.getSubImage(0, 64, 64, 64), 0, 0);
         skin.setAlpha(100f);
         
-        Sprite.drawSpriteFrame(skin, g2d, x, y, 8, 4, 16, 16);
+        /*Sprite.drawSpriteFrame(skin, g2d, x, y, 8, 4, 16, 16);
         g2d.fillRect(x + 16, y, width - 32, 16, skin.getSubImage(64+16, 0, 16, 16), 0, 0);
         Sprite.drawSpriteFrame(skin, g2d, x + (width) - 16, y, 8, 7, 16, 16);
         g2d.fillRect(x, y + 16, 16, height - 32, skin.getSubImage(64, 32, 16, 16), 0, 0);
@@ -62,6 +62,47 @@ public class Window {
         g2d.fillRect(x + 16, y + height - 16, width - 32, 16, skin.getSubImage(64+16, 64-16, 16, 16), 0, 0);
         Sprite.drawSpriteFrame(skin, g2d, x + (width) - 16, y + (height) - 16, 8, 31, 16, 16);
         g2d.fillRect(x + width - 16, y + 16, 16, height - 32, skin.getSubImage(128-16, 32, 16, 16), 0, 0);
+        g2d.drawImage(contents, x + 16, y + 16);*/
+        Sprite.drawSpriteFrame(skin, g2d, x, y, 8, 4, 16, 16);
+        if ((width % 16) == 0) {
+            for (int i = 0; i < ((width / 16) - 2); i++) {
+                Sprite.drawSpriteFrame(skin, g2d, x + (i * 16) + 16, y, 8, 5, 16, 16);
+            }
+        } else {
+            for (int i = 0; i < ((width / 16) - 1); i++) {
+                Sprite.drawSpriteFrame(skin, g2d, x + (i * 16) + 16, y, 8, 5, 16, 16);
+            }
+        }
+        Sprite.drawSpriteFrame(skin, g2d, x + (width) - 16, y, 8, 7, 16, 16);
+        if ((height % 16) == 0) {
+            for (int j = 0; j < ((height / 16) - 2); j++) {
+                Sprite.drawSpriteFrame(skin, g2d, x, y + (j * 16) + 16, 8, 12, 16, 16);
+            }
+        } else {
+            for (int j = 0; j < ((height / 16) - 1); j++) {
+                Sprite.drawSpriteFrame(skin, g2d, x, y + (j * 16) + 16, 8, 12, 16, 16);
+            }
+        }
+        Sprite.drawSpriteFrame(skin, g2d, x, y + (height) - 16, 8, 28, 16, 16);
+        if ((width % 16) == 0) {
+            for (int k = 0; k < ((width / 16) - 2); k++) {
+                Sprite.drawSpriteFrame(skin, g2d, x + (k * 16) + 16, y + (height) - 16, 8, 29, 16, 16);
+            }
+        } else {
+            for (int k = 0; k < ((width / 16) - 1); k++) {
+                Sprite.drawSpriteFrame(skin, g2d, x + (k * 16) + 16, y + (height) - 16, 8, 29, 16, 16);
+            }
+        }
+        Sprite.drawSpriteFrame(skin, g2d, x + (width) - 16, y + (height) - 16, 8, 31, 16, 16);
+        if ((height % 16) == 0) {
+            for (int l = 0; l < ((height / 16) - 2); l++) {
+                Sprite.drawSpriteFrame(skin, g2d, x + (width) - 16, y + (l * 16) + 16, 8, 15, 16, 16);
+            }
+        } else {
+            for (int l = 0; l < ((height / 16) - 1); l++) {
+                Sprite.drawSpriteFrame(skin, g2d, x + (width) - 16, y + (l * 16) + 16, 8, 15, 16, 16);
+            }
+        }
         g2d.drawImage(contents, x + 16, y + 16);
     }
 
@@ -145,7 +186,8 @@ public class Window {
     }
     
     public void drawFace(String faceName, int faceIndex, float x, float y){
-        Sprite.drawSpriteFrame(Cache.getRes(faceName+".png"), cg, x, y, 4, faceIndex, 96, 96);
+        Image face = Cache.res(faceName+".png");
+        Sprite.drawSpriteFrame(face, cg, x, y, 4, faceIndex, 96, 96);
     }
     
     public void drawActorFace(GameActor actor, float x, float y){
@@ -159,6 +201,11 @@ public class Window {
             cg.drawLine(x + (10 - i), y + i, x + 120 + (10 - i), y + i);
             cg.drawGradientLine(x + (10 - i), y + i, Color.orange, x + gw + (10 - i), y + i, Color.red);
         }
+        /*cg.setColor(Color.white);
+        cg.drawLine(x + 10, y, x, y + 10);
+        cg.drawLine(x - 1 + 10, y, x - 1 + 10 + 120, y);
+        cg.drawLine(x - 1, y + 10, x - 1 + 120, y + 10);
+        cg.drawLine(x + 10 + 120, y, x + 120, y + 10);*/
     }
     
     public void drawActorHP(GameActor actor, float x, float y){

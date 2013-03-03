@@ -7,6 +7,7 @@ package effectutil;
 /**
  * A class containing static math methods useful for image processing.
  */
+@Deprecated
 public class ImageMath {
 
 	public final static float PI = (float)Math.PI;

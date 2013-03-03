@@ -185,7 +185,7 @@ public class SceneTitle extends SceneBase{
         inputp.bindCommand(new KeyControl(Input.KEY_L), pDown);
         uielements = new ArrayList<>();
         fin = new CameraFadeInTransition();
-        back = Cache.getRes("TitleBack.png");
+        back = Cache.res("TitleBack.png");
         options = new WindowSystem(2, 1);
         String[] coms = new String[]{"New Game","Continue","Option","Exit"};
         wind = new WindowCommand(160, coms, 1, 0);

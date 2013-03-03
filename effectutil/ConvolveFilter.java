@@ -12,6 +12,7 @@ import java.awt.geom.*;
  * A filter which applies a convolution kernel to an image.
  * @author Jerry Huxtable
  */
+@Deprecated
 public class ConvolveFilter extends AbstractBufferedImageOp {
 
 	static final long serialVersionUID = 2239251672685254626L;

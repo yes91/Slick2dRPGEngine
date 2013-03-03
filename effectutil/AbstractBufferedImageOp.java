@@ -11,6 +11,7 @@ import java.awt.image.*;
 /**
  * A convenience class which implements those methods of BufferedImageOp which are rarely changed.
  */
+@Deprecated
 public abstract class AbstractBufferedImageOp implements BufferedImageOp {
 
     public BufferedImage createCompatibleDestImage(BufferedImage src, ColorModel dstCM) {

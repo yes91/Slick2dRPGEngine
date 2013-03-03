@@ -28,7 +28,7 @@ public class SceneBattle extends SceneBase{
     private WindowCommand actorCommand;
     private WindowCommand activeWindow;
     private Window canvas;
-    //private WindowBattleStatus stat;
+    private WindowBattleStatus stat;
     //private WindowBattleMessage bMessage;
     private GameParty party = SceneBase.gameParty;
             
@@ -57,7 +57,7 @@ public class SceneBattle extends SceneBase{
         }, 1, 4);
         partyCommand.initX = -120;
         partyCommand.initY = 720 - partyCommand.height;
-        canvas = new Window(120, 720 - partyCommand.height, 1280 - 120 - 8, partyCommand.height);
+        stat = new WindowBattleStatus(120, 720 - partyCommand.height, 1280 - 120 - 8, partyCommand.height);
         actorCommand = new WindowCommand(120, 
             new String[]{ "Attack", 
                           "Guard", 
@@ -77,8 +77,8 @@ public class SceneBattle extends SceneBase{
         }
         partyCommand.render(g, sbg);
         actorCommand.render(g, sbg);
-        canvas.cg.clear();
-        int index = 0;
+        stat.render(g, sbg);
+        /*int index = 0;
         for(GameActor ga :Demo.testActors){
             canvas.drawActorFace(ga, (120 * index) + 32*index, 0);
             canvas.drawActorHP(ga, (120 * index) + 32*index, 2.8f * 24);
@@ -86,7 +86,7 @@ public class SceneBattle extends SceneBase{
             index++;
         }
         canvas.cg.flush();
-        canvas.render(g, sbg); 
+        canvas.render(g, sbg); */
     }
 
     @Override
@@ -96,9 +96,9 @@ public class SceneBattle extends SceneBase{
                 BGM.loop();
             }
         }
-        canvas.initX = xOffset;
+        stat.initX = xOffset;
         partyCommand.initX = xOffset - 120;
-        actorCommand.initX = canvas.width + xOffset;
+        actorCommand.initX = stat.width + xOffset;
         activeWindow.update(inputp, delta);
         if(activeWindow.equals(partyCommand)){
             if(xOffset < 128){
