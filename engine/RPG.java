@@ -1,6 +1,7 @@
 package engine;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.lwjgl.LWJGLException;
@@ -30,7 +31,7 @@ public class RPG extends StateBasedGame {
             }
             AppGameContainer app = new AppGameContainer(new RPG());
             Sounds.load();
-            Demo.init();
+            
             app.setSmoothDeltas(true);
             app.setTargetFrameRate(60);
             app.setDisplayMode(SceneMap.B_WIDTH, SceneMap.B_HEIGHT, false);
@@ -45,7 +46,8 @@ public class RPG extends StateBasedGame {
 
     @Override
     public void initStatesList(GameContainer gc) throws SlickException {
-        gc.setDefaultFont(Cache.getFont());
+        gc.setDefaultFont(GameCache.getFont());
+        Demo.init();
         addState(new SceneTitle(0));
         addState(new SceneMap(1));
         addState(new SceneMenu(2));

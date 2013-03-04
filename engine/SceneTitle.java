@@ -183,15 +183,19 @@ public class SceneTitle extends SceneBase{
         inputp.bindCommand(new KeyControl(Input.KEY_J), action);
         inputp.bindCommand(new KeyControl(Input.KEY_R), pUp);
         inputp.bindCommand(new KeyControl(Input.KEY_L), pDown);
+        ItemReader.populateItems();
+        for(Item i: ItemReader.getItems()){
+            gameParty.giveItem(i, 99);
+        }
+        gameParty.actors = Demo.testActors.subList(0, 4);
         uielements = new ArrayList<>();
         fin = new CameraFadeInTransition();
-        back = Cache.res("TitleBack.png");
+        back = GameCache.res("TitleBack.png");
         options = new WindowSystem(2, 1);
         String[] coms = new String[]{"New Game","Continue","Option","Exit"};
         wind = new WindowCommand(160, coms, 1, 0);
-        gameMessage.faceName = "People1";
-        gameMessage.faceIndex = 4;
-        String text = "Hello, \\C[1]this\\R is a test of the message system.\n"
+        
+        String text = "Hello, \\C[1]this\\C[0] is a test of the message system.\n"
         + "This is a new line. This is still the same line.\n"
         + "Habla espanol por favor, senor. No hablo ingles.\n"
         + "For sooth, this is yet another line!~\n"
@@ -201,24 +205,25 @@ public class SceneTitle extends SceneBase{
         + "This is an eight line, the line after this better work.\n"
         + "Line #9 and it better work.\n"
         + "Ok, clearly it works no matter what.";
-        String pattern = "\\C[10]";
-        gameMessage.setText(pattern);
+        gameMessage.setText(text);
+        gameMessage.faceName = "People1";
+        gameMessage.faceIndex = 4;
         test = new WindowMessage();
         wind.initX = (1280/2) - 80;
         wind.initY = 500;
-        System.out.println(Cache.getFont().getLineHeight());
+        System.out.println(GameCache.getFont().getLineHeight());
     }
 
     @Override
     public void render(GameContainer gc, StateBasedGame sbg, Graphics g) throws SlickException {
         back.draw(0, 0);
-        Cache.getFont().drawString(300, 100, "Debug Message: KeyListener "+repChar);
-        Cache.getFont().drawString(300, 150, "Debug Message: ContollerListener Button: "+buttonPressed+" on Controller: "+controller);
+        GameCache.getFont().drawString(300, 100, "Debug Message: KeyListener "+repChar);
+        GameCache.getFont().drawString(300, 150, "Debug Message: ContollerListener Button: "+buttonPressed+" on Controller: "+controller);
         if(!inSubMenu){
             wind.render(g, sbg);
         }
         else{
-            Cache.getFont().drawString(300, 50, "Debug Message: In Submenu");
+            GameCache.getFont().drawString(300, 50, "Debug Message: In Submenu");
             for(Window w: uielements){
             w.render(g, sbg);
             }

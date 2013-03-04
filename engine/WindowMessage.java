@@ -6,9 +6,7 @@ package engine;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
-import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.command.InputProvider;
 import org.newdawn.slick.state.StateBasedGame;
@@ -64,7 +62,7 @@ public class WindowMessage extends WindowSelectable {
         time -= (5f/16f)*delta;
         super.update(input, delta);
         if (isTalking) {
-            if (input.isCommandControlPressed(SceneBase.down)) {
+            if (input.isCommandControlPressed(SceneBase.action)) {
                 if (isScrolling) {
                     drawAll();
                 } else {
@@ -109,10 +107,10 @@ public class WindowMessage extends WindowSelectable {
                         cg.setColor(textColor(color));
                         break;
                     case ' ':
-                        contX += Cache.getFont().getWidth("_");
+                        contX += GameCache.getFont().getWidth("_");
                         break;
                     default:
-                        contX += Cache.getFont().getWidth(drawChar);
+                        contX += GameCache.getFont().getWidth(drawChar);
                         break;
                 }
                 for(int z = 0; z < 4; z++){
@@ -168,10 +166,10 @@ public class WindowMessage extends WindowSelectable {
                         time = 5f * 60;
                         break;
                     case ' ':
-                        contX += Cache.getFont().getWidth("_");
+                        contX += GameCache.getFont().getWidth("_");
                         break;
                     default:
-                        contX += Cache.getFont().getWidth(drawChar);
+                        contX += GameCache.getFont().getWidth(drawChar);
                         break;
                 }
                 for(int z = 0; z < 4; z++){

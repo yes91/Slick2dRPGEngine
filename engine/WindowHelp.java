@@ -24,7 +24,7 @@ public class WindowHelp extends Window {
     public void render(Graphics g, StateBasedGame sbg){
         super.render(g, sbg);
         if(text != null){
-            Cache.getFont().drawString(x+16, y+16, text);
+            GameCache.getFont().drawString(x+16, y+16, text);
         }
     }
     

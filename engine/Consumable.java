@@ -21,10 +21,10 @@ public class Consumable extends Item {
     public void use(GameObject target, Inventory inv){
         
         if(type.equals("hppotion")){
-            if(((WorldPlayer)target).currentHP < ((WorldPlayer)target).maxHP){
+            /*if(((WorldPlayer)target).currentHP < ((WorldPlayer)target).maxHP){
                 ((WorldPlayer)target).currentHP += Integer.parseInt(effect);
                 inv.remove(this, 1);
-            }
+            }*/
         }
     }
     

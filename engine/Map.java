@@ -4,6 +4,7 @@
  */
 package engine;
 
+import engine.GameCharacter.Direction;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -118,16 +119,16 @@ public class Map {
             if(Physics.checkCollisions(p, e.getActivationRect()) & p.getAction() == true){
                 if(e.getType().equals("Actor") | e.getType().equals("Npc")){
                     if(e.getType().equals("Npc")){
-                        if(p.getFrame() == 12){
+                        if(p.facing.equals(Direction.DOWN)){
                         ((NPC)e).setFrame(12);
                         }
-                        if(p.getFrame() == 4){
+                        if(p.facing.equals(Direction.UP)){
                         ((NPC)e).setFrame(0);
                         }
-                        if(p.getFrame() == 8){
+                        if(p.facing.equals(Direction.LEFT)){
                         ((NPC)e).setFrame(8);
                         }
-                        if(p.getFrame() == 0){
+                        if(p.facing.equals(Direction.RIGHT)){
                         ((NPC)e).setFrame(4);
                         }
                         ((NPC)e).activate();

@@ -7,7 +7,7 @@ import org.newdawn.slick.SlickException;
 public abstract class Item {
     
     public static enum Targets {SINGLE_PLAYER, WHOLE_PARTY, SINGLE_ENEMY, WHOLE_ENEMY_PARTY}
-    private static Image image = Cache.system("IconSet.png");
+    private static Image image = GameCache.system("IconSet.png");
     private boolean useable;
     private String name;
     private String desc;
@@ -28,9 +28,9 @@ public abstract class Item {
     @Deprecated
     public void render(Graphics g2d, Inventory inv, float x, float y) throws SlickException{ 
         Sprite.drawSpriteFrame(image, g2d, x, y, 16, gid, 24, 24);
-        Cache.getFont().drawString(x+24, y, name);
+        GameCache.getFont().drawString(x+24, y, name);
         String amountToDraw = "" + inv.getItemAmount(this);
-        Cache.getFont().drawString((x+(Cache.getFont().getWidth(name)+32)), y,amountToDraw);
+        GameCache.getFont().drawString((x+(GameCache.getFont().getWidth(name)+32)), y,amountToDraw);
     }
     
     public Image getImage() {

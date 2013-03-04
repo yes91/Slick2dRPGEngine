@@ -38,7 +38,7 @@ public class Light {
     //original scale
 
     public Light(float x, float y, float scale, float intensity, Color tint) {
-        lightSprite = Cache.res("lighting_sprites.png");
+        lightSprite = GameCache.res("lighting_sprites.png");
         this.x = x;
         this.y = y;
         this.scale = scale;
@@ -48,7 +48,7 @@ public class Light {
     }
     
     public Light(float x, float y, float scale, float intensity, String image, Color tint) {
-        this.lightSprite = Cache.res(image+".png");
+        this.lightSprite = GameCache.res(image+".png");
         this.x = x;
         this.y = y;
         this.scale = scale;
@@ -63,8 +63,8 @@ public class Light {
 
     public void render(Graphics g) {
         GL14.glBlendColor(tint.r * intensity, tint.g * intensity, tint.b * intensity, tint.a);
-        GL11.glBlendFunc(GL11.GL_CONSTANT_COLOR, GL11.GL_SRC_ALPHA);
         GL11.glEnable(GL11.GL_BLEND);
+        GL11.glBlendFunc(GL11.GL_CONSTANT_COLOR, GL11.GL_SRC_ALPHA);
         lightSprite.setRotation(0);
         float xOff = lightSprite.getWidth() / 2f * scale;
         float yOff = lightSprite.getHeight() / 2f * scale;

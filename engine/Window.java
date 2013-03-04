@@ -35,9 +35,9 @@ public class Window {
         this.width = w;
         this.height = h;
         contents = new Image(width - 32, height - 32);
-        skin = Cache.system("Window.png");
+        skin = GameCache.system("Neo Classic Battle.png");
         cg = contents.getGraphics();
-        cg.setFont(Cache.getFont());
+        cg.setFont(GameCache.getFont());
     }
 
     public void render(Graphics g2d, StateBasedGame sbg) {
@@ -186,7 +186,7 @@ public class Window {
     }
     
     public void drawFace(String faceName, int faceIndex, float x, float y){
-        Image face = Cache.res(faceName+".png");
+        Image face = GameCache.res(faceName+".png");
         Sprite.drawSpriteFrame(face, cg, x, y, 4, faceIndex, 96, 96);
     }
     

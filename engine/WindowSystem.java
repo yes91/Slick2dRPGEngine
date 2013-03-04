@@ -31,7 +31,7 @@ public class WindowSystem extends WindowSelectable{
     
     public void drawItem(int ind){
         switch(ind){
-            case 0: Cache.getFont().drawString(x+16, y+16, "Configure Key/Controls"); break;
+            case 0: GameCache.getFont().drawString(x+16, y+16, "Configure Key/Controls"); break;
         }
     }
     

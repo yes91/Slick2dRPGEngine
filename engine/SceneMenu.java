@@ -47,7 +47,7 @@ public class SceneMenu extends SceneBase {
         };
         command = new WindowCommand(120, coms, 1, 0);
         invHelp = new WindowHelp();
-        inventory = new WindowItem(command.x, command.y + invHelp.height, SceneMap.B_WIDTH, SceneMap.B_HEIGHT - invHelp.height, worldPlayer.getInv());
+        inventory = new WindowItem(command.x, command.y + invHelp.height, SceneMap.B_WIDTH, SceneMap.B_HEIGHT - invHelp.height, gameParty.getInv());
         activeWindow = command;
     }
 
@@ -74,8 +74,8 @@ public class SceneMenu extends SceneBase {
                     break;
             }
         }
-        else if(activeWindow.equals(inventory) && !worldPlayer.getInv().items.isEmpty()){
-            invHelp.setText(worldPlayer.getInv().items.get(inventory.index).getDesc());
+        else if(activeWindow.equals(inventory) && !gameParty.getInv().items.isEmpty()){
+            invHelp.setText(gameParty.getInv().items.get(inventory.index).getDesc());
         }
         if (inputp.isCommandControlPressed(cancel)) {
             if (activeWindow.equals(command)) {

@@ -130,7 +130,7 @@ public class GameData {
          */
         ObjectInputStream actorData = new ObjectInputStream(new FileInputStream(new File("src/actors.jrdata")));
         for (int i = 0; i < actorData.readInt(); i++) {
-            GameActor actor = new GameActor();
+            GameActor actor = new GameActor("");
             actor.stats = new BattleStats(actorData.readInt(), actorData.readInt(), actorData.readInt());
             actor.name = actorData.readUTF();
             actor.classID = actorData.readInt();

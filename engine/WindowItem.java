@@ -42,9 +42,9 @@ public class WindowItem extends WindowSelectable{
         rect.setWidth(rect.getWidth() - 8);
         Item item = inven.items.get(ind);
         int number = inven.getItemAmount(item);
-        Sprite.drawSpriteFrame(Cache.image("IconSet.png"), g, x+16+rect.getX()+8, y+16+rect.getY(), 16, item.getIndex(), 24, 24);
-        Cache.getFont().drawString(x+24+16+rect.getX()+8, y+16+rect.getY()+2, item.getName());
-        Cache.getFont().drawString(x+(rect.getWidth())+rect.getX()+8-Cache.getFont().getWidth(String.format(":%2d", number)), y+16+rect.getY()+2, String.format(":%2d", number));
+        Sprite.drawSpriteFrame(GameCache.image("IconSet.png"), g, x+16+rect.getX()+8, y+16+rect.getY(), 16, item.getIndex(), 24, 24);
+        GameCache.getFont().drawString(x+24+16+rect.getX()+8, y+16+rect.getY()+2, item.getName());
+        GameCache.getFont().drawString(x+(rect.getWidth())+rect.getX()+8-GameCache.getFont().getWidth(String.format(":%2d", number)), y+16+rect.getY()+2, String.format(":%2d", number));
     }
     
     

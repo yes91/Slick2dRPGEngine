@@ -44,7 +44,7 @@ public class WindowCommand extends WindowSelectable{
         rect.setWidth(rect.getX() - 8);
         //Graphics.setCurrent(cg);
         //for(int i = 0; i < 10; i++){
-        Cache.getFont().drawString(x+16+rect.getX()+8, y+16+rect.getY()+2, commands[ind]);
+        GameCache.getFont().drawString(x+16+rect.getX()+8, y+16+rect.getY()+2, commands[ind]);
         //}
     }
     

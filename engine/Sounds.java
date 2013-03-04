@@ -33,7 +33,7 @@ public class Sounds {
         try {
             return new Music("res/"+name); 
         } catch (SlickException ex) {
-            Logger.getLogger(Cache.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(GameCache.class.getName()).log(Level.SEVERE, null, ex);
         }
         return null;
     }

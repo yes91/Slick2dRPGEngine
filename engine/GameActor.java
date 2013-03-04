@@ -24,8 +24,8 @@ public class GameActor extends GameBattler{
     public int armor4_ID;
     public int lastSkillID;
     
-    public GameActor(){
-        super();
+    public GameActor(String bSprite){
+        super(GameCache.res(bSprite+".png"));
     }
     
     public GameClass getGameClass(){

@@ -5,11 +5,14 @@
 package engine;
 
 import effectutil.CameraFadeInTransition;
+import java.util.Arrays;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
+import org.newdawn.slick.Input;
 import org.newdawn.slick.Music;
 import org.newdawn.slick.SlickException;
+import org.newdawn.slick.geom.Vector2f;
 import org.newdawn.slick.state.StateBasedGame;
 import org.newdawn.slick.state.transition.FadeOutTransition;
 
@@ -18,17 +21,24 @@ import org.newdawn.slick.state.transition.FadeOutTransition;
  * @author Kieran
  */
 public class SceneBattle extends SceneBase{
-    
     private int stateID = -1;
     private static Image battleBack;
     private static Music BGM;
     private int xOffset = 0;
-    private int currentActor;
     private WindowCommand partyCommand;
     private WindowCommand actorCommand;
     private WindowCommand activeWindow;
-    private Window canvas;
     private WindowBattleStatus stat;
+    //private DepthBuffCompare comparator = new DepthBuffCompare();
+    private final int DEPTH_BUFFER_SIZE = 720/2;
+    private int activePos = 0;
+    private static float[][] position = new float[][]{
+        new float[]{498.0f, 77.0f, 77.0f},
+        new float[]{582.0f, 129.0f, 129.0f},
+        new float[]{667.0f, 199.0f, 199.0f},
+        new float[]{751.0f, 285.0f, 285.0f}
+        
+    };
     //private WindowBattleMessage bMessage;
     private GameParty party = SceneBase.gameParty;
             
@@ -75,18 +85,20 @@ public class SceneBattle extends SceneBase{
         if(battleBack != null){
             battleBack.draw(0, 0, 1280, 720, 0, 0, 580, 444);
         }
+        int i = 0;
+        //Arrays.sort(position, comparator);
+        for(GameActor ga: gameParty.getMembers()){
+            ga.render(g, position[i][0], position[i][1], 1.0f + 1.0f * (position[i][2]/DEPTH_BUFFER_SIZE));
+            i++;
+        }
+        /*for(int i = 0; i < gameParty.getMembers().size(); i++){
+            gameParty.getMembers().get(i).battleSprite.getCurrentAni().draw(
+                (!(i < 4) ? 800:700) + 100 * (!(i < 4) ? i - 4:i), (!(i < 4) ? 200:300) + 100 * (!(i < 4) ? i - 4:i));
+        }*/
         partyCommand.render(g, sbg);
         actorCommand.render(g, sbg);
         stat.render(g, sbg);
-        /*int index = 0;
-        for(GameActor ga :Demo.testActors){
-            canvas.drawActorFace(ga, (120 * index) + 32*index, 0);
-            canvas.drawActorHP(ga, (120 * index) + 32*index, 2.8f * 24);
-            canvas.drawActorMP(ga, (120 * index)  + 32*index, 3.6f * 24);
-            index++;
-        }
-        canvas.cg.flush();
-        canvas.render(g, sbg); */
+        
     }
 
     @Override
@@ -95,6 +107,34 @@ public class SceneBattle extends SceneBase{
             if(!BGM.playing()){
                 BGM.loop();
             }
+        }
+        if(input.isKeyPressed(Input.KEY_1)){
+            activePos = 0;
+        }
+        if(input.isKeyPressed(Input.KEY_2)){
+            activePos = 1;
+        }
+        if(input.isKeyPressed(Input.KEY_3)){
+            activePos = 2;
+        }
+        if(input.isKeyPressed(Input.KEY_4)){
+            activePos = 3;
+        }
+        if(input.isKeyPressed(Input.KEY_ENTER)){
+            System.out.println(Arrays.deepToString(position));
+        }
+        if(input.isKeyDown(Input.KEY_UP)){
+            position[activePos][1] -= 1f;
+        } else if(input.isKeyDown(Input.KEY_DOWN)){
+            position[activePos][1] += 1f;
+        } else if(input.isKeyDown(Input.KEY_RIGHT)){
+            position[activePos][0] += 1f;
+        } else if(input.isKeyDown(Input.KEY_LEFT)){
+            position[activePos][0] -= 1f;
+        } else if(input.isKeyDown(Input.KEY_Z)){
+            position[activePos][2] -= 1f;
+        } else if(input.isKeyDown(Input.KEY_X)){
+            position[activePos][2] += 1f;
         }
         stat.initX = xOffset;
         partyCommand.initX = xOffset - 120;
@@ -126,15 +166,15 @@ public class SceneBattle extends SceneBase{
             if(inputp.isCommandControlPressed(cancel)){
                 actorCommand.index = -1;
                 partyCommand.index = 0;
-                Demo.init();
+                gameParty.getMembers().get(0).currentHP = gameParty.getMembers().get(0).getMaxHP();
                 activeWindow = partyCommand;
             }
             switch(actorCommand.index){
                 case 0: 
                     if(inputp.isCommandControlPressed(action)){
-                        Demo.testActors.get(0).currentHP -= 50;
-                        if(Demo.testActors.get(0).currentHP <= 0){
-                            Demo.testActors.get(0).currentHP = 0;
+                        gameParty.getMembers().get(0).currentHP -= 50;
+                        if(gameParty.getMembers().get(0).currentHP <= 0){
+                            gameParty.getMembers().get(0).currentHP = 0;
                         }
                     }
                     break;

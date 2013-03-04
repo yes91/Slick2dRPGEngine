@@ -15,11 +15,11 @@ import org.newdawn.slick.SlickException;
  *
  * @author redblast71
  */
-public class Cache {
+public class GameCache {
     
     private static AngelCodeFont font;
     //private static AngelCodeFont font;
-    private static HashMap<String, Image> images = new HashMap<>();
+    private static final  HashMap<String, Image> images = new HashMap<>();
     
     public static Image image(String filename){
         return loadImage("res/", filename);
@@ -40,7 +40,7 @@ public class Cache {
                 result = new Image(folderName+fileName); 
                 images.put(fileName, result);
             } catch (SlickException ex) {
-                Logger.getLogger(Cache.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(GameCache.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
         return result;
@@ -51,6 +51,7 @@ public class Cache {
         if(font == null){
             try {
                 font = new AngelCodeFont("res/system/umeplusbold.fnt","res/system/umeplusbold.png");
+                //font = new AngelCodeFont("res/system/mysterons.fnt","res/system/mysterons_0.png");
                     /*font = new UnicodeFont(new Font("VL Gothic Regular",Font.PLAIN,18));
                     font.addAsciiGlyphs();   //Add Glyphs
                     font.addGlyphs(400, 600); //Add Glyphs //Add Effects
@@ -60,9 +61,10 @@ public class Cache {
             try {
                 font.loadGlyphs();  //Load Glyphs*/
             } catch (SlickException ex) {
-                Logger.getLogger(Cache.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(GameCache.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
                 return font;
     }
+
 }

@@ -4,6 +4,7 @@
  */
 package engine;
 
+import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 
 /**
@@ -13,7 +14,7 @@ import org.newdawn.slick.Image;
 public abstract class GameBattler {
     
     private final int HP_LIMIT = 999999;
-    public Image battleSprite;
+    public SpriteBattler battleSprite;
     public BattleStats stats;
     public int currentHP;
     public int currentMP;
@@ -25,8 +26,22 @@ public abstract class GameBattler {
     public int MDEFplus;
     public int SPDplus;
     
-    public GameBattler(){
+    public GameBattler(Image bSprite){
         stats = new BattleStats();
+        battleSprite = new SpriteBattler(this, bSprite);
+    }
+    
+    public void render(Graphics g, float x, float y, float scale){
+        int width = battleSprite.getCurrentAni().getWidth();
+        int height = battleSprite.getCurrentAni().getHeight();
+        float cx = x +  width / 2;
+        float cy = y +  height / 2;
+
+        // get scaled draw coordinates (sx, sy)
+        float sx = cx - (width / 2 * scale);
+        float sy = cy - (height / 2 * scale);
+        
+        battleSprite.getCurrentAni().draw(cx, cy, width * scale, height * scale);
     }
     
     public void updateLevel(){

@@ -17,7 +17,7 @@ public class Demo {
     public static ArrayList<GameActor> testActors;
     public static void init(){
         testActors = new ArrayList<>();
-        GameActor battleTester = new GameActor();
+        GameActor battleTester = new GameActor("yuan_1");
         battleTester.name = "TestDude";
         battleTester.faceName = "People1";
         battleTester.faceIndex = 2;
@@ -26,7 +26,7 @@ public class Demo {
         battleTester.currentHP = battleTester.getMaxHP();
         battleTester.currentMP = battleTester.getMaxMP();
         
-        GameActor tester2 = new GameActor();
+        GameActor tester2 = new GameActor("aster_1");
         tester2.name = "Dipshit";
         tester2.faceName = "People1";
         tester2.faceIndex = 3;
@@ -35,7 +35,7 @@ public class Demo {
         tester2.currentHP = tester2.getMaxHP();
         tester2.currentMP = tester2.getMaxMP();
         
-        GameActor tester3 = new GameActor();
+        GameActor tester3 = new GameActor("kasier_1");
         tester3.name = "Dipshit";
         tester3.faceName = "People1";
         tester3.faceIndex = 0;
@@ -44,7 +44,7 @@ public class Demo {
         tester3.currentHP = tester3.getMaxHP();
         tester3.currentMP = tester3.getMaxMP();
         
-        GameActor tester4 = new GameActor();
+        GameActor tester4 = new GameActor("spearman_1");
         tester4.name = "Dipshit";
         tester4.faceName = "People1";
         tester4.faceIndex = 7;
@@ -53,7 +53,7 @@ public class Demo {
         tester4.currentHP = tester4.getMaxHP();
         tester4.currentMP = tester4.getMaxMP();
         
-        GameActor tester5 = new GameActor();
+        GameActor tester5 = new GameActor("yuan_1");
         tester5.name = "Dipshit";
         tester5.faceName = "People1";
         tester5.faceIndex = 4;
@@ -62,7 +62,7 @@ public class Demo {
         tester5.currentHP = tester5.getMaxHP();
         tester5.currentMP = tester5.getMaxMP();
         
-        GameActor tester6 = new GameActor();
+        GameActor tester6 = new GameActor("yuan_1");
         tester6.name = "Dipshit";
         tester6.faceName = "People1";
         tester6.faceIndex = 6;

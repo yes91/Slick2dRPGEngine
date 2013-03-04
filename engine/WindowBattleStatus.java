@@ -27,7 +27,7 @@ class WindowBattleStatus extends WindowSelectable{
     @Override
     public void render(Graphics g, StateBasedGame sbg){
         super.render(g, sbg);
-        itemMax = Demo.testActors.size();
+        itemMax = SceneBase.gameParty.getMembers().size();
         cg.clear();
         for(int i = 0; i < itemMax; i++){
             drawItem(i);
@@ -36,8 +36,8 @@ class WindowBattleStatus extends WindowSelectable{
     }
     
     public void drawItem(int ind){
-        int xOff = ind * 96;
-        GameActor actor = Demo.testActors.get(ind);
+        int xOff = ind * 120;
+        GameActor actor = SceneBase.gameParty.getMembers().get(ind);
         drawActorFace(actor, xOff + 32*ind, 0);
         drawActorHP(actor, xOff + 32*ind, 2.8f * 24);
         drawActorMP(actor, xOff + 32*ind, 3.6f * 24);
