@@ -22,7 +22,21 @@ public class WindowMenuStatus extends WindowSelectable{
     @Override
     public void render(Graphics g, StateBasedGame sbg){
         super.render(g, sbg);
+        itemMax = SceneBase.gameParty.getMembers().size();
         
+    }
+    
+    @Override
+    public void updateCursor(){
+        if(index < 0){
+            return;
+        } else if(index < itemMax){
+            cursorRect.setBounds(0, index * 96, contents.getWidth(), 96);
+        } else if(index >= 100){
+            cursorRect.setBounds(0, (index - 100) * 96, contents.getWidth(), 96);
+        } else {
+            cursorRect.setBounds(0, 0, contents.getWidth(), itemMax * 96);
+        }
     }
     
 }

@@ -10,10 +10,10 @@ import java.util.Comparator;
  *
  * @author Kieran
  */
-public class DepthBuffCompare implements Comparator<float[]>{
+public class DepthBuffCompare implements Comparator<GameActor>{
     
     @Override
-    public int compare(float[] f1, float[] f2) {
-        return (int)(f1[2] - f2[2]);
+    public int compare(GameActor g1, GameActor g2) {
+        return (int)(g1.z - g2.z);
     }
 }

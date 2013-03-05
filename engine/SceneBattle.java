@@ -5,14 +5,16 @@
 package engine;
 
 import effectutil.CameraFadeInTransition;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.Music;
 import org.newdawn.slick.SlickException;
-import org.newdawn.slick.geom.Vector2f;
 import org.newdawn.slick.state.StateBasedGame;
 import org.newdawn.slick.state.transition.FadeOutTransition;
 
@@ -31,7 +33,8 @@ public class SceneBattle extends SceneBase {
     private WindowCommand actorCommand;
     private WindowCommand activeWindow;
     private WindowBattleStatus stat;
-    //private DepthBuffCompare comparator = new DepthBuffCompare();
+    private List<GameActor> drawList = new ArrayList<>();
+    private DepthBuffCompare comparator = new DepthBuffCompare();
     private final int DEPTH_BUFFER_SIZE = 360;
     private int activePos = 0;
     private static float[][] position = new float[][]{
@@ -57,6 +60,21 @@ public class SceneBattle extends SceneBase {
         battleBack = null;
         BGM = null;
         createInfoView();
+    }
+    
+    @Override
+    public void enter(GameContainer container, StateBasedGame game)
+         throws SlickException {
+      super.enter(container, game);
+      drawList.clear();
+      drawList.addAll(party.getMembers());
+      int index = 0;
+      for(GameActor ga: drawList){
+          ga.x = position[index][0];
+          ga.y = position[index][1];
+          ga.z = position[index][2];
+          index++;
+      }
     }
 
     public void createInfoView() throws SlickException {
@@ -84,14 +102,12 @@ public class SceneBattle extends SceneBase {
         if (battleBack != null) {
             battleBack.draw(0, 0, 1280, 720, 0, 0, 580, 444);
         }
-        //int i = 0;
-        //Arrays.sort(position, comparator);
-        gameParty.getMembers().get(0).battleSprite.aSeq.play(768.0f, 273.0f);
-        /*for (GameActor ga : gameParty.getMembers()) {
+        Collections.sort(drawList, comparator);
+        //gameParty.getMembers().get(0).battleSprite.aSeq.play(768.0f, 273.0f);
+        for (GameActor ga : drawList) {
             ga.battleSprite.updateAnimationState();
-            ga.render(g, position[i][0], position[i][1], 1.0f + 1.0f * (position[i][2] / DEPTH_BUFFER_SIZE));
-            i++;
-        }*/
+            ga.render(g, ga.x, ga.y, 1.0f + 1.0f * (ga.z / DEPTH_BUFFER_SIZE));
+        }
         /*for(int i = 0; i < gameParty.getMembers().size(); i++){
          gameParty.getMembers().get(i).battleSprite.getCurrentAni().draw(
          (!(i < 4) ? 800:700) + 100 * (!(i < 4) ? i - 4:i), (!(i < 4) ? 200:300) + 100 * (!(i < 4) ? i - 4:i));
@@ -128,17 +144,17 @@ public class SceneBattle extends SceneBase {
                 System.out.println(Arrays.deepToString(position));
             }
             if (input.isKeyDown(Input.KEY_UP)) {
-                position[activePos][1] -= 1f;
+                party.getMembers().get(activePos).y -= 1f;
             } else if (input.isKeyDown(Input.KEY_DOWN)) {
-                position[activePos][1] += 1f;
+                party.getMembers().get(activePos).y += 1f;
             } else if (input.isKeyDown(Input.KEY_RIGHT)) {
-                position[activePos][0] += 1f;
+                party.getMembers().get(activePos).x += 1f;
             } else if (input.isKeyDown(Input.KEY_LEFT)) {
-                position[activePos][0] -= 1f;
+                party.getMembers().get(activePos).x -= 1f;
             } else if (input.isKeyDown(Input.KEY_Z)) {
-                position[activePos][2] -= 1f;
+                party.getMembers().get(activePos).z -= 1f;
             } else if (input.isKeyDown(Input.KEY_X)) {
-                position[activePos][2] += 1f;
+                party.getMembers().get(activePos).z += 1f;
             }
         }
         stat.initX = xOffset;

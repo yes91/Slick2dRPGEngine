@@ -18,6 +18,7 @@ public abstract class GameBattler {
     private final int HP_LIMIT = 999999;
     public SpriteBattler battleSprite;
     public BattleStats stats;
+    public float x, y, z;
     public int currentHP;
     public int currentMP;
     public int HPplus;

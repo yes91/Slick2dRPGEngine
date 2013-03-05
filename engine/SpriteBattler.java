@@ -42,13 +42,12 @@ public class SpriteBattler extends SpriteBase{
             new Animation(image, 0, 3, 3, 3, true, 120, true),//GUARD(3)
             new Animation(image, 0, 4, 3, 4, true, 120, true),//APPROACH(4)
             new Animation(image, 0, 5, 3, 5, true, 120, true),//RETREAT(5)
-            new Animation(image, 0, 6, 3, 6, true, 180, true),//ATTACK_HEAVY(6)
+            new Animation(image, 0, 6, 3, 6, true, 120, true),//ATTACK_HEAVY(6)
             new Animation(image, 0, 7, 3, 7, true, 120, true),//ATTACK_LIGHT(7)
             new Animation(image, 0, 8, 3, 8, true, 120, true),//CAST(8)
             new Animation(image, 0, 9, 3, 9, true, 120, true),//VICTORY(9)
             new Animation(image, 0, 10, 3, 10, true, 120, true),//COLLAPSE(10)
         };
-        states[ATTACK_HEAVY].setLooping(false);
         List<Animation> seq;
         seq = new ArrayList<>();
         seq.add(states[IDLE]);
