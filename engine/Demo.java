@@ -35,7 +35,7 @@ public class Demo {
         tester2.currentHP = tester2.getMaxHP();
         tester2.currentMP = tester2.getMaxMP();
         
-        GameActor tester3 = new GameActor("kasier_1");
+        GameActor tester3 = new GameActor("yuan_1");
         tester3.name = "Dipshit";
         tester3.faceName = "People1";
         tester3.faceIndex = 0;
@@ -44,7 +44,7 @@ public class Demo {
         tester3.currentHP = tester3.getMaxHP();
         tester3.currentMP = tester3.getMaxMP();
         
-        GameActor tester4 = new GameActor("spearman_1");
+        GameActor tester4 = new GameActor("yuan_1");
         tester4.name = "Dipshit";
         tester4.faceName = "People1";
         tester4.faceIndex = 7;

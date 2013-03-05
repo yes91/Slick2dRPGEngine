@@ -4,8 +4,10 @@
  */
 package engine;
 
+import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
+import org.newdawn.slick.Input;
 
 /**
  *
@@ -25,6 +27,11 @@ public abstract class GameBattler {
     public int DEFplus;
     public int MDEFplus;
     public int SPDplus;
+    /**
+     * Animation state testing variables
+     */
+    int stateTest = 0;
+    /* End */
     
     public GameBattler(Image bSprite){
         stats = new BattleStats();
@@ -34,14 +41,25 @@ public abstract class GameBattler {
     public void render(Graphics g, float x, float y, float scale){
         int width = battleSprite.getCurrentAni().getWidth();
         int height = battleSprite.getCurrentAni().getHeight();
+        
         float cx = x +  width / 2;
         float cy = y +  height / 2;
 
         // get scaled draw coordinates (sx, sy)
-        float sx = cx - (width / 2 * scale);
-        float sy = cy - (height / 2 * scale);
+        float sx = x - (width * scale / 2);
+        float sy = y - (height * scale / 2);
         
-        battleSprite.getCurrentAni().draw(cx, cy, width * scale, height * scale);
+        battleSprite.getCurrentAni().draw(sx, sy, width * scale, height * scale);
+        
+        if(SceneBattle.DEBUG_UTIL){
+            g.setColor(Color.cyan);
+            g.drawLine(x  + 10, y, x - 10, y);
+            g.drawLine(x , y + 10, x, y - 10);
+            g.setColor(Color.red);
+            g.drawLine(cx  + 10, cy, cx - 10, cy);
+            g.drawLine(cx , cy + 10, cx, cy - 10);
+        }
+        
     }
     
     public void updateLevel(){
@@ -56,6 +74,42 @@ public abstract class GameBattler {
         DEFplus = 0;
         MDEFplus = 0;
         SPDplus = 0;
+    }
+    
+    public void debugUpdate(Input in){
+        if(in.isKeyPressed(Input.KEY_Q)){
+            stateTest = 0;
+        }
+        if(in.isKeyPressed(Input.KEY_W)){
+            stateTest = 1;
+        }
+        if(in.isKeyPressed(Input.KEY_E)){
+            stateTest = 2;
+        }
+        if(in.isKeyPressed(Input.KEY_R)){
+            stateTest = 3;
+        }
+        if(in.isKeyPressed(Input.KEY_T)){
+            stateTest = 4;
+        }
+        if(in.isKeyPressed(Input.KEY_Y)){
+            stateTest = 5;
+        }
+        if(in.isKeyPressed(Input.KEY_U)){
+            stateTest = 6;
+        }
+        if(in.isKeyPressed(Input.KEY_I)){
+            stateTest = 7;
+        }
+        if(in.isKeyPressed(Input.KEY_O)){
+            stateTest = 8;
+        }
+        if(in.isKeyPressed(Input.KEY_P)){
+            stateTest = 9;
+        }
+        if(in.isKeyPressed(Input.KEY_LBRACKET)){
+            stateTest = 10;
+        }
     }
     
     public boolean isDead(){
