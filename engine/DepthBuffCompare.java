@@ -14,6 +14,6 @@ public class DepthBuffCompare implements Comparator<GameActor>{
     
     @Override
     public int compare(GameActor g1, GameActor g2) {
-        return (int)(g1.z - g2.z);
+        return (int)((g1.basePosZ + g1.moveZ) - (g2.basePosZ + g2.moveZ));
     }
 }

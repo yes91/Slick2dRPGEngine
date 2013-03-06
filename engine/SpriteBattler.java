@@ -20,6 +20,15 @@ public class SpriteBattler extends SpriteBase{
     
     public AnimationSequence aSeq;
     
+    public float moveX;
+    public float moveY;
+    public float moveZ;
+    private float deltaX, deltaY, deltaZ;
+    public float distX;
+    public float distY;
+    public float distZ;
+    public int pose;
+    
     private static final int IDLE = 0;
     private static final int DAMAGE = 1;
     private static final int CRITICAL = 2;
@@ -69,7 +78,17 @@ public class SpriteBattler extends SpriteBase{
         return currentAni;
     }
     
+    public void updateMove(){
+        moveX += deltaX;
+        moveY += deltaY;
+        moveZ += deltaZ;
+        gBattler.moveX = moveX;
+        gBattler.moveY = moveY;
+        gBattler.moveZ = moveZ;
+    }
+    
     public void updateAnimationState(){
+        updateMove();
         if(SceneBattle.DEBUG_UTIL){
             currentAni = states[gBattler.stateTest];
         } else {

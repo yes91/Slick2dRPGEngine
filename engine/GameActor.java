@@ -28,6 +28,11 @@ public class GameActor extends GameBattler{
         super(GameCache.res(bSprite+".png"));
     }
     
+    @Override
+    public boolean isActor(){
+        return true;
+    }
+    
     public GameClass getGameClass(){
         return GameData.classes.get(classID);
     }

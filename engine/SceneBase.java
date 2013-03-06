@@ -29,5 +29,6 @@ public abstract class SceneBase extends BasicGameState{
     public static WorldPlayer worldPlayer;
     public static GameMessage gameMessage = new GameMessage();
     public static GameParty gameParty = new GameParty();
+    public static GameTroop gameTroop = null;
     
 }

@@ -18,7 +18,9 @@ public abstract class GameBattler {
     private final int HP_LIMIT = 999999;
     public SpriteBattler battleSprite;
     public BattleStats stats;
-    public float x, y, z;
+    public float moveX, moveY, moveZ;
+    public float basePosX, basePosY, basePosZ;
+    public GameBattleAction action;
     public int currentHP;
     public int currentMP;
     public int HPplus;
@@ -37,15 +39,13 @@ public abstract class GameBattler {
     public GameBattler(Image bSprite){
         stats = new BattleStats();
         battleSprite = new SpriteBattler(this, bSprite);
+        action = new GameBattleAction(this);
     }
     
     public void render(Graphics g, float x, float y, float scale){
         int width = battleSprite.getCurrentAni().getWidth();
         int height = battleSprite.getCurrentAni().getHeight();
         
-        float cx = x +  width / 2;
-        float cy = y +  height / 2;
-
         // get scaled draw coordinates (sx, sy)
         float sx = x - (width * scale / 2);
         float sy = y - (height * scale / 2);
@@ -54,11 +54,8 @@ public abstract class GameBattler {
         
         if(SceneBattle.DEBUG_UTIL){
             g.setColor(Color.cyan);
-            g.drawLine(x  + 10, y, x - 10, y);
+            g.drawLine(x + 10, y, x - 10, y);
             g.drawLine(x , y + 10, x, y - 10);
-            g.setColor(Color.red);
-            g.drawLine(cx  + 10, cy, cx - 10, cy);
-            g.drawLine(cx , cy + 10, cx, cy - 10);
         }
         
     }
@@ -115,6 +112,10 @@ public abstract class GameBattler {
     
     public boolean isDead(){
         return currentHP <= 0;
+    }
+    
+    public boolean isActor(){
+        return false;
     }
     
     public int getMaxHP(){

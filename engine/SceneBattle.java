@@ -34,6 +34,8 @@ public class SceneBattle extends SceneBase {
     private WindowCommand activeWindow;
     private WindowBattleStatus stat;
     private List<GameActor> drawList = new ArrayList<>();
+    private List<GameActor> actionBattlers = new ArrayList<>();
+    private GameBattler activeBattler;
     private DepthBuffCompare comparator = new DepthBuffCompare();
     private final int DEPTH_BUFFER_SIZE = 360;
     private int activePos = 0;
@@ -66,13 +68,14 @@ public class SceneBattle extends SceneBase {
     public void enter(GameContainer container, StateBasedGame game)
          throws SlickException {
       super.enter(container, game);
+      activeBattler = party.getMembers().get(0);
       drawList.clear();
       drawList.addAll(party.getMembers());
       int index = 0;
-      for(GameActor ga: drawList){
-          ga.x = position[index][0];
-          ga.y = position[index][1];
-          ga.z = position[index][2];
+      for(GameActor ga: party.getMembers()){
+          ga.basePosX = position[index][0];
+          ga.basePosY = position[index][1];
+          ga.basePosZ = position[index][2];
           index++;
       }
     }
@@ -106,7 +109,7 @@ public class SceneBattle extends SceneBase {
         //gameParty.getMembers().get(0).battleSprite.aSeq.play(768.0f, 273.0f);
         for (GameActor ga : drawList) {
             ga.battleSprite.updateAnimationState();
-            ga.render(g, ga.x, ga.y, 1.0f + 1.0f * (ga.z / DEPTH_BUFFER_SIZE));
+            ga.render(g, (ga.basePosX + ga.moveX ), (ga.basePosY + ga.moveY), 1.0f + ((ga.basePosZ + ga.moveZ) / DEPTH_BUFFER_SIZE));
         }
         /*for(int i = 0; i < gameParty.getMembers().size(); i++){
          gameParty.getMembers().get(i).battleSprite.getCurrentAni().draw(
@@ -144,17 +147,17 @@ public class SceneBattle extends SceneBase {
                 System.out.println(Arrays.deepToString(position));
             }
             if (input.isKeyDown(Input.KEY_UP)) {
-                party.getMembers().get(activePos).y -= 1f;
+                party.getMembers().get(activePos).moveY -= 1f;
             } else if (input.isKeyDown(Input.KEY_DOWN)) {
-                party.getMembers().get(activePos).y += 1f;
+                party.getMembers().get(activePos).moveY += 1f;
             } else if (input.isKeyDown(Input.KEY_RIGHT)) {
-                party.getMembers().get(activePos).x += 1f;
+                party.getMembers().get(activePos).moveX += 1f;
             } else if (input.isKeyDown(Input.KEY_LEFT)) {
-                party.getMembers().get(activePos).x -= 1f;
+                party.getMembers().get(activePos).moveX -= 1f;
             } else if (input.isKeyDown(Input.KEY_Z)) {
-                party.getMembers().get(activePos).z -= 1f;
+                party.getMembers().get(activePos).moveZ -= 1f;
             } else if (input.isKeyDown(Input.KEY_X)) {
-                party.getMembers().get(activePos).z += 1f;
+                party.getMembers().get(activePos).moveZ += 1f;
             }
         }
         stat.initX = xOffset;
@@ -162,25 +165,38 @@ public class SceneBattle extends SceneBase {
         actorCommand.initX = stat.width + xOffset;
         activeWindow.update(inputp, delta);
         if (activeWindow.equals(partyCommand)) {
-            if (xOffset < 128) {
+            updatePartyCommandSelection(sbg);
+        } else if (activeWindow.equals(actorCommand)) {
+            updateActorCommandSelection();
+        }
+    }
+    
+    public void updatePartyCommandSelection(StateBasedGame sbg){
+        if (xOffset < 128) {
                 xOffset += 16;
             }
             switch (partyCommand.index) {
-                case 0:
+                case 0://Fight
                     if (inputp.isCommandControlPressed(action)) {
-                        actorCommand.index = 0;
-                        activeWindow = actorCommand;
-                        partyCommand.index = -1;
+                        startActorCommandSelection();
                     }
                     break;
-                case 1:
+                case 1://Escape
                     if (inputp.isCommandControlPressed(action)) {
                         sbg.enterState(1, new FadeOutTransition(), new CameraFadeInTransition());
                     }
                     break;
             }
-        } else if (activeWindow.equals(actorCommand)) {
-            if (xOffset > 0) {
+    }
+    
+    public void startActorCommandSelection(){
+        actorCommand.index = 0;
+        activeWindow = actorCommand;
+        partyCommand.index = -1;
+    }
+    
+    public void updateActorCommandSelection(){
+        if (xOffset > 0) {
                 xOffset -= 16;
             }
 
@@ -200,6 +216,11 @@ public class SceneBattle extends SceneBase {
                     }
                     break;
             }
+    }
+    
+    public void playAction(){
+        while(true){
+            
         }
     }
 
