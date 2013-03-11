@@ -4,12 +4,16 @@
  */
 package engine;
 
+import java.io.IOException;
+import java.io.ObjectInputStream.GetField;
+import java.io.Serializable;
+
 /**
  *
  * @author redblast71
  */
 
-public class GameActor extends GameBattler{   
+public class GameActor extends GameBattler {   
     
     public String name;
     public String characterName;
@@ -24,8 +28,14 @@ public class GameActor extends GameBattler{
     public int armor4_ID;
     public int lastSkillID;
     
+    public GameActor(){
+        super();
+        spriteName = "default";
+    }
+    
     public GameActor(String bSprite){
-        super(GameCache.res(bSprite+".png"));
+        super(bSprite+".png");
+        spriteName = bSprite;
     }
     
     @Override

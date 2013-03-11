@@ -7,7 +7,6 @@ package engine;
 import java.util.List;
 import org.lwjgl.Sys;
 import org.newdawn.slick.Animation;
-import org.newdawn.slick.Graphics;
 
 /**
  *

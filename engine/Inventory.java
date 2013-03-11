@@ -13,7 +13,7 @@ import org.newdawn.slick.Graphics;
  */
 public class Inventory {
     
-    public static final int INV_SIZE = 50;
+    public static final int INV_SIZE = 150;
     public static final int MAX_AMOUNT = 99;
     public ArrayList<Item> items;
     private int[] amounts;

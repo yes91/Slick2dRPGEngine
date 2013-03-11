@@ -60,17 +60,17 @@ public class Camera {
                 transY = -(int)target.getY()+SceneMap.B_HEIGHT/2-16;
             }
  
-        if(!SceneMap.blocked){
-    	g.translate(transX, transY);
-    	viewPort.setX(-transX);
-    	viewPort.setY(-transY);
-        lastTX = transX;
-        lastTY = transY;
+        if(!target.collide()){
+            g.translate(transX, transY);
+            viewPort.setX(-transX);
+            viewPort.setY(-transY);
+            lastTX = transX;
+            lastTY = transY;
         }
         else{
-        g.translate(lastTX, lastTY);
-    	viewPort.setX(-lastTX);
-    	viewPort.setY(-lastTY);
+            g.translate(lastTX, lastTY);
+            viewPort.setX(-lastTX);
+            viewPort.setY(-lastTY);
         }
  
 	}

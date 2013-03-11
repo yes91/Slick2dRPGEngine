@@ -4,6 +4,7 @@
  */
 package engine;
 
+import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 
@@ -21,6 +22,14 @@ public class Sprite {
         int frameY = (frame / columns) * height;
         g2d.drawImage(source, x, y, x + width, y + height,
                 frameX, frameY, frameX + width, frameY + height);
+    }
+    
+    public static void drawSpriteFrame(Image source, Graphics g2d, float x, float y,
+            int columns, int frame, int width, int height, Color filter) {
+        int frameX = (frame % columns) * width;
+        int frameY = (frame / columns) * height;
+        g2d.drawImage(source, x, y, x + width, y + height,
+                frameX, frameY, frameX + width, frameY + height, filter);
     }
 
     public static void animateSprite(Image source, Graphics g, float x, float y, int width, int height, int columns, int startFrame, int endFrame, float speed, boolean isMoving) {

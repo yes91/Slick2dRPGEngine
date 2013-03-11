@@ -4,8 +4,6 @@
  */
 package engine;
 
-import java.util.ArrayList;
-import java.util.List;
 import org.newdawn.slick.Animation;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SpriteSheet;
@@ -15,15 +13,16 @@ import org.newdawn.slick.SpriteSheet;
  * @author Kieran
  */
 public class SpriteBattler extends SpriteBase{
+    
     private GameBattler gBattler;
     private Animation currentAni;
     
-    public AnimationSequence aSeq;
+    //public AnimationSequence aSeq;
     
     public float moveX;
     public float moveY;
     public float moveZ;
-    private float deltaX, deltaY, deltaZ;
+    public float deltaX, deltaY, deltaZ;
     public float distX;
     public float distY;
     public float distZ;
@@ -41,8 +40,13 @@ public class SpriteBattler extends SpriteBase{
     private static final int VICTORY = 9;
     private static final int COLLAPSE = 10;
     
-    public SpriteBattler(GameBattler b, Image i){
+    public SpriteBattler(){
+        
+    }
+    
+    public SpriteBattler(GameBattler b, String sprite){
         gBattler = b;
+        Image i = GameCache.res(sprite);
         image = new SpriteSheet(i, i.getWidth()/4, i.getHeight()/11);
         states = new Animation[]{
             new Animation(image, 0, 0, 3, 0, true, 160, true),//IDLE(0)
@@ -57,7 +61,7 @@ public class SpriteBattler extends SpriteBase{
             new Animation(image, 0, 9, 3, 9, true, 120, true),//VICTORY(9)
             new Animation(image, 0, 10, 3, 10, true, 120, true),//COLLAPSE(10)
         };
-        List<Animation> seq;
+        /*List<Animation> seq;
         seq = new ArrayList<>();
         seq.add(states[IDLE]);
         seq.add(states[APPROACH]);
@@ -68,7 +72,7 @@ public class SpriteBattler extends SpriteBase{
             new float[]{-20.0f, 0.0f},
             new float[]{0.0f, 0.0f},
             new float[]{20.0f, 0.0f}
-        });
+        });*/
         //states[ATTACK_HEAVY].setLooping(false);
         //states[ATTACK_LIGHT].setLooping(false);
         currentAni = states[IDLE];
@@ -79,6 +83,17 @@ public class SpriteBattler extends SpriteBase{
     }
     
     public void updateMove(){
+        distX += (deltaX < 0 ? deltaX:-deltaX);
+        distY += (deltaY < 0 ? deltaY:-deltaY);
+        distZ += (deltaZ < 0 ? deltaZ:-deltaZ);
+        if(distX <= 0 && distY <= 0 && distZ <= 0){
+            distX = 0;
+            distY = 0;
+            distZ = 0;
+            deltaX = 0;
+            deltaY = 0;
+            deltaZ = 0;
+        }
         moveX += deltaX;
         moveY += deltaY;
         moveZ += deltaZ;
@@ -90,12 +105,24 @@ public class SpriteBattler extends SpriteBase{
     public void updateAnimationState(){
         updateMove();
         if(SceneBattle.DEBUG_UTIL){
-            currentAni = states[gBattler.stateTest];
+            //currentAni = states[gBattler.stateTest];
+            if(gBattler.isDead()){
+                currentAni = states[COLLAPSE];
+            } else if(deltaX > 0){
+                currentAni = states[RETREAT];
+            } else if(deltaX < 0){
+                currentAni = states[APPROACH];
+            } else{
+                currentAni = states[IDLE];
+            }
         } else {
             if(gBattler.isDead()){
                 currentAni = states[COLLAPSE];
-            }
-            else{
+            } else if(deltaX > 0 || deltaY > 0 || deltaZ > 0){
+                currentAni = states[RETREAT];
+            } else if(deltaX < 0 || deltaY < 0 || deltaZ < 0){
+                currentAni = states[APPROACH];
+            } else{
                 currentAni = states[IDLE];
             }
         }

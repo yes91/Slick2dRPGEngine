@@ -5,7 +5,10 @@
 package engine;
 
 import effectutil.CameraFadeInTransition;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.newdawn.slick.ControllerListener;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
@@ -181,20 +184,23 @@ public class SceneTitle extends SceneBase{
         inputp.bindCommand(new ControllerButtonControl(0, 2), cancel);
         inputp.bindCommand(new KeyControl(Input.KEY_LSHIFT), sprint);
         inputp.bindCommand(new KeyControl(Input.KEY_J), action);
-        inputp.bindCommand(new KeyControl(Input.KEY_R), pUp);
-        inputp.bindCommand(new KeyControl(Input.KEY_L), pDown);
+        inputp.bindCommand(new KeyControl(Input.KEY_PRIOR), pUp);
+        inputp.bindCommand(new KeyControl(Input.KEY_NEXT), pDown);
+        inputp.bindCommand(new ControllerButtonControl(0, 5), pUp);
+        inputp.bindCommand(new ControllerButtonControl(0, 6), pDown);
         ItemReader.populateItems();
-        for(Item i: ItemReader.getItems()){
+        for(Item i: GameData.items){
             gameParty.giveItem(i, 99);
         }
-        gameParty.actors = Demo.testActors.subList(0, 4);
+        gameParty.actors = GameData.actors.subList(0, 4);
         uielements = new ArrayList<>();
         fin = new CameraFadeInTransition();
         back = GameCache.res("TitleBack.png");
         options = new WindowSystem(2, 1);
         String[] coms = new String[]{"New Game","Continue","Option","Exit"};
         wind = new WindowCommand(160, coms, 1, 0);
-        
+        gameMessage.faceName = "People1";
+        gameMessage.faceIndex = 4;
         String text = "Hello, \\C[1]this\\C[0] is a test of the message system.\n"
         + "This is a new line. This is still the same line.\n"
         + "Habla espanol por favor, senor. No hablo ingles.\n"
@@ -206,8 +212,6 @@ public class SceneTitle extends SceneBase{
         + "Line #9 and it better work.\n"
         + "Ok, clearly it works no matter what.";
         gameMessage.setText(text);
-        gameMessage.faceName = "People1";
-        gameMessage.faceIndex = 4;
         test = new WindowMessage();
         wind.initX = (1280/2) - 80;
         wind.initY = 500;

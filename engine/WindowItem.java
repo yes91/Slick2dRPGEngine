@@ -4,6 +4,11 @@
  */
 package engine;
 
+import engine.Effect.Place;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Rectangle;
@@ -13,40 +18,80 @@ import org.newdawn.slick.state.StateBasedGame;
  *
  * @author redblast71
  */
-public class WindowItem extends WindowSelectable{
-    
+public class WindowItem extends WindowSelectable {
+
     private Inventory inven;
+    private ArrayList<Item> data;
     
-    public WindowItem(int x, int y, int width,int height, Inventory inv) throws SlickException{
+
+    public WindowItem(int x, int y, int width, int height, Inventory inv) throws SlickException {
         super(x, y, width, height);
         this.columnMax = 2;
         this.index = 0;
         inven = inv;
+        data = new ArrayList<>();
+        data.addAll(inven.items);
+        sortAlpha();
     }
-    
+
+    public Item getItem() {
+        return data.get(index);
+    }
+
     @Override
-    public void render(Graphics g, StateBasedGame sbg){
+    public void render(Graphics g, StateBasedGame sbg) {
         super.render(g, sbg);
-        this.itemMax = inven.getCurrLength()-1;
-        if(itemMax > 0){
-        drawCursorRect(g);
+        this.itemMax = data.size();
+        if (itemMax > 0) {
+            drawCursorRect(g);
         }
-        for(int i = 0; i < itemMax; i++ ){
-            drawItem(i, g);
+        cg.clear();
+        for (int i = 0; i < itemMax; i++) {
+            drawItem(i);
         }
+        cg.flush();
+        g.drawImage(contents, x + 16, y + 16);
     }
-    
-    public void drawItem(int ind, Graphics g){
+
+    public void drawItem(int ind) {
         Rectangle rect = getItemRect(ind);
         rect.setX(rect.getX() + 4);
         rect.setWidth(rect.getWidth() - 8);
-        Item item = inven.items.get(ind);
+        Item item = data.get(ind);
         int number = inven.getItemAmount(item);
-        Sprite.drawSpriteFrame(GameCache.image("IconSet.png"), g, x+16+rect.getX()+8, y+16+rect.getY(), 16, item.getIndex(), 24, 24);
-        GameCache.getFont().drawString(x+24+16+rect.getX()+8, y+16+rect.getY()+2, item.getName());
-        GameCache.getFont().drawString(x+(rect.getWidth())+rect.getX()+8-GameCache.getFont().getWidth(String.format(":%2d", number)), y+16+rect.getY()+2, String.format(":%2d", number));
+        boolean enabled = item.isUseable() && item.getPlace() != Place.BATTLE_ONLY;
+        drawItemName(item, rect.getX() + 8, rect.getY() - oy, enabled);
+        for(int i = 0; i < 4; i++){
+            cg.drawString(String.format(":%2d", number), 
+                    (rect.getWidth()) + 
+                    rect.getX() -
+                    GameCache.getFont().getWidth(String.format(":%2d", number)), 
+                    rect.getY() + 2 - oy);
+        }
+    }
+
+    public final void sortAlpha() {
+        Collections.sort(data, new byName());
+    }
+
+    public void setBattle() {
+        data.clear();
+        for (Item i : inven.items) {
+            if (i instanceof Consumable && i.getPlace() != Place.MENU_ONLY) {
+                data.add(i);
+            }
+        }
     }
     
     
-    
+    private static final class byName implements Comparator {
+        @Override
+        public int compare(Object o1, Object o2) {
+            Item i1 = (Item) o1;
+            Item i2 = (Item) o2;
+            return i1.getName().compareTo(i2.getName());
+        }
+    }
 }
+
+

@@ -27,7 +27,7 @@ public class GameBattleAction {
     private BasicType basic;
     private int skillID;
     private int itemID;
-    private int targetIndex;
+    public int targetIndex;
 
     public GameBattleAction(GameBattler battler) {
         this.battler = battler;

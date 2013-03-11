@@ -9,7 +9,15 @@ import effectutil.ShaderProgram;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.script.Bindings;
+import javax.script.ScriptContext;
+import javax.script.ScriptEngine;
+import javax.script.ScriptEngineManager;
+import javax.script.ScriptException;
 import org.newdawn.slick.Color;
+import org.newdawn.slick.Font;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
@@ -17,6 +25,9 @@ import org.newdawn.slick.ImageBuffer;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.Music;
 import org.newdawn.slick.SlickException;
+import org.newdawn.slick.gui.AbstractComponent;
+import org.newdawn.slick.gui.ComponentListener;
+import org.newdawn.slick.gui.TextField;
 import org.newdawn.slick.state.StateBasedGame;
 
 /**
@@ -24,7 +35,6 @@ import org.newdawn.slick.state.StateBasedGame;
  * @author Kieran
  */
 public class SceneMap extends SceneBase {
-
     int stateID = -1;
     private ShaderProgram blurH;
     private ShaderProgram blurV;
@@ -53,6 +63,7 @@ public class SceneMap extends SceneBase {
     Camera camera;
     private Image buffer;
     private Image lightBuffer;
+    private Image consoleBuffer;
     private Image fire1;
     private Image fire2;
     private float count;
@@ -61,6 +72,7 @@ public class SceneMap extends SceneBase {
     //public Input input;
     public static Map map;
     public Image light;
+    private TextField console;
     private static ArrayList<Window> uielements;
 
     public SceneMap(int stateID) {
@@ -70,17 +82,17 @@ public class SceneMap extends SceneBase {
 
     @Override
     public void init(GameContainer container, StateBasedGame sbg) throws SlickException {
-
         fire1 = GameCache.res("fire1.png");
         fire2 = GameCache.res("fire2.png");
         interpreter = new GameInterpreter(0, true);
         ImageBuffer scratch = new ImageBuffer(B_WIDTH, B_HEIGHT);
         lightBuffer = new Image(B_WIDTH, B_HEIGHT);
+        consoleBuffer = new Image(B_WIDTH, B_HEIGHT);
         buffer = scratch.getImage();
         allowClose = false;
         //container.setMaximumLogicUpdateInterval(60);
         testbattler = new Image("res/yuan_3.png");
-        worldPlayer = new WorldPlayer(new Image("engine/craft.png"));
+        worldPlayer = new WorldPlayer("steampunk_m4");
         blurH = ShaderProgram.loadProgram("engine/blurH.vert", "engine/blurH.frag");
         blurV = ShaderProgram.loadProgram("engine/blurV.vert", "engine/blurV.frag");
         effect = new LightShader("engine/oilpaint.vert", "engine/oilpaint.frag");
@@ -107,7 +119,28 @@ public class SceneMap extends SceneBase {
         items = new Image("res/system/IconSet.png");
         light = new Image("res/LightRays.png");
         //System.out.println(new GameBattler().stat.getBaseHP());
-
+        final ScriptEngine js = new ScriptEngineManager().getEngineByName("javascript");
+        Bindings bindings = js.getBindings(ScriptContext.ENGINE_SCOPE);
+        bindings.put("stdout", System.out);
+        bindings.put("actors", gameParty.getMembers());
+        bindings.put("data", new GameData());
+        bindings.put("cache", new GameCache());
+        bindings.put("npc", map.events.get(0));
+        bindings.put("player", worldPlayer);
+        ComponentListener listener = new ComponentListener() {
+            @Override
+            public void componentActivated(AbstractComponent source) {
+                try {
+                    js.eval(console.getText());
+                } catch (ScriptException ex) {
+                    System.err.println(ex.getMessage());
+                    System.err.println("Dude, watch it.");
+                }
+                console.setFocus(true);
+                input.clearKeyPressedRecord();
+            }
+        };
+        console = new TextField(container, (Font)GameCache.getFont(), B_WIDTH/2 - 500/2, B_HEIGHT - 35,500,35, listener);
     }
 
     @Override
@@ -126,7 +159,7 @@ public class SceneMap extends SceneBase {
         if (input.isKeyPressed(Input.KEY_ESCAPE)) {
             container.exit();
         }
-        if (input.isKeyPressed(Input.KEY_0)) {
+        if (input.isKeyPressed(Input.KEY_0) && !console.hasFocus()) {
             ((SceneBattle) sbg.getState(3)).setBattleBack(GameCache.res("Cobblestones3.png"));
             sbg.enterState(3);
         }
@@ -189,8 +222,7 @@ public class SceneMap extends SceneBase {
 
     @Override
     public void render(GameContainer container, StateBasedGame sbg, Graphics g) throws SlickException {
-        //effect.bind();
-
+        //effect.bind();        
         mouseLight.x = (float) input.getMouseX() + Camera.viewPort.getX();
         mouseLight.y = (float) input.getMouseY() + Camera.viewPort.getY();
         mouseLight.scale = 1f + Math.abs((float) Math.sin(elapsed / 1000f));
@@ -249,6 +281,9 @@ public class SceneMap extends SceneBase {
             w.render(g, sbg);
             map.renderUI(worldPlayer);
         }
+        console.render(container, consoleBuffer.getGraphics());
+        consoleBuffer.getGraphics().flush();
+        g.drawImage(consoleBuffer, Camera.viewPort.getX(), Camera.viewPort.getY());
     }
 
     private void tpPlayer(int tileX, int tileY, WorldPlayer p) {

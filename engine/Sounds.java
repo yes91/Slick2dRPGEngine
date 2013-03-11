@@ -19,11 +19,15 @@ public class Sounds {
     
     public static Sound cursor;
     public static Sound cancel;
+    public static Sound buzzer;
+    public static Sound itemUse;
     
     public static void load(){
         try {
-            cursor = new Sound("res/Cursor2.wav");
-            cancel = new Sound("res/Cancel2.wav");  
+            itemUse = new Sound("res/Audio/SE/105-Heal01.wav");
+            buzzer = new Sound("res/Audio/SE/004-System04.wav");
+            cursor = new Sound("res/Audio/SE/Cursor2.wav");
+            cancel = new Sound("res/Audio/SE/Cancel2.wav");  
         } catch (SlickException ex) {
             Logger.getLogger(Sounds.class.getName()).log(Level.SEVERE, null, ex);
         }

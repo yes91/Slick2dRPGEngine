@@ -46,12 +46,16 @@ public class GameCache {
         return result;
     }
     
+    public static void clear(){
+        images.clear();
+    }
+    
     public static AngelCodeFont getFont(){
         
         if(font == null){
             try {
                 font = new AngelCodeFont("res/system/umeplusbold.fnt","res/system/umeplusbold.png");
-                //font = new AngelCodeFont("res/system/mysterons.fnt","res/system/mysterons_0.png");
+                //font = new AngelCodeFont("res/system/mysterons.fnt","res/system/mysterons.png");
                     /*font = new UnicodeFont(new Font("VL Gothic Regular",Font.PLAIN,18));
                     font.addAsciiGlyphs();   //Add Glyphs
                     font.addGlyphs(400, 600); //Add Glyphs //Add Effects

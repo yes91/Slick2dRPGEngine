@@ -91,7 +91,6 @@ public class Map {
                 objs.add(p);
                 p.setX(Float.parseFloat(map.getMapProperty("startPosx", "1"))*64 + 32);
                 p.setY(Float.parseFloat(map.getMapProperty("startPosy", "1"))*64 + 48);
-        
     }
     
     public void render(WorldPlayer p, Graphics g){
@@ -104,17 +103,6 @@ public class Map {
     }
     
     public void update(GameContainer container, WorldPlayer p) throws SlickException {
-        
-         SceneMap.blocked = false;
-        if(p.getX()+p.getBounds().getWidth() > boundsX | p.getY()+p.getHeight() > boundsY | p.getX() < 0 | p.getY() < 0){
-            SceneMap.blocked = true;
-        }
-        for(Rectangle o: listRect){
-            if (Physics.checkCollisions(p, o)) {
-                
-                SceneMap.blocked = true;
-            }
-        }
         for(Event e: events){
             if(Physics.checkCollisions(p, e.getActivationRect()) & p.getAction() == true){
                 if(e.getType().equals("Actor") | e.getType().equals("Npc")){

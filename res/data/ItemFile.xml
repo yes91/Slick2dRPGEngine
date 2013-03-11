@@ -2,7 +2,6 @@
   <item>
     <type>weapon</type>
     <name>Gestalt Sword</name>
-    <subtype>sword</subtype>
     <desc>A sword</desc>
     <dmg>10</dmg>
     <gid>1</gid>
@@ -10,7 +9,6 @@
   <item>
       <type>weapon</type>
       <name>Philosopher's Tongue</name>
-      <subtype>sword</subtype>
       <desc>A sword</desc>
       <dmg>20</dmg>
       <gid>2</gid>
@@ -18,7 +16,6 @@
   <item>
       <type>weapon</type>
       <name>Gib Wibbit</name>
-      <subtype>sword</subtype>
       <desc>A sword</desc>
       <dmg>30</dmg>
       <gid>3</gid>
@@ -27,23 +24,49 @@
       <type>weapon</type>
       <name>Neo Platinar</name>
       <desc>A spear</desc>
-      <subtype>sword</subtype>
       <dmg>40</dmg>
       <gid>4</gid>
   </item>
   <item>
       <type>consumable</type>
       <name>Potion</name>
-      <subtype>hppotion</subtype>
-      <desc>Restores 500HP to one player.</desc>
-      <effect>10</effect>
+      <desc>Restores 500 health to one player.</desc>
+      <HPrate>0</HPrate>
+      <HPamount>500</HPamount>
+      <MPrate>0</MPrate>
+      <MPamount>0</MPamount>
+      <scope>SINGLE_ALLY</scope>
+      <place>ALWAYS</place>
       <gid>64</gid>
+  </item>
+  <item>
+      <type>consumable</type>
+      <name>Mana</name>
+      <desc>Restores 100 magic to one player.</desc>
+      <HPrate>0</HPrate>
+      <HPamount>0</HPamount>
+      <MPrate>0</MPrate>
+      <MPamount>100</MPamount>
+      <scope>SINGLE_ALLY</scope>
+      <place>ALWAYS</place>
+      <gid>65</gid>
+  </item>
+  <item>
+      <type>consumable</type>
+      <name>Soul Gem</name>
+      <desc>Revives one dead player and restores 10% max health.</desc>
+      <HPrate>10</HPrate>
+      <HPamount>0</HPamount>
+      <MPrate>0</MPrate>
+      <MPamount>0</MPamount>
+      <scope>DEAD_ALLY</scope>
+      <place>ALWAYS</place>
+      <gid>201</gid>
   </item>
   <item>
     <type>weapon</type>
     <name>Steam Gunblade</name>
     <desc>A sword</desc>
-    <subtype>sword</subtype>
     <dmg>10</dmg>
     <gid>19</gid>
   </item>

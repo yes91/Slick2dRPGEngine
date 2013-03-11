@@ -49,12 +49,13 @@ public class WindowMessage extends WindowSelectable {
         time = TYPE_DELAY;
         drawChar = "";
         cg.clear();
-        drawFace(gameMessage.faceName, gameMessage.faceIndex, 0, 0);
+        drawFace(gameMessage.faceName, gameMessage.faceIndex, 0, 0, 96);
     }
 
     @Override
     public void render(Graphics g, StateBasedGame sbg) {
         super.render(g, sbg);
+        g.drawImage(contents, x + 16, y + 16);
     }
 
     @Override
@@ -70,7 +71,7 @@ public class WindowMessage extends WindowSelectable {
                         drawChar = "";
                         currentPage++;
                         cg.clear();
-                        drawFace(gameMessage.faceName, gameMessage.faceIndex, 0, 0);
+                        drawFace(gameMessage.faceName, gameMessage.faceIndex, 0, 0, 96);
                         isScrolling = true;
                     } else {
                         currentPage = 0;
@@ -149,7 +150,7 @@ public class WindowMessage extends WindowSelectable {
                 drawChar = "" + gameMessage.pages[currentPage][currentLine].charAt(currentChar);
                 switch (gameMessage.pages[currentPage][currentLine].charAt(currentChar)) {
                     case '\u0001':
-                         m = p.matcher(gameMessage.pages[currentPage][currentLine].substring(currentChar, currentChar+5));
+                         m = p.matcher(gameMessage.pages[currentPage][currentLine]);
                         int color = 0;
                         if(m.find()){
                            color = Integer.parseInt(m.group(1)); 

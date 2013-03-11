@@ -22,6 +22,7 @@ public class Window {
     public final Graphics cg;
     public Rectangle cursorRect;
     private double time;
+    private static final Color transp = new Color(1.0f, 1.0f, 1.0f, 0.8f);
 
     public Window(int x, int y, int w, int h) throws SlickException {
 
@@ -35,7 +36,7 @@ public class Window {
         this.width = w;
         this.height = h;
         contents = new Image(width - 32, height - 32);
-        skin = GameCache.system("Neo Classic Battle.png");
+        skin = GameCache.system("Neo Classic.png");
         cg = contents.getGraphics();
         cg.setFont(GameCache.getFont());
     }
@@ -54,7 +55,7 @@ public class Window {
         g2d.fillRect(x + 4, y + 4, width - 4, height - 4, skin.getSubImage(0, 64, 64, 64), 0, 0);
         skin.setAlpha(100f);
         
-        /*Sprite.drawSpriteFrame(skin, g2d, x, y, 8, 4, 16, 16);
+        Sprite.drawSpriteFrame(skin, g2d, x, y, 8, 4, 16, 16);
         g2d.fillRect(x + 16, y, width - 32, 16, skin.getSubImage(64+16, 0, 16, 16), 0, 0);
         Sprite.drawSpriteFrame(skin, g2d, x + (width) - 16, y, 8, 7, 16, 16);
         g2d.fillRect(x, y + 16, 16, height - 32, skin.getSubImage(64, 32, 16, 16), 0, 0);
@@ -62,8 +63,9 @@ public class Window {
         g2d.fillRect(x + 16, y + height - 16, width - 32, 16, skin.getSubImage(64+16, 64-16, 16, 16), 0, 0);
         Sprite.drawSpriteFrame(skin, g2d, x + (width) - 16, y + (height) - 16, 8, 31, 16, 16);
         g2d.fillRect(x + width - 16, y + 16, 16, height - 32, skin.getSubImage(128-16, 32, 16, 16), 0, 0);
-        g2d.drawImage(contents, x + 16, y + 16);*/
-        Sprite.drawSpriteFrame(skin, g2d, x, y, 8, 4, 16, 16);
+        
+        
+        /*Sprite.drawSpriteFrame(skin, g2d, x, y, 8, 4, 16, 16);
         if ((width % 16) == 0) {
             for (int i = 0; i < ((width / 16) - 2); i++) {
                 Sprite.drawSpriteFrame(skin, g2d, x + (i * 16) + 16, y, 8, 5, 16, 16);
@@ -103,7 +105,7 @@ public class Window {
                 Sprite.drawSpriteFrame(skin, g2d, x + (width) - 16, y + (l * 16) + 16, 8, 15, 16, 16);
             }
         }
-        g2d.drawImage(contents, x + 16, y + 16);
+        g2d.drawImage(contents, x + 16, y + 16);*/
     }
 
     public void drawCursorRect(Graphics g2d) {
@@ -185,13 +187,45 @@ public class Window {
         return y;
     }
     
-    public void drawFace(String faceName, int faceIndex, float x, float y){
+    public void drawItemName(Effect item, float x, float y, boolean enabled){
+        cg.setColor(enabled ? Color.white:transp);
+        Sprite.drawSpriteFrame(GameCache.system("IconSet.png"), cg, x, y, 16, item.getIndex(), 24, 24, cg.getColor());
+        for (int i = 0; i < 4; i++) {
+            cg.drawString(item.getName(), 24 + x, y);
+        }
+    }
+    
+    public void drawFace(String faceName, int faceIndex, float x, float y, int size){
         Image face = GameCache.res(faceName+".png");
-        Sprite.drawSpriteFrame(face, cg, x, y, 4, faceIndex, 96, 96);
+        int frameX = (faceIndex % 4) * 96;
+        int frameY = (faceIndex / 4) * 96;
+        cg.drawImage(face.getSubImage(frameX, frameY, 96, 96), x, y, x+size, y+size, 0, 0, 96, 96);
     }
     
     public void drawActorFace(GameActor actor, float x, float y){
-        drawFace(actor.faceName, actor.faceIndex, x , y);
+        drawFace(actor.faceName, actor.faceIndex, x , y, 96);
+    }
+    
+    public void drawActorFace(GameActor actor, float x, float y, int size){
+        drawFace(actor.faceName, actor.faceIndex, x , y, size);
+    }
+    
+    public void drawActorName(GameActor ga, float x, float y){
+        cg.setColor(hpColor(ga));
+        for(int i = 0; i < 4; i++){
+            cg.drawString(ga.name, x, y);
+        }
+    }
+    
+    public void drawActorLevel(GameActor ga, float x, float y){
+        cg.setColor(systemColor());
+        for(int i = 0; i < 4; i++){
+            cg.drawString("Lv", x, y);
+        }
+        cg.setColor(normalColor());
+        for(int i = 0; i < 4; i++){
+            cg.drawString(""+ga.stats.level, x + 32, y);
+        }
     }
 
     public void drawActorHPGuage(GameActor actor, float x, float y) {

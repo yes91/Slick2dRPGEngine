@@ -11,6 +11,7 @@ package engine;
 public class GameEnemy extends GameBattler{
     
     public GameEnemy(){
-        super(GameCache.res("slime.png"));
+        super("slime.png");
+        currentHP = getMaxHP();
     }
 }

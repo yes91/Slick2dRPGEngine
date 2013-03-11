@@ -4,8 +4,6 @@
  */
 package engine;
 
-import java.util.ArrayList;
-
 /**
  *
  * @author redblast71
@@ -13,20 +11,14 @@ import java.util.ArrayList;
 public class Weapon extends Item {
     
     private int damage;
-    private ArrayList<Element> elements;
     private float hitPercent;
+    
+    public Weapon(){
+        super("Default", false);
+    }
     
     public Weapon(String name){
         super(name, false);
-        elements = new ArrayList<>();
-    }
-
-    public Element[] getElements() {
-        return elements.toArray(new Element[]{});
-    }
-
-    public void addElement(Element e) {
-        this.elements.add(e);
     }
 
     public float getHitPercent() {

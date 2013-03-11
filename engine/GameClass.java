@@ -4,8 +4,8 @@
  */
 package engine;
 
-import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 /**
  *
@@ -38,15 +38,15 @@ public class GameClass {
             return "";
         }
     }
+    
     public Position pos;
     public String className;
     public HashMap<Integer, Boolean> weapons; //Key-weapon item index Value-usable by class
     public HashMap<Integer, Boolean> armors; //Key-armor item index Value-usable by class
     public HashMap<Element, Float> eEfficiency;
-    public HashMap<Integer /*level*/, ArrayList<Integer> /*Skills id's to learn at level*/> learnings;
+    public HashMap<Integer /*level*/, List<Integer>> learnings;
 
     public GameClass() {
-
         pos = Position.FRONT;
         className = "";
         weapons = new HashMap();

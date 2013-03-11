@@ -21,9 +21,13 @@ public class GameCharacter extends GameObject{
     protected float lastX;
     protected float lastY;
     public SpriteCharacter sprite;
+    public String characterName;
+    public int characterIndex;
     public Direction facing;
     
-    public GameCharacter(Image i){
+    public GameCharacter(String image){
+        characterName = image;
+        Image i = GameCache.res(image+".png");
         width = i.getWidth() / 4;
         height = i.getHeight() / 4;
         sprite = new SpriteCharacter(this, i);

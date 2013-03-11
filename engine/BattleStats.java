@@ -4,11 +4,13 @@
  */
 package engine;
 
+import java.io.Serializable;
+
 /**
  *
  * @author Kieran
  */
-public class BattleStats {
+public class BattleStats implements Serializable{
     
     private int levels = 99;
     private int[] expList;

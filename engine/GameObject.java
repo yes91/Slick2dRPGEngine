@@ -18,9 +18,6 @@ public abstract class GameObject {
     public Vector2f pos = new Vector2f(0,0);
     public int width;
     public int height;
-    //private Animation anim;
-    
-    
     
     public void update() {
         
@@ -30,6 +27,10 @@ public abstract class GameObject {
     public void render(Graphics g2d) {
         
         
+    }
+    
+    public boolean collide(){
+        return false;
     }
     
     public float getX() {

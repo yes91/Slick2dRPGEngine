@@ -21,33 +21,35 @@ public class RPG extends StateBasedGame {
     }
 
     public static void main(String[] arguments) {
-        try {
-            System.setProperty("org.lwjgl.librarypath", new File(new File(System.getProperty("user.dir"), "native"), LWJGLUtil.getPlatformName()).getAbsolutePath());
-            System.setProperty("net.java.games.input.librarypath", System.getProperty("org.lwjgl.librarypath"));
-            try {
-                Controllers.create();
-            } catch (LWJGLException ex) {
-                Logger.getLogger(RPG.class.getName()).log(Level.SEVERE, null, ex);
-            }
-            AppGameContainer app = new AppGameContainer(new RPG());
-            Sounds.load();
+        System.setProperty("org.lwjgl.librarypath", new File(new File(System.getProperty("user.dir"), "native"), LWJGLUtil.getPlatformName()).getAbsolutePath());
+        System.setProperty("net.java.games.input.librarypath", System.getProperty("org.lwjgl.librarypath"));
+        try {    
             
+            Controllers.create();
+            AppGameContainer app = new AppGameContainer(new RPG());
             app.setSmoothDeltas(true);
             app.setTargetFrameRate(60);
             app.setDisplayMode(SceneMap.B_WIDTH, SceneMap.B_HEIGHT, false);
             app.setVSync(true);
             app.setShowFPS(true);
             app.start();
-            Controllers.destroy();
-        } catch (SlickException e) {
-            Logger.getLogger(RPG.class.getName()).log(Level.SEVERE, null, e);
+            Controllers.destroy();  
+        } catch (LWJGLException | SlickException ex) {
+            Logger.getLogger(RPG.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
     @Override
-    public void initStatesList(GameContainer gc) throws SlickException {
+    public void initStatesList(GameContainer gc) throws SlickException{
+        try {
+            //Demo.init();
+            GameData.editorMode = false;
+            GameData.populate();
+            Sounds.load();
+        } catch (IOException | ClassNotFoundException ex) {
+            Logger.getLogger(RPG.class.getName()).log(Level.SEVERE, null, ex);
+        }
         gc.setDefaultFont(GameCache.getFont());
-        Demo.init();
         addState(new SceneTitle(0));
         addState(new SceneMap(1));
         addState(new SceneMenu(2));

@@ -18,36 +18,44 @@ public class Demo {
     public static void init(){
         testActors = new ArrayList<>();
         GameActor battleTester = new GameActor("yuan_1");
-        battleTester.name = "TestDude";
+        battleTester.name = "Atticus";
         battleTester.faceName = "People1";
         battleTester.faceIndex = 2;
+        battleTester.characterName = "001-Fighter01";
+        battleTester.characterIndex = -1;
         battleTester.stats.level = 22;
         battleTester.stats.EXP = battleTester.stats.getEXP(22);
         battleTester.currentHP = battleTester.getMaxHP();
         battleTester.currentMP = battleTester.getMaxMP();
         
         GameActor tester2 = new GameActor("aster_1");
-        tester2.name = "Dipshit";
+        tester2.name = "Raena";
         tester2.faceName = "People1";
         tester2.faceIndex = 3;
+        tester2.characterName = "";
+        tester2.characterIndex = -1;
         tester2.stats.level = 8;
         tester2.stats.EXP = tester2.stats.getEXP(8);
         tester2.currentHP = tester2.getMaxHP();
         tester2.currentMP = tester2.getMaxMP();
         
         GameActor tester3 = new GameActor("yuan_1");
-        tester3.name = "Dipshit";
+        tester3.name = "Markus";
         tester3.faceName = "People1";
         tester3.faceIndex = 0;
+        tester3.characterName = "";
+        tester3.characterIndex = -1;
         tester3.stats.level = 45;
         tester3.stats.EXP = tester3.stats.getEXP(45);
         tester3.currentHP = tester3.getMaxHP();
         tester3.currentMP = tester3.getMaxMP();
         
         GameActor tester4 = new GameActor("yuan_1");
-        tester4.name = "Dipshit";
+        tester4.name = "Olga";
         tester4.faceName = "People1";
         tester4.faceIndex = 7;
+        tester4.characterName = "";
+        tester4.characterIndex = -1;
         tester4.stats.level = 85;
         tester4.stats.EXP = tester4.stats.getEXP(85);
         tester4.currentHP = tester4.getMaxHP();
@@ -57,6 +65,8 @@ public class Demo {
         tester5.name = "Dipshit";
         tester5.faceName = "People1";
         tester5.faceIndex = 4;
+        tester5.characterName = "";
+        tester5.characterIndex = -1;
         tester5.stats.level = 25;
         tester5.stats.EXP = tester5.stats.getEXP(25);
         tester5.currentHP = tester5.getMaxHP();
@@ -66,6 +76,8 @@ public class Demo {
         tester6.name = "Dipshit";
         tester6.faceName = "People1";
         tester6.faceIndex = 6;
+        tester6.characterName = "";
+        tester6.characterIndex = -1;
         tester6.stats.level = 15;
         tester6.stats.EXP = tester6.stats.getEXP(15);
         tester6.currentHP = tester6.getMaxHP();

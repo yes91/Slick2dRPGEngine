@@ -33,6 +33,7 @@ class WindowBattleStatus extends WindowSelectable{
             drawItem(i);
         }
         cg.flush();
+        g.drawImage(contents, x + 16, y + 16);
     }
     
     public void drawItem(int ind){

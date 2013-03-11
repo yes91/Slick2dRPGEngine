@@ -10,28 +10,49 @@ package engine;
  */
 public class Consumable extends Item {
     
-    private String effect;
-    private String type;
+    private float HPrate;
+    private int HPamount;
+    private float MPrate;
+    private int MPamount;
     
-    public Consumable(String name,String type) {
+    public Consumable(){
+        super("Default", true);
+    }
+    
+    public Consumable(String name) {
         super(name, true);
-        this.type = type;
     }
     
-    public void use(GameObject target, Inventory inv){
-        
-        if(type.equals("hppotion")){
-            /*if(((WorldPlayer)target).currentHP < ((WorldPlayer)target).maxHP){
-                ((WorldPlayer)target).currentHP += Integer.parseInt(effect);
-                inv.remove(this, 1);
-            }*/
-        }
+    public float getHPrate() {
+        return HPrate;
     }
-    
-    public void setEffect(String s){
-        
-        effect = s;
+
+    public void setHPrate(float HPrate) {
+        this.HPrate = HPrate;
     }
-    
+
+    public int getHPamount() {
+        return HPamount;
+    }
+
+    public void setHPamount(int HPamount) {
+        this.HPamount = HPamount;
+    }
+
+    public float getMPrate() {
+        return MPrate;
+    }
+
+    public void setMPrate(float MPrate) {
+        this.MPrate = MPrate;
+    }
+
+    public int getMPamount() {
+        return MPamount;
+    }
+
+    public void setMPamount(int MPamount) {
+        this.MPamount = MPamount;
+    }
     
 }

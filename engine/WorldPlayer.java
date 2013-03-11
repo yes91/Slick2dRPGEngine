@@ -1,7 +1,6 @@
 package engine;
 
 import org.newdawn.slick.Graphics;
-import org.newdawn.slick.Image;
 import org.newdawn.slick.command.InputProvider;
 import org.newdawn.slick.geom.Rectangle;
 import org.newdawn.slick.tiled.TiledMap;
@@ -9,16 +8,24 @@ import org.newdawn.slick.tiled.TiledMap;
 public class WorldPlayer extends GameCharacter {
 
     private boolean action;
+    private Rectangle bounds;
 
-    public WorldPlayer(Image i) {
-        super(i);
+    public WorldPlayer(String image) {
+        super(image);
+        characterName = image;
         pos.x = 50;
         pos.y = 60;
+        bounds = new Rectangle(pos.x - width/2 + 8, pos.y, width - 16, height/2);
+    }
+    
+    public void setActor(GameActor a){
+        sprite = new SpriteCharacter(this, GameCache.res(a.characterName+".png"));
+        characterName = a.characterName;
     }
 
     public void update(InputProvider in, int delta) {
         getInput(in, delta);
-        if (SceneMap.isBlocked() == true || SceneMap.stopPlayer() == true) {
+        if (collide()) {
             pos.x = lastX;
             pos.y = lastY;
         }
@@ -26,12 +33,28 @@ public class WorldPlayer extends GameCharacter {
         lastY = pos.y;
         pos.x += dx;
         pos.y += dy;
+        bounds.setLocation(pos.x - width/2 + 8, pos.y);
         sprite.updateAnimationState();
+    }
+    
+    @Override
+    public boolean collide(){
+        boolean blocked = false;
+        if(pos.x + width/2  > SceneMap.map.boundsX || pos.y + height/2 > SceneMap.map.boundsY || pos.x - width/2 < 0 || pos.y - height/2 < 0){
+            blocked = true;
+        }
+        for(Rectangle o: SceneMap.map.listRect){
+            if (Physics.checkCollisions(this, o)) {
+                blocked = true;
+            }
+        }
+        return blocked;
     }
 
     @Override
     public void render(Graphics g2d) {
-        if (!SceneMap.blocked) {
+        //g2d.draw(bounds);
+        if (!collide()) {
             sprite.getCurrentAni().draw((int) pos.x - 32, (int) pos.y - 48);
         } else {
             sprite.getIdle().draw((int) lastX - 32, (int) lastY - 48);
@@ -47,19 +70,14 @@ public class WorldPlayer extends GameCharacter {
     }
 
     public int getTileX(TiledMap map) {
-        return (int) (getBounds().getX() / map.getTileWidth());
+        return (int) (pos.x / map.getTileWidth());
     }
 
     public int getTileY(TiledMap map) {
-        return (int) (getBounds().getY() / map.getTileHeight());
-    }
-
-    public Image getImage() {
-        return sprite.image;
+        return (int) (pos.y / map.getTileHeight());
     }
 
     public boolean isMoving() {
-
         if (((dx != 0) | (dy != 0)) & !SceneMap.blocked) {
             return true;
         } else {
@@ -127,12 +145,11 @@ public class WorldPlayer extends GameCharacter {
     }
 
     public boolean getAction() {
-
         return action;
     }
 
     @Override
     public Rectangle getBounds() {
-        return new Rectangle((pos.x - 32) + 10, (pos.y - 48) + 40, 52, 52);
+        return bounds;
     }
 }

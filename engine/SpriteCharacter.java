@@ -15,6 +15,7 @@ import org.newdawn.slick.SpriteSheet;
 public class SpriteCharacter extends SpriteBase {
 
     private GameCharacter gChar;
+    private String imageName;
     private Animation currentAni;
     private Animation idle;
     
@@ -29,16 +30,17 @@ public class SpriteCharacter extends SpriteBase {
 
     public SpriteCharacter(GameCharacter c, Image i) {
         gChar = c;
+        imageName = gChar.characterName;
         image = new SpriteSheet(i, gChar.width, gChar.height);
         states = new Animation[]{
-            new Animation(image, 0, 1, 3, 1, true, 120, true),//UP(0)
-            new Animation(image, 0, 3, 3, 3, true, 120, true),//DOWN(1)
-            new Animation(image, 0, 2, 3, 2, true, 120, true),//LEFT(2)
-            new Animation(image, 0, 0, 3, 0, true, 120, true),//RIGHT(3)
-            new Animation(image, 0, 1, 0, 1, false, 1, false),//IDLE_UP(4)
-            new Animation(image, 0, 3, 0, 3, false, 1, false),//IDLE_DOWN(5)
-            new Animation(image, 0, 2, 0, 2, false, 1, false),//IDLE_LEFT(6)
-            new Animation(image, 0, 0, 0, 0, false, 1, false),//IDLE_RIGHT(7)
+            new Animation(image, 0, 3, 3, 3, true, 120, true),//UP(0)
+            new Animation(image, 0, 0, 3, 0, true, 120, true),//DOWN(1)
+            new Animation(image, 0, 1, 3, 1, true, 120, true),//LEFT(2)
+            new Animation(image, 0, 2, 3, 2, true, 120, true),//RIGHT(3)
+            new Animation(image, 0, 3, 0, 3, false, 1, false),//IDLE_UP(4)
+            new Animation(image, 0, 0, 0, 0, false, 1, false),//IDLE_DOWN(5)
+            new Animation(image, 0, 1, 0, 1, false, 1, false),//IDLE_LEFT(6)
+            new Animation(image, 0, 2, 0, 2, false, 1, false),//IDLE_RIGHT(7)
         };
         currentAni = states[5];
         idle = states[5];
@@ -53,7 +55,6 @@ public class SpriteCharacter extends SpriteBase {
     }
 
     public void updateAnimationState() {
-
         if (gChar.dx > 0) {
             idle = states[IDLE_RIGHT];
             gChar.facing = GameCharacter.Direction.RIGHT;

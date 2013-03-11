@@ -4,6 +4,7 @@
  */
 package engine;
 
+import engine.Effect.Place;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
@@ -18,7 +19,9 @@ public class SceneMenu extends SceneBase {
 
     public static Image back;
     private WindowCommand command;
-    private Window menuStatus;
+    private WindowMenuStatus menuStatus;
+    private WindowMenuStatus target;
+    private Item toUse;
     private WindowItem inventory;
     private WindowHelp invHelp;
     private Window activeWindow;
@@ -46,6 +49,9 @@ public class SceneMenu extends SceneBase {
             "Options"
         };
         command = new WindowCommand(120, coms, 1, 0);
+        menuStatus = new WindowMenuStatus(command.width, 0);
+        target = new WindowMenuStatus(0, 0);
+        target.index = 0;
         invHelp = new WindowHelp();
         inventory = new WindowItem(command.x, command.y + invHelp.height, SceneMap.B_WIDTH, SceneMap.B_HEIGHT - invHelp.height, gameParty.getInv());
         activeWindow = command;
@@ -55,10 +61,13 @@ public class SceneMenu extends SceneBase {
     public void render(GameContainer gc, StateBasedGame sbg, Graphics grphcs) throws SlickException {
         grphcs.drawImage(back, 0, 0);
         if (activeWindow != null) {
-            if(activeWindow.equals(inventory)){
+            if (activeWindow.equals(inventory)) {
                 invHelp.render(grphcs, sbg);
             }
             activeWindow.render(grphcs, sbg);
+            if (activeWindow.equals(command)) {
+                menuStatus.render(grphcs, sbg);
+            }
         }
     }
 
@@ -70,12 +79,29 @@ public class SceneMenu extends SceneBase {
                 case 0:
                     if (inputp.isCommandControlDown(action)) {
                         activeWindow = inventory;
+                        clearPressedRecord(action);
                     }
                     break;
             }
-        }
-        else if(activeWindow.equals(inventory) && !gameParty.getInv().items.isEmpty()){
-            invHelp.setText(gameParty.getInv().items.get(inventory.index).getDesc());
+        } else if (activeWindow.equals(inventory) && !gameParty.getInv().items.isEmpty()) {
+            invHelp.setText(inventory.getItem().getDesc());
+            if (inventory.getItem().isUseable() 
+                    && inventory.getItem().getPlace() != Place.BATTLE_ONLY) {
+                if (inputp.isCommandControlPressed(action)) {
+                    activeWindow = target;
+                    toUse = inventory.getItem();
+                }
+            }
+        } else if (activeWindow.equals(target)) {
+            if (inputp.isCommandControlPressed(action)) {
+                if (gameParty.getMembers().get(target.index).isEffective(toUse)) {
+                    gameParty.getMembers().get(target.index).itemEffect(toUse);
+                    gameParty.takeItem(toUse, 1);
+                    Sounds.itemUse.play();
+                } else {
+                    Sounds.buzzer.play();
+                }
+            }
         }
         if (inputp.isCommandControlPressed(cancel)) {
             if (activeWindow.equals(command)) {
@@ -84,10 +110,15 @@ public class SceneMenu extends SceneBase {
                 input.clearControlPressedRecord();
                 sbg.getState(1).update(gc, sbg, delta);
                 sbg.enterState(1);
-            } else {
+            } else if (activeWindow.equals(inventory)) {
                 Sounds.cancel.play();
                 activeWindow = command;
+            } else if (activeWindow.equals(target)) {
+                Sounds.cancel.play();
+                toUse = null;
+                activeWindow = inventory;
             }
         }
+        clearPressedRecord(action);
     }
 }

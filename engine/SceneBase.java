@@ -6,6 +6,7 @@ package engine;
 
 import org.newdawn.slick.Input;
 import org.newdawn.slick.command.BasicCommand;
+import org.newdawn.slick.command.Command;
 import org.newdawn.slick.command.InputProvider;
 import org.newdawn.slick.state.BasicGameState;
 
@@ -31,4 +32,7 @@ public abstract class SceneBase extends BasicGameState{
     public static GameParty gameParty = new GameParty();
     public static GameTroop gameTroop = null;
     
+    public void clearPressedRecord(Command c){
+        inputp.isCommandControlPressed(c);
+    }
 }

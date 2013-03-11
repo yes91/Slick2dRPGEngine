@@ -46,8 +46,13 @@ public class ItemReader {
                    }
                    if(node.getChildText("type").equals("consumable")){
                        
-                       Item item = new Consumable(node.getChildText("name"),node.getChildText("subtype"));
-                       ((Consumable)item).setEffect(node.getChildText("effect"));
+                       Consumable item = new Consumable(node.getChildText("name"));
+                       item.setHPrate(Float.parseFloat(node.getChildText("HPrate")));
+                       item.setHPamount(Integer.parseInt(node.getChildText("HPamount")));
+                       item.setMPrate(Float.parseFloat(node.getChildText("MPrate")));
+                       item.setMPamount(Integer.parseInt(node.getChildText("MPamount")));
+                       item.setScope(Item.Scope.valueOf(node.getChildText("scope")));
+                       item.setPlace(Item.Place.valueOf(node.getChildText("place")));
                        item.setDesc(node.getChildText("desc"));
                        item.setIndex(Integer.parseInt(node.getChildText("gid")));
                        items.add(item);
