@@ -17,6 +17,7 @@ import org.newdawn.slick.Music;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.StateBasedGame;
 import org.newdawn.slick.state.transition.FadeOutTransition;
+import org.newdawn.slick.SpriteSheet;
 
 /**
  *
@@ -36,6 +37,7 @@ public class SceneBattle extends SceneBase {
     private WindowSelectable activeWindow;
     private WindowSelectable targetEnemy; 
     private WindowBattleStatus stat;
+    private Cursor cursor;
     private List<GameBattler> drawList = new ArrayList<>();
     private List<GameActor> actionBattlers = new ArrayList<>();
     private int actorIndex;
@@ -74,6 +76,7 @@ public class SceneBattle extends SceneBase {
     public void enter(GameContainer container, StateBasedGame game)
          throws SlickException {
       super.enter(container, game);
+      cursor = new Cursor();
       actorIndex = 0;
       activeBattler = party.getMembers().get(actorIndex);
       drawList.clear();
@@ -82,6 +85,7 @@ public class SceneBattle extends SceneBase {
       testEnemy.basePosY = 327;
       testEnemy.basePosZ = 180;
       drawList.add(testEnemy);
+      BGM = GameCache.bgm("Trial_By_Fire.ogg");
       int index = 0;
       for(GameActor ga: party.getMembers()){
           ga.basePosX = position[index][0];
@@ -89,6 +93,7 @@ public class SceneBattle extends SceneBase {
           ga.basePosZ = position[index][2];
           index++;
       }
+      BGM.loop();
     }
 
     public void createInfoView() throws SlickException {
@@ -133,19 +138,16 @@ public class SceneBattle extends SceneBase {
         partyCommand.render(g, sbg);
         actorCommand.render(g, sbg);
         stat.render(g, sbg);
-        if(activeWindow.equals(itemWindow)){
+        if(activeWindow == itemWindow){
             itemWindow.render(g, sbg);
             help.render(g, sbg);
+        } else if(activeWindow == null){
+            cursor.render();
         }
     }
 
     @Override
     public void update(GameContainer gc, StateBasedGame sbg, int delta) throws SlickException {
-        if (BGM != null) {
-            if (!BGM.playing()) {
-                BGM.loop();
-            }
-        }
 
         if (DEBUG_UTIL) {
             gameParty.getMembers().get(activePos).debugUpdate(input);
@@ -165,12 +167,9 @@ public class SceneBattle extends SceneBase {
                 System.out.println(Arrays.deepToString(position));
             }
             if(input.isKeyPressed(Input.KEY_BACKSLASH)){
-                gameParty.getMembers().get(activePos).toPoint(testEnemy.posX() + 50, testEnemy.posY(), testEnemy.posZ() + 5);
+                gameParty.getMembers().get(activePos).battleSprite.toPoint(testEnemy.posX() + 50, testEnemy.posY(), testEnemy.posZ() + 5);
             } else if(input.isKeyPressed(Input.KEY_TAB)){
-                gameParty.getMembers().get(activePos).retreat();
-            }
-            if(input.isKeyPressed(Input.KEY_HOME)){
-                gameParty.getMembers().get(activePos).toPoint(position[activePos][0],position[activePos][1], position[activePos][2]);
+                gameParty.getMembers().get(activePos).battleSprite.retreat();
             }
             if (input.isKeyDown(Input.KEY_UP)) {
                 party.getMembers().get(activePos).moveY -= 1f;
@@ -189,15 +188,16 @@ public class SceneBattle extends SceneBase {
         stat.initX = xOffset;
         partyCommand.initX = xOffset - 120;
         actorCommand.initX = stat.width + xOffset;
-        
-        activeWindow.update(inputp, delta);
-        if (activeWindow.equals(partyCommand)) {
+        if(activeWindow != null){
+            activeWindow.update(inputp, delta);
+        }
+        if (activeWindow == partyCommand) {
             updatePartyCommandSelection(sbg);
-        } else if (activeWindow.equals(actorCommand)) {
+        } else if (activeWindow == actorCommand) {
             updateActorCommandSelection();
-        } else if(activeWindow.equals(targetEnemy)){
+        } else if(activeWindow == null){
             updateTargetEnemySelection();
-        } else if(activeWindow.equals(itemWindow)){
+        } else if(activeWindow == itemWindow){
             updateItemSelection();
         }
     }
@@ -214,6 +214,7 @@ public class SceneBattle extends SceneBase {
                     break;
                 case 1://Escape
                     if (inputp.isCommandControlPressed(action)) {
+                        BGM.fade(1500, 0.05f, true);
                         sbg.enterState(1, new FadeOutTransition(), new CameraFadeInTransition());
                     }
                     break;
@@ -224,7 +225,7 @@ public class SceneBattle extends SceneBase {
         actorCommand.index = 0;
         activeWindow = actorCommand;
         partyCommand.index = -1;
-        activeBattler.moveAmount(50, 0, 0);
+        activeBattler.battleSprite.moveAmount(50, 0, 0);
     }
     
     public void updateActorCommandSelection(){
@@ -236,7 +237,7 @@ public class SceneBattle extends SceneBase {
                 actorCommand.index = -1;
                 partyCommand.index = 0;
                 activeWindow = partyCommand;
-                activeBattler.retreat();
+                activeBattler.battleSprite.retreat();
             }
             switch (actorCommand.index) {
                 case 0://Attack
@@ -249,6 +250,11 @@ public class SceneBattle extends SceneBase {
                     if (inputp.isCommandControlPressed(action)) {
                         startItemSelection();
                         activeBattler.action.setItem(GameData.items.indexOf(itemWindow.getItem()));
+                        if(itemWindow.getItem().forAlly()){
+                            startTargetActorSelection();
+                        } else if(itemWindow.getItem().forEnemy()){
+                            startTargetEnemySelection();
+                        }
                     }
                     break;
             }
@@ -256,15 +262,29 @@ public class SceneBattle extends SceneBase {
     }
     
     public void startTargetEnemySelection(){
-        activeWindow = targetEnemy;
+        activeWindow = null;
+        cursor.setTarget(testEnemy);
     }
     
     public void updateTargetEnemySelection(){
         if(inputp.isCommandControlPressed(action)){
             activeBattler.action.targetIndex = 0;
-            nextActor();
+            if(!nextActor()){
+                activeWindow = actorCommand;
+            } else {
+                
+            }
+        } else if(inputp.isCommandControlPressed(cancel)){
             activeWindow = actorCommand;
         }
+    }
+    
+    public void startTargetActorSelection(){
+        
+    }
+    
+    public void updateTargetActorSelection(){
+        
     }
     
     public void startItemSelection(){        
@@ -276,15 +296,17 @@ public class SceneBattle extends SceneBase {
         
     }
     
-    public void nextActor(){
-        activeBattler.retreat();
+    public boolean nextActor(){
+        activeBattler.battleSprite.retreat();
         actorIndex++;
         if(actorIndex > gameParty.getMembers().size() - 1){
             actorIndex = 0;
             //Turn end
+            return true;
         }
         activeBattler = gameParty.getMembers().get(actorIndex);
-        activeBattler.moveAmount(50, 0, 0);
+        activeBattler.battleSprite.moveAmount(50, 0, 0);
+        return false;
     }
     
     public void executeAction(){
@@ -323,5 +345,31 @@ public class SceneBattle extends SceneBase {
 
     public Image getBattleBack() {
         return battleBack;
+    }
+    
+    private class Cursor{
+        public float x, y;
+        private int yOffset;
+        private Animation anim;
+        
+        public Cursor(){
+            x = 0;
+            y = 0;
+            yOffset = 0;
+            Image sheet = GameCache.system("cursor.png");
+            SpriteSheet s = new SpriteSheet(sheet, sheet.getWidth(), sheet.getHeight()/2);
+            anim = new Animation(s, 0, 0, 0, 1, true, 350, true);
+        }
+        
+        public void render(){
+            anim.draw(x - 32, y - 32 - yOffset);
+        }
+        
+        public void setTarget(GameBattler b){
+            yOffset = b.battleSprite.image.getHeight()/b.battleSprite.image.getVerticalCount();
+            x = b.posX();
+            y = b.posY();
+        }
+        
     }
 }

@@ -63,7 +63,7 @@ public class Light {
 
     public void render(Graphics g) {
         GL14.glBlendColor(tint.r * intensity, tint.g * intensity, tint.b * intensity, tint.a);
-        GL11.glEnable(GL11.GL_BLEND);
+        //GL11.glEnable(GL11.GL_BLEND);
         GL11.glBlendFunc(GL11.GL_CONSTANT_COLOR, GL11.GL_SRC_ALPHA);
         lightSprite.setRotation(0);
         float xOff = lightSprite.getWidth() / 2f * scale;

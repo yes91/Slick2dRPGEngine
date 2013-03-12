@@ -6,7 +6,6 @@ package engine;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.newdawn.slick.Image;
 import org.newdawn.slick.Music;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.Sound;
@@ -35,7 +34,7 @@ public class Sounds {
     
     public static Music getMusic(String name){
         try {
-            return new Music("res/"+name); 
+            return new Music("res/Audio/BGM/"+name); 
         } catch (SlickException ex) {
             Logger.getLogger(GameCache.class.getName()).log(Level.SEVERE, null, ex);
         }

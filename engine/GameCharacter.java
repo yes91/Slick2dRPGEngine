@@ -5,6 +5,7 @@
 package engine;
 
 import org.newdawn.slick.Image;
+import org.newdawn.slick.geom.Vector2f;
 
 /**
  *
@@ -16,10 +17,8 @@ public class GameCharacter extends GameObject{
         UP, DOWN, LEFT, RIGHT;
     }
     
-    protected float dx;
-    protected float dy;
-    protected float lastX;
-    protected float lastY;
+    protected Vector2f deltaPos = new Vector2f();
+    protected Vector2f lastPos = new Vector2f();
     public SpriteCharacter sprite;
     public String characterName;
     public int characterIndex;

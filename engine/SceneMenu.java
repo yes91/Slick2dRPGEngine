@@ -59,7 +59,7 @@ public class SceneMenu extends SceneBase {
 
     @Override
     public void render(GameContainer gc, StateBasedGame sbg, Graphics grphcs) throws SlickException {
-        grphcs.drawImage(back, 0, 0);
+        back.draw();
         if (activeWindow != null) {
             if (activeWindow.equals(inventory)) {
                 invHelp.render(grphcs, sbg);

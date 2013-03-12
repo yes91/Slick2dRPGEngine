@@ -4,7 +4,6 @@
  */
 package engine;
 
-import org.newdawn.slick.Animation;
 import org.newdawn.slick.SpriteSheet;
 
 /**

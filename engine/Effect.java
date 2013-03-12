@@ -33,6 +33,18 @@ public abstract class Effect {
         this.name = name;
     }
     
+    public boolean forAlly(){
+        return scope == Scope.SINGLE_ALLY || scope == Scope.ALL_ALLY || 
+                scope == Scope.DEAD_ALLY || scope == Scope.ALL_DEAD || 
+                scope == Scope.USER;
+    }
+    
+    public boolean forEnemy(){
+        if(scope.name().contains("ENEMY")){
+            return true;
+        }
+        return false;
+    }
     
     public Place getPlace() {
         return place;

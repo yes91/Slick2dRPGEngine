@@ -1,8 +1,10 @@
 package engine;
 
 import org.newdawn.slick.Graphics;
+import org.newdawn.slick.Image;
 import org.newdawn.slick.command.InputProvider;
 import org.newdawn.slick.geom.Rectangle;
+import org.newdawn.slick.geom.Vector2f;
 import org.newdawn.slick.tiled.TiledMap;
 
 public class WorldPlayer extends GameCharacter {
@@ -13,27 +15,28 @@ public class WorldPlayer extends GameCharacter {
     public WorldPlayer(String image) {
         super(image);
         characterName = image;
-        pos.x = 50;
-        pos.y = 60;
-        bounds = new Rectangle(pos.x - width/2 + 8, pos.y, width - 16, height/2);
+        pos.set(50, 60);
+        bounds = new Rectangle(pos.x - width/2 + (width/8), pos.y, width - (width/4), height/2);
     }
     
     public void setActor(GameActor a){
-        sprite = new SpriteCharacter(this, GameCache.res(a.characterName+".png"));
+        System.out.println(a.characterName);
+        Image aSprite = GameCache.res(a.characterName+".png");
+        width = aSprite.getWidth()/4;
+        height = aSprite.getHeight()/4;
+        sprite = new SpriteCharacter(this, aSprite);
         characterName = a.characterName;
+        bounds = new Rectangle(pos.x - width/2 + (width/8), pos.y, width - (width/4), height/2);
     }
 
     public void update(InputProvider in, int delta) {
         getInput(in, delta);
         if (collide()) {
-            pos.x = lastX;
-            pos.y = lastY;
+            pos.set(lastPos);
         }
-        lastX = pos.x;
-        lastY = pos.y;
-        pos.x += dx;
-        pos.y += dy;
-        bounds.setLocation(pos.x - width/2 + 8, pos.y);
+        lastPos.set(pos);
+        pos.add(deltaPos);
+        bounds.setLocation(pos.x - width/2 + (width/8), pos.y);
         sprite.updateAnimationState();
     }
     
@@ -53,12 +56,12 @@ public class WorldPlayer extends GameCharacter {
 
     @Override
     public void render(Graphics g2d) {
-        //g2d.draw(bounds);
         if (!collide()) {
-            sprite.getCurrentAni().draw((int) pos.x - 32, (int) pos.y - 48);
+            sprite.getCurrentAni().draw((int) pos.x - width/2, (int) pos.y - height/2);
         } else {
-            sprite.getIdle().draw((int) lastX - 32, (int) lastY - 48);
+            sprite.getIdle().draw((int) lastPos.x - width/2, (int) lastPos.y - height/2);
         }
+        //g2d.draw(bounds);
     }
 
     public void setX(float x1) {
@@ -78,11 +81,7 @@ public class WorldPlayer extends GameCharacter {
     }
 
     public boolean isMoving() {
-        if (((dx != 0) | (dy != 0)) & !SceneMap.blocked) {
-            return true;
-        } else {
-            return false;
-        }
+        return (((deltaPos.x != 0) || (deltaPos.y != 0)) && !collide());
     }
 
     public void getInput(InputProvider input, int delta) {
@@ -98,50 +97,54 @@ public class WorldPlayer extends GameCharacter {
 
             if (input.isCommandControlDown(SceneBase.left)) {
                 if (input.isCommandControlDown(SceneBase.sprint)) {
-                    dx = -(0.48f * delta);
+                    deltaPos.x = -(0.48f * delta);
                 } else {
-                    dx = -(0.24f * delta);
+                    deltaPos.x = -(0.24f * delta);
                 }
             }
 
             if (input.isCommandControlDown(SceneBase.right)) {
                 if (input.isCommandControlDown(SceneBase.sprint)) {
-                    dx = 0.48f * delta;
+                    deltaPos.x = 0.48f * delta;
                 } else {
-                    dx = 0.24f * delta;
+                    deltaPos.x = 0.24f * delta;
                 }
             }
 
 
             if ((!input.isCommandControlDown(SceneBase.right)) && (!input.isCommandControlDown(SceneBase.left))) {
-                dx = 0;
+                deltaPos.x = 0;
             }
 
             if (input.isCommandControlDown(SceneBase.up)) {
                 if (input.isCommandControlDown(SceneBase.sprint)) {
-                    dy = -(0.48f * delta);
+                    deltaPos.y = -(0.48f * delta);
                 } else {
-                    dy = -(0.24f * delta);
+                    deltaPos.y = -(0.24f * delta);
                 }
             }
 
             if (input.isCommandControlDown(SceneBase.down)) {
                 if (input.isCommandControlDown(SceneBase.sprint)) {
-                    dy = 0.48f * delta;
+                    deltaPos.y = 0.48f * delta;
                 } else {
-                    dy = 0.24f * delta;
+                    deltaPos.y = 0.24f * delta;
                 }
             }
 
             if ((!input.isCommandControlDown(SceneBase.up)) && (!input.isCommandControlDown(SceneBase.down))) {
-                dy = 0;
+                deltaPos.y = 0;
             }
 
         } else {
             action = false;
-            dx = 0;
-            dy = 0;
+            deltaPos.set(0, 0);
         }
+    }
+    
+    public void tp(float x, float y){
+        pos.set(x, y);
+        lastPos.set(pos);
     }
 
     public boolean getAction() {

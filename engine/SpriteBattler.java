@@ -4,9 +4,9 @@
  */
 package engine;
 
-import org.newdawn.slick.Animation;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SpriteSheet;
+
 
 /**
  *
@@ -14,7 +14,7 @@ import org.newdawn.slick.SpriteSheet;
  */
 public class SpriteBattler extends SpriteBase{
     
-    private GameBattler gBattler;
+    private GameBattler battler;
     private Animation currentAni;
     
     //public AnimationSequence aSeq;
@@ -45,7 +45,7 @@ public class SpriteBattler extends SpriteBase{
     }
     
     public SpriteBattler(GameBattler b, String sprite){
-        gBattler = b;
+        battler = b;
         Image i = GameCache.res(sprite);
         image = new SpriteSheet(i, i.getWidth()/4, i.getHeight()/11);
         states = new Animation[]{
@@ -97,16 +97,43 @@ public class SpriteBattler extends SpriteBase{
         moveX += deltaX;
         moveY += deltaY;
         moveZ += deltaZ;
-        gBattler.moveX = moveX;
-        gBattler.moveY = moveY;
-        gBattler.moveZ = moveZ;
+        battler.moveX = moveX;
+        battler.moveY = moveY;
+        battler.moveZ = moveZ;
+    }
+    
+    public void toPoint(float x, float y, float z){
+        distX = Math.abs(battler.basePosX - x);
+        distY = Math.abs(battler.basePosY - y);
+        distZ = Math.abs(battler.basePosZ - z);
+        deltaX = distX/20f * (x - battler.basePosX < 0 ? -1:1);
+        deltaY = distY/20f * (y - battler.basePosY < 0 ? -1:1);
+        deltaZ = distZ/20f * (z - battler.basePosZ < 0 ? -1:1);
+    }
+    
+    public void moveAmount(float x, float y, float z){
+        distX = x;
+        distY = y;
+        distZ = z;
+        deltaX = distX/20f * (x > 0 ? -1:1);
+        deltaY = distY/20f * (y > 0 ? -1:1);
+        deltaZ = distZ/20f * (z > 0 ? -1:1);
+    }
+    
+    public void retreat(){
+        distX = Math.abs(battler.basePosX - battler.posX());
+        distY = Math.abs(battler.basePosY - battler.posY());
+        distZ = Math.abs(battler.basePosZ - battler.posZ());
+        deltaX = distX/20f * (battler.posX() - battler.basePosX < 0 ? 1:-1);
+        deltaY = distY/20f * (battler.posY() - battler.basePosY < 0 ? 1:-1);
+        deltaZ = distZ/20f * (battler.posZ() - battler.basePosZ < 0 ? 1:-1);
     }
     
     public void updateAnimationState(){
         updateMove();
         if(SceneBattle.DEBUG_UTIL){
             //currentAni = states[gBattler.stateTest];
-            if(gBattler.isDead()){
+            if(battler.isDead()){
                 currentAni = states[COLLAPSE];
             } else if(deltaX > 0){
                 currentAni = states[RETREAT];
@@ -116,7 +143,7 @@ public class SpriteBattler extends SpriteBase{
                 currentAni = states[IDLE];
             }
         } else {
-            if(gBattler.isDead()){
+            if(battler.isDead()){
                 currentAni = states[COLLAPSE];
             } else if(deltaX > 0 || deltaY > 0 || deltaZ > 0){
                 currentAni = states[RETREAT];

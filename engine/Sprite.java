@@ -24,6 +24,14 @@ public class Sprite {
                 frameX, frameY, frameX + width, frameY + height);
     }
     
+    public static void drawSpriteFrame(Image source, float x, float y,
+            int columns, int frame, int width, int height) {
+        int frameX = (frame % columns) * width;
+        int frameY = (frame / columns) * height;
+        source.draw(x, y, x + width, y + height,
+                frameX, frameY, frameX + width, frameY + height);
+    }
+    
     public static void drawSpriteFrame(Image source, Graphics g2d, float x, float y,
             int columns, int frame, int width, int height, Color filter) {
         int frameX = (frame % columns) * width;

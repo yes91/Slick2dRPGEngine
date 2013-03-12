@@ -6,6 +6,9 @@ package engine;
 
 import effectutil.LightShader;
 import effectutil.ShaderProgram;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -16,18 +19,19 @@ import javax.script.ScriptContext;
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
 import javax.script.ScriptException;
+import org.lwjgl.opengl.GL11;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Font;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
-import org.newdawn.slick.ImageBuffer;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.Music;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.gui.AbstractComponent;
 import org.newdawn.slick.gui.ComponentListener;
 import org.newdawn.slick.gui.TextField;
+import org.newdawn.slick.imageout.ImageIOWriter;
 import org.newdawn.slick.state.StateBasedGame;
 
 /**
@@ -85,10 +89,9 @@ public class SceneMap extends SceneBase {
         fire1 = GameCache.res("fire1.png");
         fire2 = GameCache.res("fire2.png");
         interpreter = new GameInterpreter(0, true);
-        ImageBuffer scratch = new ImageBuffer(B_WIDTH, B_HEIGHT);
         lightBuffer = new Image(B_WIDTH, B_HEIGHT);
         consoleBuffer = new Image(B_WIDTH, B_HEIGHT);
-        buffer = scratch.getImage();
+        buffer = new Image(B_WIDTH, B_HEIGHT);
         allowClose = false;
         //container.setMaximumLogicUpdateInterval(60);
         testbattler = new Image("res/yuan_3.png");
@@ -116,7 +119,6 @@ public class SceneMap extends SceneBase {
         music = new Music("res/fatefulencounter.wav");
         //isPlaying = true;
         //music.loop();
-        items = new Image("res/system/IconSet.png");
         light = new Image("res/LightRays.png");
         //System.out.println(new GameBattler().stat.getBaseHP());
         final ScriptEngine js = new ScriptEngineManager().getEngineByName("javascript");
@@ -133,8 +135,7 @@ public class SceneMap extends SceneBase {
                 try {
                     js.eval(console.getText());
                 } catch (ScriptException ex) {
-                    System.err.println(ex.getMessage());
-                    System.err.println("Dude, watch it.");
+                    Logger.getLogger(SceneMap.class.getName()).log(Level.SEVERE, null, ex);
                 }
                 console.setFocus(true);
                 input.clearKeyPressedRecord();
@@ -148,43 +149,10 @@ public class SceneMap extends SceneBase {
         //System.out.println(delta);
         deltaG = delta;
         elapsed += delta;
-        if (input.isKeyPressed(Input.KEY_F10)) {
-            if (isPlaying) {
-                music.pause();
-            } else {
-                music.loop();
-            }
-            isPlaying = !isPlaying;
-        }
         if (input.isKeyPressed(Input.KEY_ESCAPE)) {
             container.exit();
         }
-        if (input.isKeyPressed(Input.KEY_0) && !console.hasFocus()) {
-            ((SceneBattle) sbg.getState(3)).setBattleBack(GameCache.res("Cobblestones3.png"));
-            sbg.enterState(3);
-        }
-        if (input.isKeyPressed(Input.KEY_1)) {
-            shaderOption = 0;
-            isLit = !isLit;
-        }
-        if (input.isKeyPressed(Input.KEY_2)) {
-            shaderOption = 1;
-        }
-        if (input.isKeyPressed(Input.KEY_3)) {
-            shaderOption = 2;
-        }
-        if (input.isKeyPressed(Input.KEY_4)) {
-            shaderOption = 3;
-        }
-        if (input.isKeyPressed(Input.KEY_5)) {
-            shaderOption = 4;
-        }
-        if (input.isKeyPressed(Input.KEY_6)) {
-            shaderOption = 5;
-        }
-        if (input.isKeyPressed(Input.KEY_F4)) {
-            map.camera.setTarget(map.objs.get(0));
-        }
+        debugUpdate(sbg);
         if (input.isKeyDown(Input.KEY_RALT) && input.isKeyPressed(Input.KEY_ENTER)) {
             fullscreen = container.isFullscreen();
             container.pause();
@@ -218,6 +186,43 @@ public class SceneMap extends SceneBase {
             }
         }
         interpreter.update();
+    }
+    
+    public void debugUpdate(StateBasedGame sbg){
+        if (input.isKeyPressed(Input.KEY_F10)) {
+            if (isPlaying) {
+                music.pause();
+            } else {
+                music.loop();
+            }
+            isPlaying = !isPlaying;
+        }
+        if (input.isKeyPressed(Input.KEY_0) && !console.hasFocus()) {
+            ((SceneBattle) sbg.getState(3)).setBattleBack(GameCache.res("Cobblestones3.png"));
+            sbg.enterState(3);
+        }
+        if (input.isKeyPressed(Input.KEY_1)) {
+            shaderOption = 0;
+            isLit = !isLit;
+        }
+        if (input.isKeyPressed(Input.KEY_2)) {
+            shaderOption = 1;
+        }
+        if (input.isKeyPressed(Input.KEY_3)) {
+            shaderOption = 2;
+        }
+        if (input.isKeyPressed(Input.KEY_4)) {
+            shaderOption = 3;
+        }
+        if (input.isKeyPressed(Input.KEY_5)) {
+            shaderOption = 4;
+        }
+        if (input.isKeyPressed(Input.KEY_6)) {
+            shaderOption = 5;
+        }
+        if (input.isKeyPressed(Input.KEY_F4)) {
+            map.camera.setTarget(map.objs.get(0));
+        }
     }
 
     @Override
@@ -281,9 +286,9 @@ public class SceneMap extends SceneBase {
             w.render(g, sbg);
             map.renderUI(worldPlayer);
         }
-        console.render(container, consoleBuffer.getGraphics());
-        consoleBuffer.getGraphics().flush();
-        g.drawImage(consoleBuffer, Camera.viewPort.getX(), Camera.viewPort.getY());
+        //console.render(container, consoleBuffer.getGraphics());
+        //consoleBuffer.getGraphics().flush();
+        //g.drawImage(consoleBuffer, Camera.viewPort.getX(), Camera.viewPort.getY());
     }
 
     private void tpPlayer(int tileX, int tileY, WorldPlayer p) {
@@ -319,12 +324,33 @@ public class SceneMap extends SceneBase {
 
     public void makeMenuBack(GameContainer gc) {
         Graphics g = gc.getGraphics();
-        g.flush();
+        //g.flush();
+        /*buffer.bind();
+        GL11.glCopyTexImage2D(GL11.GL_TEXTURE_2D, 0, GL11.GL_RGB, 0, 720-(0+buffer.getHeight()), 
+							  buffer.getTexture().getTextureWidth(),
+							  buffer.getTexture().getTextureHeight(), 0);
+        buffer.ensureInverted();
+        blurH.bind();
+        g.drawImage(buffer, 0, 0);
+        ShaderProgram.unbind();
+        buffer.bind();
+        GL11.glCopyTexImage2D(GL11.GL_TEXTURE_2D, 0, GL11.GL_RGB, 0, 720-(0+buffer.getHeight()), 
+							  buffer.getTexture().getTextureWidth(),
+							  buffer.getTexture().getTextureHeight(), 0);
+        buffer.ensureInverted();
+        blurV.bind();
+        g.drawImage(buffer, 0, 0);
+        ShaderProgram.unbind();
+        buffer.bind();
+        GL11.glCopyTexImage2D(GL11.GL_TEXTURE_2D, 0, GL11.GL_RGB, 0, 720-(0+buffer.getHeight()), 
+							  buffer.getTexture().getTextureWidth(),
+							  buffer.getTexture().getTextureHeight(), 0);
+        buffer.ensureInverted();*/
         g.copyArea(buffer, 0, 0);
         gc.pause();
         blurH.bind();
         g.drawImage(buffer, 0, 0);
-        g.flush();
+        //g.flush();
         ShaderProgram.unbind();
         g.copyArea(buffer, 0, 0);
         blurV.bind();
@@ -332,6 +358,12 @@ public class SceneMap extends SceneBase {
         ShaderProgram.unbind();
         g.copyArea(buffer, 0, 0);
         SceneMenu.back = buffer.copy();
+        ImageIOWriter writer = new ImageIOWriter();
+        try {
+            writer.saveImage(buffer, "png", new FileOutputStream(new File("C:/Users/Kieran/Documents/Testscreen.png")), true);
+        } catch (IOException ex) {
+            Logger.getLogger(SceneMap.class.getName()).log(Level.SEVERE, null, ex);
+        }
         gc.resume();
 
         /*try {

@@ -4,9 +4,9 @@
  */
 package engine;
 
-import org.newdawn.slick.Animation;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SpriteSheet;
+
 
 /**
  *
@@ -55,19 +55,19 @@ public class SpriteCharacter extends SpriteBase {
     }
 
     public void updateAnimationState() {
-        if (gChar.dx > 0) {
+        if (gChar.deltaPos.x > 0) {
             idle = states[IDLE_RIGHT];
             gChar.facing = GameCharacter.Direction.RIGHT;
             currentAni = states[RIGHT];
-        } else if (gChar.dx < 0) {
+        } else if (gChar.deltaPos.x < 0) {
             idle = states[IDLE_LEFT];
             gChar.facing = GameCharacter.Direction.LEFT;
             currentAni = states[LEFT];
-        } else if (gChar.dy < 0) {
+        } else if (gChar.deltaPos.y < 0) {
             idle = states[IDLE_UP];
             gChar.facing = GameCharacter.Direction.UP;
             currentAni = states[UP];
-        } else if (gChar.dy > 0) {
+        } else if (gChar.deltaPos.y > 0) {
             idle = states[IDLE_DOWN];
             gChar.facing = GameCharacter.Direction.DOWN;
             currentAni = states[DOWN];

@@ -5,7 +5,6 @@
 package engine;
 
 import engine.Effect.Scope;
-import java.io.Serializable;
 import java.util.Random;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
@@ -15,11 +14,11 @@ import org.newdawn.slick.Input;
  *
  * @author redblast71
  */
-public abstract class GameBattler implements Serializable{
+public abstract class GameBattler {
     
     private final int HP_LIMIT = 999999;
     private Random chance = new Random();
-    public transient SpriteBattler battleSprite = null;
+    public transient SpriteBattler battleSprite;
     public String spriteName;
     public BattleStats stats;
     public float moveX, moveY, moveZ;
@@ -73,33 +72,6 @@ public abstract class GameBattler implements Serializable{
             g.drawLine(x , y + 10, x, y - 10);
         }
         
-    }
-    
-    public void toPoint(float x, float y, float z){
-        battleSprite.distX = Math.abs(basePosX - x);
-        battleSprite.distY = Math.abs(basePosY - y);
-        battleSprite.distZ = Math.abs(basePosZ - z);
-        battleSprite.deltaX = battleSprite.distX/20f * (x - basePosX < 0 ? -1:1);
-        battleSprite.deltaY = battleSprite.distY/20f * (y - basePosY < 0 ? -1:1);
-        battleSprite.deltaZ = battleSprite.distZ/20f * (z - basePosZ < 0 ? -1:1);
-    }
-    
-    public void moveAmount(float x, float y, float z){
-        battleSprite.distX = x;
-        battleSprite.distY = y;
-        battleSprite.distZ = z;
-        battleSprite.deltaX = battleSprite.distX/20f * (x > 0 ? -1:1);
-        battleSprite.deltaY = battleSprite.distY/20f * (y > 0 ? -1:1);
-        battleSprite.deltaZ = battleSprite.distZ/20f * (z > 0 ? -1:1);
-    }
-    
-    public void retreat(){
-        battleSprite.distX = Math.abs(basePosX - posX());
-        battleSprite.distY = Math.abs(basePosY - posY());
-        battleSprite.distZ = Math.abs(basePosZ - posZ());
-        battleSprite.deltaX = battleSprite.distX/20f * (posX() - basePosX < 0 ? 1:-1);
-        battleSprite.deltaY = battleSprite.distY/20f * (posY() - basePosY < 0 ? 1:-1);
-        battleSprite.deltaZ = battleSprite.distZ/20f * (posZ() - basePosZ < 0 ? 1:-1);
     }
     
     public void updateLevel(){
