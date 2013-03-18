@@ -40,7 +40,7 @@ public class Animes {
         
         ANIME.put("NO_MOVE",            new Object[]{ 0,   0,   0,  1,   0,   0,  "WAIT(FIXED)"});
         ANIME.put("MOVE_DOWN",          new Object[]{ 3,   0,  50,  2,  -1,   0,  "DEAD_POSE"});
-        ANIME.put("PREV_MOVING_TARGET", new Object[]{ 1,  24,   0, 12,  -1,   0,  "MOVE_TO"});
+        ANIME.put("PREV_MOVING_TARGET", new Object[]{ 1,   0,   0, 12,  -1,   0,  "MOVE_TO"});
         ANIME.put("START_POSITION",     new Object[]{ 0,  54,   0,  1,   0,   0,  "MOVE_TO"});
         ANIME.put("BEFORE_MOVE",        new Object[]{ 3, -32,   0, 18,  -1,   0,  "MOVE_TO"});
         

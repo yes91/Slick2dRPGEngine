@@ -311,6 +311,10 @@ public class SpriteBattler extends SpriteBase {
         animeSpeed = (int)activeAction[2];
         animeLoop = (int)activeAction[3];
         
+        if(battler instanceof GameEnemy){
+            reverse = true;
+        }
+        
         reverse = false;
         
         animeEnd = true;
@@ -343,9 +347,9 @@ public class SpriteBattler extends SpriteBase {
     }
 
     public void updateMove(float delta) {
-        distX += ((deltaX < 0 ? deltaX : -deltaX)*16f)/delta;
-        distY += ((deltaY < 0 ? deltaY : -deltaY)*16f)/delta;
-        distZ += ((deltaZ < 0 ? deltaZ : -deltaZ)*16f)/delta;
+        distX += ((deltaX < 0 ? deltaX : -deltaX)/16f)*delta;
+        distY += ((deltaY < 0 ? deltaY : -deltaY)/16f)*delta;
+        distZ += ((deltaZ < 0 ? deltaZ : -deltaZ)/16f)*delta;
         if (distX <= 0 && distY <= 0 && distZ <= 0) {
             distX = 0;
             distY = 0;
@@ -356,9 +360,13 @@ public class SpriteBattler extends SpriteBase {
         } else {
             animeEnd = false;
         }
-        moveX += (deltaX*16f)/delta;
-        moveY += (deltaY*16f)/delta;
-        moveZ += (deltaZ*16f)/delta;
+        moveX += (deltaX/16f)*delta;
+        moveY += (deltaY/16f)*delta;
+        moveZ += (deltaZ/16f)*delta;
+        if(posX() > 20000 && posY() > 2000 && posZ() > 1000){
+            System.out.println("Oh no, it happened again!\nIt was him!: "+battler.name+"\nThis was the delta: "+delta);
+        }
+        //System.out.println(delta);
     }
 
     public void toPoint(float x, float y, float z) {

@@ -93,13 +93,13 @@ public class SpritesetBattle {
             } else if (input.isKeyDown(Input.KEY_X)) {
                 position[activePos][2] += 1f;
             }
-            int index = 0;
+            /*int index = 0;
             for(SpriteBattler a: actorSprites){
                 a.basePosX = position[index][0];
                 a.basePosY = position[index][1];
                 a.basePosZ = position[index][2];
                 index++;
-            }
+            }*/
     }
     
     public final void createEnemies(){

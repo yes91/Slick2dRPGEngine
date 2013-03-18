@@ -214,6 +214,8 @@ public class SceneBattle extends SceneBase {
                         playingAction = false;
                     } else if (activeBattler.play[0].equals("OBJ_ANIM")) {
                         damageAction(activeBattler.play[1]);
+                    } else if (activeBattler.play[0].equals("Can Collapse")){
+                        activeBattler.play = null;
                     }
                 }
             }
