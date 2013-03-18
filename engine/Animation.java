@@ -72,6 +72,13 @@ public class Animation {
 	public Animation(SpriteSheet frames, int duration) {
 		this(frames, 0,0,frames.getHorizontalCount()-1,frames.getVerticalCount()-1,true,duration,true);
 	}
+        
+        public Animation(SpriteSheet sheet, Animation[] anis) {
+                this.sheet = sheet;
+		for(Animation a: anis){
+                    frames.addAll(a.frames);
+                }
+	}
 	
 	/**
 	 * Create a new animation based on a selection of sprites from a sheet
@@ -400,6 +407,7 @@ public class Animation {
 		
 		while (nextChange < 0 && (currentFrame != stopAt)) {
 			if ((currentFrame == frames.size() - 1) && (!loop)) {
+                                stopped = true;
 				break;
 			}
 			currentFrame = (currentFrame + direction) % frames.size();

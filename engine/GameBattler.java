@@ -6,8 +6,6 @@ package engine;
 
 import engine.Effect.Scope;
 import java.util.Random;
-import org.newdawn.slick.Color;
-import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
 
 /**
@@ -17,12 +15,11 @@ import org.newdawn.slick.Input;
 public abstract class GameBattler {
     
     private final int HP_LIMIT = 999999;
-    private Random chance = new Random();
-    public transient SpriteBattler battleSprite;
+    public Random chance = new Random();
+    public String name;
     public String spriteName;
+    public transient Object[] play;
     public BattleStats stats;
-    public float moveX, moveY, moveZ;
-    public float basePosX, basePosY, basePosZ;
     public GameBattleAction action;
     public int currentHP;
     public int currentMP;
@@ -51,28 +48,12 @@ public abstract class GameBattler {
     }
     
     public GameBattler(String sprite){
+        spriteName = sprite;
         stats = new BattleStats();
-        battleSprite = new SpriteBattler(this, sprite);
         action = new GameBattleAction(this);
     }
     
-    public void render(Graphics g, float x, float y, float scale){
-        int width = battleSprite.getCurrentAni().getWidth();
-        int height = battleSprite.getCurrentAni().getHeight();
-        
-        // get scaled draw coordinates (sx, sy)
-        float sx = x - (width * scale / 2);
-        float sy = y - (height * scale / 2);
-        
-        battleSprite.getCurrentAni().draw(sx, sy, width * scale, height * scale);
-        
-        if(SceneBattle.DEBUG_UTIL){
-            g.setColor(Color.cyan);
-            g.drawLine(x + 10, y, x - 10, y);
-            g.drawLine(x , y + 10, x, y - 10);
-        }
-        
-    }
+    
     
     public void updateLevel(){
         stats.updateLevel();
@@ -138,6 +119,14 @@ public abstract class GameBattler {
         return currentHP <= 0;
     }
     
+    public boolean isInputable(){
+        return !isDead(); //Replace with death state restriction check.
+    }
+    
+    public boolean isMovable(){
+        return !isDead();
+    }
+    
     public boolean isActor(){
         return false;
     }
@@ -186,12 +175,12 @@ public abstract class GameBattler {
         } else if(damage > 0){
             //crit
         }
-        applyVariance(damage, 20);
-        applyGuard(damage);
+        damage = applyVariance(damage, 20);
+        damage = applyGuard(damage);
         HPchange = damage;
     }
     
-    public boolean isEffective(Item item){
+    public boolean isEffective(Effect item){
         if(item.getScope() == Scope.DEAD_ALLY && isDead()){
             return true;
         } else if(item.getScope() == Scope.SINGLE_ALLY && !isDead()){
@@ -200,7 +189,7 @@ public abstract class GameBattler {
         return false;
     }
     
-    private boolean itemTest(Item item){
+    private boolean itemTest(Effect item){
         if(item instanceof Consumable){
             if(calcHPRecovery((Consumable)item) > 0 && currentHP < getMaxHP()){
                 return true;
@@ -223,6 +212,7 @@ public abstract class GameBattler {
     
     public void attackEffect(GameBattler attacker){
         makeAttackDamageValue(attacker);
+        doDamage();
     }
     
     public int applyVariance(int damage, float variance){
@@ -252,18 +242,6 @@ public abstract class GameBattler {
     
     private boolean isGuarding() {
         return action.isGuard();
-    }
-    
-    public float posX(){
-        return basePosX + moveX; 
-    }
-    
-    public float posY(){
-        return basePosY + moveY;
-    }
-    
-    public float posZ(){
-        return basePosZ + moveZ;
     }
     
     public int getMaxHP(){

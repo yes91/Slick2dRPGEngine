@@ -8,17 +8,18 @@ package engine;
  *
  * @author redblast71
  */
-public class Weapon extends Item {
+public class Weapon extends BaseItem implements Item {
     
+    private int price;
     private int damage;
     private float hitPercent;
     
     public Weapon(){
-        super("Default", false);
+        super("Default");
     }
     
     public Weapon(String name){
-        super(name, false);
+        super(name);
     }
 
     public float getHitPercent() {
@@ -36,4 +37,14 @@ public class Weapon extends Item {
     public int getDmg(){
         return damage;
     } 
+    
+    @Override
+    public int getPrice(){
+        return price;
+    }
+    
+    @Override
+    public void setPrice(int price){
+        this.price = price;
+    }
 }

@@ -26,12 +26,12 @@ public class WindowItem extends WindowSelectable {
 
     public WindowItem(int x, int y, int width, int height, Inventory inv) throws SlickException {
         super(x, y, width, height);
-        this.columnMax = 2;
+        this.columnMax = 4;
         this.index = 0;
         inven = inv;
         data = new ArrayList<>();
         data.addAll(inven.items);
-        sortAlpha();
+        sortUseable();
     }
 
     public Item getItem() {
@@ -59,8 +59,9 @@ public class WindowItem extends WindowSelectable {
         rect.setWidth(rect.getWidth() - 8);
         Item item = data.get(ind);
         int number = inven.getItemAmount(item);
-        boolean enabled = item.isUseable() && item.getPlace() != Place.BATTLE_ONLY;
-        drawItemName(item, rect.getX() + 8, rect.getY() - oy, enabled);
+        boolean enabled = item instanceof Consumable && ((Consumable)item).getPlace() != Place.BATTLE_ONLY
+                                                     && ((Consumable)item).getPlace() != Place.NEVER;
+        drawItemName((BaseItem)item, rect.getX() + 8, rect.getY() - oy, enabled);
         for(int i = 0; i < 4; i++){
             cg.drawString(String.format(":%2d", number), 
                     (rect.getWidth()) + 
@@ -73,23 +74,52 @@ public class WindowItem extends WindowSelectable {
     public final void sortAlpha() {
         Collections.sort(data, new byName());
     }
+    
+    public final void sortUseable() {
+        Collections.sort(data, new byType());
+    }
+    
+    public void updateItems(){
+        data.clear();
+        data.addAll(inven.items);
+        sortUseable();
+    }
 
     public void setBattle() {
         data.clear();
         for (Item i : inven.items) {
-            if (i instanceof Consumable && i.getPlace() != Place.MENU_ONLY) {
+            if (i instanceof Consumable && ((Consumable)i).getPlace() != Place.MENU_ONLY
+                                        && ((Consumable)i).getPlace() != Place.NEVER) {
                 data.add(i);
             }
         }
     }
     
     
-    private static final class byName implements Comparator {
+    private static final class byName implements Comparator<Item> {
         @Override
-        public int compare(Object o1, Object o2) {
-            Item i1 = (Item) o1;
-            Item i2 = (Item) o2;
+        public int compare(Item i1, Item i2) {
             return i1.getName().compareTo(i2.getName());
+        }
+    }
+    
+    private static final class byType implements Comparator<Item> {
+        @Override
+        public int compare(Item i1, Item i2) {
+            int result = 0;
+            if(i1 instanceof Consumable && i2 instanceof Consumable){
+                result = i1.getName().compareTo(i2.getName());
+            }
+            if(i1 instanceof Weapon && i2 instanceof Weapon){
+                result = i1.getName().compareTo(i2.getName());
+            }
+            if(i1 instanceof Weapon && i2 instanceof Consumable){
+                result = 1;
+            }
+            if(i1 instanceof Consumable && i2 instanceof Weapon){
+                result = -1;
+            }
+            return result;
         }
     }
 }

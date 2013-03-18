@@ -67,7 +67,9 @@ public class SceneMap extends SceneBase {
     Camera camera;
     private Image buffer;
     private Image lightBuffer;
+    private Graphics lg;
     private Image consoleBuffer;
+    private Graphics cg;
     private Image fire1;
     private Image fire2;
     private float count;
@@ -90,7 +92,9 @@ public class SceneMap extends SceneBase {
         fire2 = GameCache.res("fire2.png");
         interpreter = new GameInterpreter(0, true);
         lightBuffer = new Image(B_WIDTH, B_HEIGHT);
+        lg = lightBuffer.getGraphics();
         consoleBuffer = new Image(B_WIDTH, B_HEIGHT);
+        cg = consoleBuffer.getGraphics();
         buffer = new Image(B_WIDTH, B_HEIGHT);
         allowClose = false;
         //container.setMaximumLogicUpdateInterval(60);
@@ -261,7 +265,6 @@ public class SceneMap extends SceneBase {
 
         //ShaderProgram.unbind();
         if (isLit) {
-            Graphics lg = lightBuffer.getGraphics();
             lg.clear();
             lg.setColor(new Color(0.0f, 0.0f, 0.0f, 1f));
             lg.fillRect(0, 0, B_WIDTH, B_HEIGHT);
@@ -278,7 +281,7 @@ public class SceneMap extends SceneBase {
 
         /*g.setColor(Color.yellow);
          g.drawRect(Camera.viewPort.getX() + 5, 
-         * Camera.viewPort.getY() + 5, 
+         * Camera.viewPort.getY() + 5, s
          * Camera.viewPort.getWidth() - 10, 
          * Camera.viewPort.getHeight() - 10);*/
 
@@ -286,9 +289,9 @@ public class SceneMap extends SceneBase {
             w.render(g, sbg);
             map.renderUI(worldPlayer);
         }
-        //console.render(container, consoleBuffer.getGraphics());
-        //consoleBuffer.getGraphics().flush();
-        //g.drawImage(consoleBuffer, Camera.viewPort.getX(), Camera.viewPort.getY());
+        console.render(container, cg);
+        cg.flush();
+        g.drawImage(consoleBuffer, Camera.viewPort.getX(), Camera.viewPort.getY());
     }
 
     private void tpPlayer(int tileX, int tileY, WorldPlayer p) {
@@ -324,33 +327,10 @@ public class SceneMap extends SceneBase {
 
     public void makeMenuBack(GameContainer gc) {
         Graphics g = gc.getGraphics();
-        //g.flush();
-        /*buffer.bind();
-        GL11.glCopyTexImage2D(GL11.GL_TEXTURE_2D, 0, GL11.GL_RGB, 0, 720-(0+buffer.getHeight()), 
-							  buffer.getTexture().getTextureWidth(),
-							  buffer.getTexture().getTextureHeight(), 0);
-        buffer.ensureInverted();
-        blurH.bind();
-        g.drawImage(buffer, 0, 0);
-        ShaderProgram.unbind();
-        buffer.bind();
-        GL11.glCopyTexImage2D(GL11.GL_TEXTURE_2D, 0, GL11.GL_RGB, 0, 720-(0+buffer.getHeight()), 
-							  buffer.getTexture().getTextureWidth(),
-							  buffer.getTexture().getTextureHeight(), 0);
-        buffer.ensureInverted();
-        blurV.bind();
-        g.drawImage(buffer, 0, 0);
-        ShaderProgram.unbind();
-        buffer.bind();
-        GL11.glCopyTexImage2D(GL11.GL_TEXTURE_2D, 0, GL11.GL_RGB, 0, 720-(0+buffer.getHeight()), 
-							  buffer.getTexture().getTextureWidth(),
-							  buffer.getTexture().getTextureHeight(), 0);
-        buffer.ensureInverted();*/
         g.copyArea(buffer, 0, 0);
         gc.pause();
         blurH.bind();
         g.drawImage(buffer, 0, 0);
-        //g.flush();
         ShaderProgram.unbind();
         g.copyArea(buffer, 0, 0);
         blurV.bind();
@@ -358,12 +338,6 @@ public class SceneMap extends SceneBase {
         ShaderProgram.unbind();
         g.copyArea(buffer, 0, 0);
         SceneMenu.back = buffer.copy();
-        ImageIOWriter writer = new ImageIOWriter();
-        try {
-            writer.saveImage(buffer, "png", new FileOutputStream(new File("C:/Users/Kieran/Documents/Testscreen.png")), true);
-        } catch (IOException ex) {
-            Logger.getLogger(SceneMap.class.getName()).log(Level.SEVERE, null, ex);
-        }
         gc.resume();
 
         /*try {

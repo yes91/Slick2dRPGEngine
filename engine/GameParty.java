@@ -14,12 +14,16 @@ import java.util.List;
 public class GameParty extends GameUnit{
     
     private final int MAX_MEMBERS = 10;
-    public List<GameActor> actors;
+    private List<GameActor> actors;
     private int gold;
     private Inventory inven;
     
     public GameParty(){
         inven = new Inventory();
+    }
+    
+    public void setMembers(List l){
+        this.actors = l;
     }
     
     @Override
@@ -36,6 +40,33 @@ public class GameParty extends GameUnit{
             }
         }
         return result;
+    }
+    
+    @Override
+    public boolean allDead(){
+        return getLivingMembers().isEmpty();
+    }
+    
+    @Override
+    public GameBattler getRandomTarget() {
+        return getLivingMembers().get(chance.nextInt(getLivingMembers().size()));
+    }
+
+    @Override
+    public GameBattler getRandomDeadTarget() {
+        List<GameBattler> dead = new ArrayList<>();
+        for(GameActor a: actors){
+            if(a.isDead()){
+               dead.add(a); 
+            }
+        }
+        return dead.get(chance.nextInt(dead.size())); 
+    }
+    
+    public void clearActions(){
+        for(GameActor a: actors){
+            a.action.clear();
+        }
     }
     
     public Inventory getInv(){

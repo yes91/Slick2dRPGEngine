@@ -4,9 +4,8 @@
  */
 package engine;
 
-import java.io.IOException;
-import java.io.ObjectInputStream.GetField;
-import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -15,7 +14,6 @@ import java.io.Serializable;
 
 public class GameActor extends GameBattler {   
     
-    public String name;
     public String characterName;
     public int characterIndex;
     public String faceName;
@@ -27,6 +25,7 @@ public class GameActor extends GameBattler {
     public int armor3_ID;
     public int armor4_ID;
     public int lastSkillID;
+    private boolean twoSwords;
     
     public GameActor(){
         super();
@@ -41,6 +40,25 @@ public class GameActor extends GameBattler {
     @Override
     public boolean isActor(){
         return true;
+    }
+    
+    public List<Weapon> getWeapons(){
+        List<Weapon> weps = new ArrayList<>();
+        if(GameData.items.get(weaponID) instanceof Weapon){
+            weps.add((Weapon)GameData.items.get(weaponID));
+        }
+        if(twoSwordsStyle() && GameData.items.get(armor1_ID) instanceof Weapon){
+            weps.add((Weapon)GameData.items.get(armor1_ID));
+        }
+        return weps; 
+    }
+    
+    public void setTwoSwords(boolean twoSwords){
+        this.twoSwords = twoSwords;
+    }
+    
+    public boolean twoSwordsStyle(){
+        return twoSwords;
     }
     
     public GameClass getGameClass(){

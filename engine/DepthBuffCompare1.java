@@ -10,10 +10,10 @@ import java.util.Comparator;
  *
  * @author Kieran
  */
-public class DepthBuffCompare implements Comparator<SpriteBattler>{
+public class DepthBuffCompare1 implements Comparator<SpriteBattler1>{
     
     @Override
-    public int compare(SpriteBattler g1, SpriteBattler g2) {
+    public int compare(SpriteBattler1 g1, SpriteBattler1 g2) {
         return (int)(g1.posZ() - g2.posZ());
     }
 }

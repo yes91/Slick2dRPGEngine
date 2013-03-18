@@ -21,7 +21,7 @@ public class SceneMenu extends SceneBase {
     private WindowCommand command;
     private WindowMenuStatus menuStatus;
     private WindowMenuStatus target;
-    private Item toUse;
+    private Consumable toUse;
     private WindowItem inventory;
     private WindowHelp invHelp;
     private Window activeWindow;
@@ -85,21 +85,23 @@ public class SceneMenu extends SceneBase {
             }
         } else if (activeWindow.equals(inventory) && !gameParty.getInv().items.isEmpty()) {
             invHelp.setText(inventory.getItem().getDesc());
-            if (inventory.getItem().isUseable() 
-                    && inventory.getItem().getPlace() != Place.BATTLE_ONLY) {
+            if (inventory.getItem() instanceof Consumable 
+                    && ((Consumable)inventory.getItem()).getPlace() != Place.BATTLE_ONLY
+                    && ((Consumable)inventory.getItem()).getPlace() != Place.NEVER) {
                 if (inputp.isCommandControlPressed(action)) {
                     activeWindow = target;
-                    toUse = inventory.getItem();
+                    toUse = (Consumable)inventory.getItem();
                 }
             }
         } else if (activeWindow.equals(target)) {
             if (inputp.isCommandControlPressed(action)) {
-                if (gameParty.getMembers().get(target.index).isEffective(toUse)) {
+                if (gameParty.getMembers().get(target.index).isEffective(toUse) && gameParty.getInv().getItemAmount(toUse) > 0){
                     gameParty.getMembers().get(target.index).itemEffect(toUse);
                     gameParty.takeItem(toUse, 1);
                     Sounds.itemUse.play();
                 } else {
                     Sounds.buzzer.play();
+                    inventory.updateItems();
                 }
             }
         }

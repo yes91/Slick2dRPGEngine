@@ -187,7 +187,7 @@ public class Window {
         return y;
     }
     
-    public void drawItemName(Effect item, float x, float y, boolean enabled){
+    public void drawItemName(BaseItem item, float x, float y, boolean enabled){
         cg.setColor(enabled ? Color.white:transp);
         Sprite.drawSpriteFrame(GameCache.system("IconSet.png"), cg, x, y, 16, item.getIndex(), 24, 24, cg.getColor());
         for (int i = 0; i < 4; i++) {
@@ -228,7 +228,7 @@ public class Window {
         }
     }
 
-    public void drawActorHPGuage(GameActor actor, float x, float y) {
+    public void drawActorHPGuage(GameBattler actor, float x, float y) {
         float gw = 120 * ((float) actor.currentHP / (float) actor.getMaxHP());
         for (int i = 0; i < 10; i++) {
             cg.setColor(Color.darkGray);
@@ -242,7 +242,7 @@ public class Window {
         cg.drawLine(x + 10 + 120, y, x + 120, y + 10);*/
     }
     
-    public void drawActorHP(GameActor actor, float x, float y){
+    public void drawActorHP(GameBattler actor, float x, float y){
         drawActorHPGuage(actor, x, y);
         float xr = x + 120;
         for(int i = 0; i < 4; i++){
@@ -256,7 +256,7 @@ public class Window {
         }
     }
     
-    public void drawActorMP(GameActor actor, float x, float y){
+    public void drawActorMP(GameBattler actor, float x, float y){
         drawActorMPGuage(actor, x, y);
         float xr = x + 120;
         for(int i = 0; i < 4; i++){
@@ -269,7 +269,7 @@ public class Window {
         }
     }
 
-    public void drawActorMPGuage(GameActor actor, float x, float y) {
+    public void drawActorMPGuage(GameBattler actor, float x, float y) {
         float gw = 120 * ((float) actor.currentMP / (float) actor.getMaxMP());
         for (int i = 0; i < 10; i++) {
             cg.setColor(Color.darkGray);
@@ -292,7 +292,7 @@ public class Window {
         return textColor(16);
     }
     
-    public Color hpColor(GameActor actor){
+    public Color hpColor(GameBattler actor){
         if(actor.currentHP <= 0){
             return textColor(18);
         } else if(actor.currentHP < actor.getMaxHP()/3f){

@@ -23,13 +23,25 @@ public class WindowHelp extends Window {
     @Override
     public void render(Graphics g, StateBasedGame sbg){
         super.render(g, sbg);
-        if(text != null){
-            GameCache.getFont().drawString(x+16, y+16, text);
-        }
+        contents.draw(x+16, y+16);
     }
     
     public void setText(String text){
         this.text = text;
+        cg.clear();
+        for(int i = 0;i < 4; i++){
+            cg.drawString(text, 0, 0);
+        }
+        cg.flush();
+    }
+    
+    public void setBattleText(GameBattler member){
+        cg.clear();
+        drawActorHP(member, 180, 12);
+        for(int i = 0;i < 4; i++){
+            cg.drawString(member.name, 40, 0);
+        }
+        cg.flush();
     }
     
 }

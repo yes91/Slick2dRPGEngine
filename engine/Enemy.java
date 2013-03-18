@@ -29,7 +29,6 @@ public class Enemy extends Event{
         enemySprite = i;
         try {
             eBattleSprite = new Image(i.getResourceReference().replaceAll(".png", "")+"!.png");
-            System.out.println(eBattleSprite.getResourceReference());
         } catch (SlickException ex) {
             Logger.getLogger(Enemy.class.getName()).log(Level.SEVERE, null, ex);
         }

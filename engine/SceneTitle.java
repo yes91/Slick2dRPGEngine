@@ -5,10 +5,8 @@
 package engine;
 
 import effectutil.CameraFadeInTransition;
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.util.List;
 import org.newdawn.slick.ControllerListener;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
@@ -29,7 +27,6 @@ import org.newdawn.slick.state.transition.FadeOutTransition;
  */
 public class SceneTitle extends SceneBase{
     
-    private CameraFadeInTransition fin;
     private KeyListener klistener;
     private ControllerListener clistener;
     private Image back;
@@ -192,9 +189,9 @@ public class SceneTitle extends SceneBase{
         for(Item i: GameData.items){
             gameParty.giveItem(i, 99);
         }
-        gameParty.actors = GameData.actors.subList(0, 4);
+        gameParty.setMembers(GameData.actors.subList(0, 4));
+        gameTroop.setMembers(Demo.testEnemies);
         uielements = new ArrayList<>();
-        fin = new CameraFadeInTransition();
         back = GameCache.res("TitleBack.png");
         options = new WindowSystem(2, 1);
         String[] coms = new String[]{"New Game","Continue","Option","Exit"};
@@ -215,7 +212,6 @@ public class SceneTitle extends SceneBase{
         test = new WindowMessage();
         wind.initX = (1280/2) - 80;
         wind.initY = 500;
-        System.out.println(GameCache.getFont().getLineHeight());
     }
 
     @Override
@@ -254,7 +250,7 @@ public class SceneTitle extends SceneBase{
                         input.removeControllerListener(clistener);
                         input.clearKeyPressedRecord();
                         input.clearControlPressedRecord();
-                        sbg.enterState(1, new FadeOutTransition(), fin); break;
+                        sbg.enterState(1, new FadeOutTransition(), new CameraFadeInTransition()); break;
                     case 1: lastAdded = test;
                         uielements.add(lastAdded); 
                         test.startMessage(); break;

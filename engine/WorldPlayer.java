@@ -20,7 +20,6 @@ public class WorldPlayer extends GameCharacter {
     }
     
     public void setActor(GameActor a){
-        System.out.println(a.characterName);
         Image aSprite = GameCache.res(a.characterName+".png");
         width = aSprite.getWidth()/4;
         height = aSprite.getHeight()/4;

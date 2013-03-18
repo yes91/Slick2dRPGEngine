@@ -1,6 +1,6 @@
 package engine;
 
-public abstract class Effect {
+public abstract class Effect extends BaseItem{
     
     public static enum Scope {
         NONE,
@@ -14,10 +14,7 @@ public abstract class Effect {
     private Scope scope;
     private Place place;
     
-    private String name;
-    private String desc;
     private int speed;
-    private int gid;
     
     public int baseDamage;
     public int variance;
@@ -30,13 +27,16 @@ public abstract class Effect {
     public boolean ignoreDEF;
     
     public Effect(String name){
-        this.name = name;
+        super(name);
     }
     
     public boolean forAlly(){
-        return scope == Scope.SINGLE_ALLY || scope == Scope.ALL_ALLY || 
-                scope == Scope.DEAD_ALLY || scope == Scope.ALL_DEAD || 
+        return scope == Scope.SINGLE_ALLY || scope == Scope.ALL_ALLY ||
                 scope == Scope.USER;
+    }
+    
+    public boolean forDeadAlly(){
+        return scope == Scope.DEAD_ALLY || scope == Scope.ALL_DEAD;
     }
     
     public boolean forEnemy(){
@@ -62,36 +62,12 @@ public abstract class Effect {
         this.scope = scope;
     }
     
-    public String getName() {
-        return name;
-    }
-    
-    public void setName(String name){
-        this.name = name;
-    }
-    
-    public String getDesc() {
-        return desc;
-    }
-
-    public void setDesc(String desc) {
-        this.desc = desc;
-    }
-
     public int getSpeed() {
         return speed;
     }
 
     public void setSpeed(int speed) {
         this.speed = speed;
-    }
-    
-    public int getIndex() {
-        return gid;
-    }
-
-    public void setIndex(int n) {
-        gid = n;
     }
     
 }

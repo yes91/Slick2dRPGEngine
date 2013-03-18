@@ -30,7 +30,7 @@ import org.objenesis.strategy.StdInstantiatorStrategy;
  */
 public class GameData {
     
-    private static Kryo kryo = new Kryo();
+    public static Kryo kryo = new Kryo();
     
     public static boolean editorMode = false;
     
@@ -69,7 +69,7 @@ public class GameData {
         //writeItems();
         //readSkills();
         //readClasses();
-        //writeActors();
+        writeActors();
         if(editorMode){
             readEditorActors();
         } else {
@@ -110,8 +110,8 @@ public class GameData {
                     item.setHPamount(Integer.parseInt(node.getChildText("HPamount")));
                     item.setMPrate(Float.parseFloat(node.getChildText("MPrate")));
                     item.setMPamount(Integer.parseInt(node.getChildText("MPamount")));
-                    item.setScope(Item.Scope.valueOf(node.getChildText("scope")));
-                    item.setPlace(Item.Place.valueOf(node.getChildText("place")));
+                    item.setScope(Effect.Scope.valueOf(node.getChildText("scope")));
+                    item.setPlace(Effect.Place.valueOf(node.getChildText("place")));
                     item.setDesc(node.getChildText("desc"));
                     item.setIndex(Integer.parseInt(node.getChildText("gid")));
                     items.add(item);
@@ -121,7 +121,7 @@ public class GameData {
             }
 
         } catch (IOException | JDOMException io) {
-            System.out.println(io.getMessage());
+            System.err.println(io.getMessage());
         }
     }
     
@@ -141,7 +141,7 @@ public class GameData {
     }
     
     private static void writeItems() throws FileNotFoundException{
-        try (Output output = new Output(new FileOutputStream("data/consumables.jrdata"))) {
+        try (Output output = new Output(new FileOutputStream("src/data/consumables.jrdata"))) {
             int consumableCount = 0;
             for(Item i: items){
                 if(i instanceof Consumable){
@@ -155,7 +155,7 @@ public class GameData {
                 }
             }
         }
-        try (Output output2 = new Output(new FileOutputStream("data/weapons.jrdata"))) {
+        try (Output output2 = new Output(new FileOutputStream("src/data/weapons.jrdata"))) {
             int weaponCount = 0;
             for(Item i: items){
                 if(i instanceof Weapon){
@@ -229,7 +229,6 @@ public class GameData {
         int length = input.readInt();
         for(int i = 0; i < length; i++){
             GameActor actor = kryo.readObject(input, GameActor.class);
-            actor.battleSprite = new SpriteBattler(actor, actor.spriteName+".png");
             actors.add(actor);
         }
         

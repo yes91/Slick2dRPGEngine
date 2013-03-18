@@ -51,8 +51,8 @@ public class ItemReader {
                        item.setHPamount(Integer.parseInt(node.getChildText("HPamount")));
                        item.setMPrate(Float.parseFloat(node.getChildText("MPrate")));
                        item.setMPamount(Integer.parseInt(node.getChildText("MPamount")));
-                       item.setScope(Item.Scope.valueOf(node.getChildText("scope")));
-                       item.setPlace(Item.Place.valueOf(node.getChildText("place")));
+                       item.setScope(Effect.Scope.valueOf(node.getChildText("scope")));
+                       item.setPlace(Effect.Place.valueOf(node.getChildText("place")));
                        item.setDesc(node.getChildText("desc"));
                        item.setIndex(Integer.parseInt(node.getChildText("gid")));
                        items.add(item);
@@ -62,7 +62,7 @@ public class ItemReader {
 		}
  
 	  } catch (IOException | JDOMException io) {
-		System.out.println(io.getMessage());
+		System.err.println(io.getMessage());
 	  }
 }
     public static ArrayList<Item> getItems(){

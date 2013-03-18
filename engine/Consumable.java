@@ -8,19 +8,20 @@ package engine;
  *
  * @author Kieran
  */
-public class Consumable extends Item {
+public class Consumable extends Effect implements Item {
     
     private float HPrate;
     private int HPamount;
     private float MPrate;
     private int MPamount;
+    private int price;
     
     public Consumable(){
-        super("Default", true);
+        super("Default");
     }
     
     public Consumable(String name) {
-        super(name, true);
+        super(name);
     }
     
     public float getHPrate() {
@@ -55,4 +56,21 @@ public class Consumable extends Item {
         this.MPamount = MPamount;
     }
     
+    public int getPrice(){
+        return price;
+    }
+    
+    public void setPrice(int price){
+        this.price = price;
+    }
+    
+    @Override
+    public String toString() {
+        String list = 
+                "Name: "+getName()+"\n"+
+                "Scope: "+getScope().toString()+"\n"+
+                "Description: "+getDesc();
+        return list;
+    }
+
 }

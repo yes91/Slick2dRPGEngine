@@ -1,37 +1,21 @@
 package engine;
 
-public abstract class Item extends Effect{
-
-    private boolean useable;
-    private int price;
-
-    public Item(String name, boolean use) {
-        super(name);
-        this.useable = use;
-        this.price = 0;
-        this.setDesc("Default item description.");
-
-    }
+public interface Item {
     
-    public int getPrice(){
-        return price;
-    }
+    public String getName();
     
-    public void setPrice(int price){
-        this.price = price;
-    }
+    public void setName(String name);
+    
+    public String getDesc();
+    
+    public void setDesc(String desc);
+    
+    public int getIndex();
+    
+    public void setIndex(int gid);
 
-    public boolean isUseable() {
-
-        return useable;
-    }
-
-    @Override
-    public String toString() {
-        String list = 
-                "Name: "+getName()+"\n"+
-                "Scope: "+getScope().toString()+"\n"+
-                "Description: "+getDesc();
-        return list;
-    }
+    public int getPrice();
+    
+    public void setPrice(int price);
+    
 }

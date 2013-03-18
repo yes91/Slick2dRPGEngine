@@ -26,33 +26,30 @@ public class EnemyReader {
     public static ArrayList<Enemy> enemies = new ArrayList<>();
     
     public static void populateEnemies() {
-          SAXBuilder builder = new SAXBuilder();
- 
-	  try {
-              InputStream is = EnemyReader.class.getClassLoader().getResourceAsStream("res/data/EnemyFile.xml");
- 
-		Document document = (Document) builder.build(is);
-		Element rootNode = document.getRootElement();
-		List<Element> list = rootNode.getChildren("enemy");
- 
-		for (int i = 0; i < list.size(); i++) {
- 
-		   Element node = (Element) list.get(i);
-                   Enemy e = null;
-                  try {
-                      e = new Enemy(new Image(node.getChildText("image")),node.getChildText("name"),Integer.parseInt(node.getChildText("hp")), Integer.parseInt(node.getChildText("mp")), Integer.parseInt(node.getChildText("atk")),Integer.parseInt(node.getChildText("def")), Integer.parseInt(node.getChildText("matk")), Integer.parseInt(node.getChildText("mdef")));
-                  } catch (SlickException ex) {
-                      Logger.getLogger(EnemyReader.class.getName()).log(Level.SEVERE, null, ex);
+        try {
+            SAXBuilder builder = new SAXBuilder();
+   
+                InputStream is = EnemyReader.class.getClassLoader().getResourceAsStream("res/data/EnemyFile.xml");
+   
+                  Document document = (Document) builder.build(is);
+                  Element rootNode = document.getRootElement();
+                  List<Element> list = rootNode.getChildren("enemy");
+   
+                  for (int i = 0; i < list.size(); i++) {
+   
+                     Element node = (Element) list.get(i);
+                     Enemy e = null;
+                    try {
+                        e = new Enemy(new Image(node.getChildText("image")),node.getChildText("name"),Integer.parseInt(node.getChildText("hp")), Integer.parseInt(node.getChildText("mp")), Integer.parseInt(node.getChildText("atk")),Integer.parseInt(node.getChildText("def")), Integer.parseInt(node.getChildText("matk")), Integer.parseInt(node.getChildText("mdef")));
+                    } catch (SlickException ex) {
+                        Logger.getLogger(EnemyReader.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                         enemies.add(e);
                   }
-                       System.out.println(e.toString());
-                       enemies.add(e);
-		}
+        } catch (JDOMException | IOException ex) {
+            Logger.getLogger(EnemyReader.class.getName()).log(Level.SEVERE, null, ex);
+        }
  
-	  } catch (IOException io) {
-		System.out.println(io.getMessage());
-	  } catch (JDOMException jdomex) {
-		System.out.println(jdomex.getMessage());
-	  }
 }
     public static ArrayList<Enemy> getEnemies(){
         

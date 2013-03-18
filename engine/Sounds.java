@@ -17,6 +17,7 @@ import org.newdawn.slick.Sound;
 public class Sounds {
     
     public static Sound cursor;
+    public static Sound decision;
     public static Sound cancel;
     public static Sound buzzer;
     public static Sound itemUse;
@@ -26,19 +27,11 @@ public class Sounds {
             itemUse = new Sound("res/Audio/SE/105-Heal01.wav");
             buzzer = new Sound("res/Audio/SE/004-System04.wav");
             cursor = new Sound("res/Audio/SE/Cursor2.wav");
-            cancel = new Sound("res/Audio/SE/Cancel2.wav");  
+            cancel = new Sound("res/Audio/SE/Cancel2.wav");
+            decision = new Sound("res/Audio/SE/Decision1.ogg");
         } catch (SlickException ex) {
             Logger.getLogger(Sounds.class.getName()).log(Level.SEVERE, null, ex);
         }
-    }
-    
-    public static Music getMusic(String name){
-        try {
-            return new Music("res/Audio/BGM/"+name); 
-        } catch (SlickException ex) {
-            Logger.getLogger(GameCache.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        return null;
     }
     
 }

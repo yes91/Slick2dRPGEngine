@@ -12,12 +12,12 @@ import java.util.List;
  */
 public class GameBattleAction {
 
-    private enum ActionType {
+    public enum ActionType {
 
         BASIC, SKILL, ITEM
     }
 
-    private enum BasicType {
+    public enum BasicType {
 
         ATTACK, GUARD, ESCAPE, WAIT
     }
@@ -34,18 +34,18 @@ public class GameBattleAction {
         clear();
     }
 
-    public List getAllyUnit() {
+    public GameUnit getAllyUnit() {
         if (battler.isActor()) {
-            return SceneBase.gameParty.getMembers();
+            return SceneBase.gameParty;
         }
-        return SceneBase.gameTroop.getMembers();
+        return SceneBase.gameTroop;
     }
 
-    public List getEnemyUnit() {
+    public GameUnit getEnemyUnit() {
         if (!battler.isActor()) {
-            return SceneBase.gameParty.getMembers();
+            return SceneBase.gameParty;
         }
-        return SceneBase.gameTroop.getMembers();
+        return SceneBase.gameTroop;
     }
 
     public final void clear() {
@@ -80,17 +80,17 @@ public class GameBattleAction {
     }
 
     public boolean isAttack() {
-        return kind.equals(ActionType.BASIC)
-                && basic.equals(BasicType.ATTACK);
+        return kind == ActionType.BASIC
+                && basic == BasicType.ATTACK;
     }
     
     public boolean isGuard(){
-        return kind.equals(ActionType.BASIC)
-                && basic.equals(BasicType.GUARD);
+        return kind == ActionType.BASIC
+                && basic == BasicType.GUARD;
     }
     
     public boolean isNothing(){
-        return kind.equals(ActionType.BASIC)
+        return kind == ActionType.BASIC
                 && basic == null;
     }
     
@@ -106,10 +106,56 @@ public class GameBattleAction {
         return kind == ActionType.ITEM;
     }
     
-    public Item getItem(){
-        return isItem() ? ItemReader.items.get(itemID): null;
+    public Consumable getItem(){
+        return isItem() ? (Consumable)ItemReader.items.get(itemID): null;
     }
     
+    public boolean isValid(){
+        if(isNothing()){
+            return false;
+        }
+        if(!battler.isMovable()){
+            return false;
+        }
+        return true;
+    }
     
+    public boolean forAlly(){
+        if(isSkill() && getSkill().forAlly()){
+            return true;
+        } else if(isItem() && getItem().forAlly()){
+            return true;
+        }
+        return false;
+    }
+    
+    public boolean forDeadAlly(){
+        if(isSkill() && getSkill().forDeadAlly()){
+            return true;
+        } else if(isItem() && getItem().forDeadAlly()){
+            return true;
+        }
+        return false;
+    }
+    
+    public void randomTarget(){
+        GameBattler target;
+        GameUnit unit;
+        if(forAlly()){
+            unit = getAllyUnit();
+            target = unit.getRandomTarget();
+        } else if(forDeadAlly()){
+            unit = getAllyUnit();
+            target = unit.getRandomDeadTarget();
+        } else {
+            unit = getEnemyUnit();
+            target = unit.getRandomTarget();
+        }
+        if(target == null){
+            clear();
+        } else {
+            targetIndex = unit.getMembers().indexOf(target);
+        }
+    }
     
 }

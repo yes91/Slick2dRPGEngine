@@ -42,7 +42,7 @@ public class RPG extends StateBasedGame {
     @Override
     public void initStatesList(GameContainer gc) throws SlickException{
         try {
-            //Demo.init();
+            Demo.init();
             GameData.editorMode = false;
             GameData.populate();
             Sounds.load();

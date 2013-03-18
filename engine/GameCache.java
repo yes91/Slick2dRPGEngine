@@ -61,6 +61,19 @@ public class GameCache {
         return result;
     }
     
+    public static Music me(String name){
+        Music result = music.get(name);
+        if(result == null){
+            try {
+                result = new Music("res/Audio/ME/"+name);
+                music.put(name, result);
+            } catch (SlickException ex) {
+                Logger.getLogger(GameCache.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        return result;
+    }
+    
     public static void clear(){
         images.clear();
         music.clear();
