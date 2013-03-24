@@ -16,7 +16,8 @@ public class Animes {
     static {
         ANIME.put("WAIT",           new Object[]{ 1,  0,  12,   0,   0,  -1,  0,  false,  ""});
         ANIME.put("WAIT(FIXED)",    new Object[]{ 1,  0,  12,   2,   0,   1,  0,  false,  ""});
-        ANIME.put("DEAD_POSE",      new Object[]{ 1, 10,  12,   1,   8,   0,  0,   true,  ""});
+        ANIME.put("DEAD_POSE",      new Object[]{ 1, 10,  12,   2,   0,   0,  0,  false,  ""});
+        ANIME.put("HURT_POSE",      new Object[]{ 1,  1,   4,   2,   0,  -1,  0,  false,  ""});
         ANIME.put("VICTORY_POSE",   new Object[]{ 1,  9,  12,   0,   0,  -1,  0,  false,  ""});
         ANIME.put("SKILL_POSE",     new Object[]{ 1,  8,  16,   2,   0,  -1,  0,  false,  ""});
         ANIME.put("MOVE_TO",        new Object[]{ 1,  4,   6,   1,   0,  -1,  0,  false,  ""});
@@ -43,6 +44,7 @@ public class Animes {
         ANIME.put("PREV_MOVING_TARGET", new Object[]{ 1,   0,   0, 12,  -1,   0,  "MOVE_TO"});
         ANIME.put("START_POSITION",     new Object[]{ 0,  54,   0,  1,   0,   0,  "MOVE_TO"});
         ANIME.put("BEFORE_MOVE",        new Object[]{ 3, -32,   0, 18,  -1,   0,  "MOVE_TO"});
+        ANIME.put("KNOCKBACK",          new Object[]{ 0,   2,   0,  4,  -1,   0,  "HURT_POSE"});
         
     }
     

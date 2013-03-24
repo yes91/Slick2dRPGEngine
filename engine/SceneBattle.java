@@ -5,6 +5,7 @@
 package engine;
 
 import effectutil.CameraFadeInTransition;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.LinkedList;
@@ -213,7 +214,8 @@ public class SceneBattle extends SceneBase {
                         actionEnd();
                         playingAction = false;
                     } else if (activeBattler.play[0].equals("OBJ_ANIM")) {
-                        damageAction(activeBattler.play[1]);
+                        Object[] temp = Arrays.copyOfRange(activeBattler.play, 1, activeBattler.play.length);
+                        damageAction(temp);
                     } else if (activeBattler.play[0].equals("Can Collapse")){
                         activeBattler.play = null;
                     }
@@ -262,13 +264,17 @@ public class SceneBattle extends SceneBase {
         activeBattler.clearActionResults();
     }
     
-    public void damageAction(Object action){
+    public void damageAction(Object[] action){
         activeBattler.play = null;
         if(activeBattler.action.isAttack()){
-            GameBattler target = activeBattler.isActor() ? 
-                    gameTroop.getMembers().get(activeBattler.action.targetIndex):
-                    party.getMembers().get(activeBattler.action.targetIndex);
+            int index = activeBattler.action.targetIndex;
+            boolean actor = activeBattler.isActor();
+            GameBattler target = actor ? 
+                    gameTroop.getMembers().get(index):
+                    party.getMembers().get(index);
             target.attackEffect(activeBattler);
+            spriteset.setDamageAction(!actor, index, action);//TODO: Change to popDamage()
+            
         }
     }
     
@@ -300,7 +306,7 @@ public class SceneBattle extends SceneBase {
                     if (inputp.isCommandControlPressed(action)) {
                         Sounds.decision.play();
                         BGM.fade(1500, 0.05f, true);
-                        sbg.enterState(1, new FadeOutTransition(), new CameraFadeInTransition());
+                        sbg.enterState(1, new FadeOutTransition(), new CameraFadeInTransition(((SceneMap)sbg.getState(1)).getCamera()));
                     }
                     break;
             }
@@ -517,7 +523,7 @@ public class SceneBattle extends SceneBase {
     }
     
     public void battleEnd(int result, StateBasedGame sbg){
-        sbg.enterState(1, new FadeOutTransition(), new CameraFadeInTransition());
+        sbg.enterState(1, new FadeOutTransition(), new CameraFadeInTransition(((SceneMap)sbg.getState(1)).getCamera()));
     }
 
     public static Music getBGM() {

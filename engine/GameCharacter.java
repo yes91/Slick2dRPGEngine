@@ -4,6 +4,7 @@
  */
 package engine;
 
+import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.geom.Vector2f;
 
@@ -30,6 +31,16 @@ public class GameCharacter extends GameObject{
         width = i.getWidth() / 4;
         height = i.getHeight() / 4;
         sprite = new SpriteCharacter(this, i);
+    }
+    
+    @Override
+    public void render(Graphics g){
+        sprite.getCurrentAni().draw((int) pos.x - width/2, (int) pos.y - height/2);
+    }
+    
+    @Override
+    public void update(){
+        sprite.update();
     }
     
 }

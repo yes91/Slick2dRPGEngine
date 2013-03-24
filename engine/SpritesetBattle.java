@@ -119,10 +119,15 @@ public class SpritesetBattle {
         switch (action) {
             case "COMMAND_INPUT":
                 t.startAction(action);
-                t.moveAmount(50, 0, 0);
-                break;
+                //t.moveAmount(50, 0, 0);
+                return;
         }
         t.startAction(action);
+    }
+    
+    public void setDamageAction(boolean isActor, int index, Object[] action){
+        SpriteBattler t = isActor ? actorSprites.get(index):enemySprites.get(index);
+        t.damageAction(action);
     }
     
     public void setTarget(boolean isActor, int index, Integer targetIndex){

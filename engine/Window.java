@@ -17,13 +17,14 @@ public class Window {
     public int initX;
     public int initY;
     public int oy;
+    public Camera camera;
     public Image skin;
     public final Image contents;
     public final Graphics cg;
     public Rectangle cursorRect;
     private double time;
     private static final Color transp = new Color(1.0f, 1.0f, 1.0f, 0.8f);
-
+    
     public Window(int x, int y, int w, int h) throws SlickException {
 
         this.cursorRect = new Rectangle(0, 0, 0, 0);
@@ -42,7 +43,7 @@ public class Window {
     }
 
     public void render(Graphics g2d, StateBasedGame sbg) {
-        if (sbg.getCurrentStateID() == 1) {
+        if (camera != null) {
             x = initX + (int) Camera.viewPort.getX();
             y = initY + (int) Camera.viewPort.getY();
         } else {

@@ -4,7 +4,6 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.command.InputProvider;
 import org.newdawn.slick.geom.Rectangle;
-import org.newdawn.slick.geom.Vector2f;
 import org.newdawn.slick.tiled.TiledMap;
 
 public class WorldPlayer extends GameCharacter {
@@ -36,7 +35,7 @@ public class WorldPlayer extends GameCharacter {
         lastPos.set(pos);
         pos.add(deltaPos);
         bounds.setLocation(pos.x - width/2 + (width/8), pos.y);
-        sprite.updateAnimationState();
+        super.update();
     }
     
     @Override
@@ -56,7 +55,7 @@ public class WorldPlayer extends GameCharacter {
     @Override
     public void render(Graphics g2d) {
         if (!collide()) {
-            sprite.getCurrentAni().draw((int) pos.x - width/2, (int) pos.y - height/2);
+            super.render(g2d);
         } else {
             sprite.getIdle().draw((int) lastPos.x - width/2, (int) lastPos.y - height/2);
         }
@@ -85,7 +84,6 @@ public class WorldPlayer extends GameCharacter {
 
     public void getInput(InputProvider input, int delta) {
 
-
         if (SceneMap.uiFocus == false) {
 
             if (input.isCommandControlPressed(SceneBase.action)) {
@@ -109,7 +107,6 @@ public class WorldPlayer extends GameCharacter {
                     deltaPos.x = 0.24f * delta;
                 }
             }
-
 
             if ((!input.isCommandControlDown(SceneBase.right)) && (!input.isCommandControlDown(SceneBase.left))) {
                 deltaPos.x = 0;

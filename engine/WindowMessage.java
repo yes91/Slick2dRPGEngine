@@ -36,6 +36,14 @@ public class WindowMessage extends WindowSelectable {
         this.itemMax = 0;
         this.gameMessage = SceneBase.gameMessage;
     }
+    
+    public WindowMessage(Camera camera) throws SlickException {
+        super(0, (int) (SceneMap.B_HEIGHT * 0.82), SceneMap.B_WIDTH, (int) (SceneMap.B_HEIGHT * 0.18));
+        this.index = -1;
+        this.itemMax = 0;
+        this.gameMessage = SceneBase.gameMessage;
+        this.camera = camera;
+    }
 
     public void startMessage() {
         this.currentPage = 0;

@@ -21,14 +21,14 @@ public class BeamLight extends Light {
     }
     
     @Override
-    public void render(Graphics g) {
+    public void render(Graphics g, Camera c) {
         GL14.glBlendColor(tint.r * intensity, tint.g * intensity, tint.b * intensity, tint.a);
         GL11.glBlendFunc(GL11.GL_CONSTANT_COLOR, GL11.GL_SRC_ALPHA);
        // GL11.glEnable(GL11.GL_BLEND);
         lightSprite.setRotation(angle);
         float xOff = lightSprite.getWidth() / 2f;
         float yOff = lightSprite.getHeight() / 2f;
-        lightSprite.draw(screenX() - xOff, screenY() - yOff, screenX() + lightSprite.getWidth() * scale, screenY() + lightSprite.getHeight(), 
+        lightSprite.draw(screenX(c) - xOff, screenY(c) - yOff, screenX(c) + lightSprite.getWidth() * scale, screenY(c) + lightSprite.getHeight(), 
                 0, 0, lightSprite.getWidth(), lightSprite.getHeight());
     }
     

@@ -4,11 +4,10 @@
  */
 package engine;
 
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
-import org.newdawn.slick.SlickException;
+import org.newdawn.slick.SpriteSheet;
+import org.newdawn.slick.geom.Vector2f;
 
 /**
  *
@@ -16,31 +15,20 @@ import org.newdawn.slick.SlickException;
  */
 public class Enemy extends Event{
     
-    private Image enemySprite;
-    private Image eBattleSprite;
-    private String name;
-    private int maxHP;
-    private int currentHP;
-    private int maxMP;
-    private int currentMP;
+    private Animation ani;
     
     public Enemy(Image i,String n,int hp, int mp,int atk, int def,int matk,int mdef){   
         super(0,0,0,0,"Enemy",null,null,null);
-        enemySprite = i;
-        try {
-            eBattleSprite = new Image(i.getResourceReference().replaceAll(".png", "")+"!.png");
-        } catch (SlickException ex) {
-            Logger.getLogger(Enemy.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        name = n;
-        maxHP = hp;
-        maxMP = mp;
+        SpriteSheet sheet = new SpriteSheet(i, 4, 4);
+        this.width = sheet.getWidth()/sheet.getHorizontalCount();
+        this.height = sheet.getHeight()/sheet.getVerticalCount();
+        ani = new Animation(sheet, 0, 1, 3, 1, true, 120, true);
         
     }
     
     @Override
     public void render(Graphics g){
-        Sprite.animateSprite(enemySprite, g, pos.x, pos.y, width, height, 4, 0, 4, .125f, true);   
+        ani.draw(pos.x + width/2, pos.y + height/2, width, height);
     }
     
 }

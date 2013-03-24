@@ -250,7 +250,7 @@ public class SceneTitle extends SceneBase{
                         input.removeControllerListener(clistener);
                         input.clearKeyPressedRecord();
                         input.clearControlPressedRecord();
-                        sbg.enterState(1, new FadeOutTransition(), new CameraFadeInTransition()); break;
+                        sbg.enterState(1, new FadeOutTransition(), new CameraFadeInTransition(((SceneMap)sbg.getState(1)).getCamera())); break;
                     case 1: lastAdded = test;
                         uielements.add(lastAdded); 
                         test.startMessage(); break;

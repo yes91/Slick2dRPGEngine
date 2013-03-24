@@ -54,7 +54,7 @@ public class SpriteCharacter extends SpriteBase {
         return idle;
     }
 
-    public void updateAnimationState() {
+    public void update() {
         if (gChar.deltaPos.x > 0) {
             idle = states[IDLE_RIGHT];
             gChar.facing = GameCharacter.Direction.RIGHT;

@@ -18,6 +18,7 @@ public class Actions {
         ACTION.put("WAIT", new String[]{"WAIT"});
         ACTION.put("DEATH_POSITION", new String[]{"MOVE_DOWN"});
         ACTION.put("DEAD", new String[]{"DEAD_POSE"});
+        ACTION.put("HURT", new String[]{"KNOCKBACK", "COORD_RESET"});
         ACTION.put("VICTORY", new String[]{ "WAIT", "16", "VICTORY_POSE", "Don't Wait" });
         ACTION.put("WAIT-CRITICAL", new String[]{ "NO_MOVE", "WAIT(FIXED)", "22"});
         ACTION.put("COMMAND_INPUT", new String[]{ "BEFORE_MOVE" });

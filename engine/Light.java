@@ -61,31 +61,31 @@ public class Light {
         this(x, y, scale, 1f, Color.white);
     }
 
-    public void render(Graphics g) {
+    public void render(Graphics g, Camera cam) {
         GL14.glBlendColor(tint.r * intensity, tint.g * intensity, tint.b * intensity, tint.a);
         //GL11.glEnable(GL11.GL_BLEND);
         GL11.glBlendFunc(GL11.GL_CONSTANT_COLOR, GL11.GL_SRC_ALPHA);
         lightSprite.setRotation(0);
         float xOff = lightSprite.getWidth() / 2f * scale;
         float yOff = lightSprite.getHeight() / 2f * scale;
-        lightSprite.draw(screenX() - xOff, screenY() - yOff, scale);
+        lightSprite.draw(screenX(cam) - xOff, screenY(cam) - yOff, scale);
     }
     
     public void update(long elapsed){
         scale = scaleOrig + 0.5f * (float)Math.sin(elapsed /1000f);
     }
 
-    public float screenX() {
-        return x - Camera.viewPort.getX();
+    public float screenX(Camera c) {
+        return x - c.viewPort.getX();
     }
 
-    public float screenY() {
-        return y - Camera.viewPort.getY();
+    public float screenY(Camera c) {
+        return y - c.viewPort.getY();
     }
 
-    public boolean isVisible() {
-        return x > Camera.viewPort.getX() - 1024 && y > Camera.viewPort.getY() - 1024
-                && x < Camera.viewPort.getX() + Camera.viewPort.getWidth() + 1024
-                && y < Camera.viewPort.getY() + Camera.viewPort.getHeight() + 1024;
+    public boolean isVisible(Camera c) {
+        return x > c.viewPort.getX() - 1024 && y > c.viewPort.getY() - 1024
+                && x < c.viewPort.getX() + c.viewPort.getWidth() + 1024
+                && y < c.viewPort.getY() + c.viewPort.getHeight() + 1024;
     }
 }

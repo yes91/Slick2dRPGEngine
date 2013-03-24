@@ -5,6 +5,7 @@
 package effectutil;
 
 import engine.Camera;
+import engine.SceneMap;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
@@ -22,12 +23,14 @@ public class CameraFadeInTransition implements Transition {
 	private Color color;
 	/** The time it takes to fade in */
 	private int fadeTime = 500;
+        
+        private Camera camera;
 
 	/**
 	 * Create a new fade in transition
 	 */
-	public CameraFadeInTransition() {
-		this(Color.black, 500);
+	public CameraFadeInTransition(Camera c) {
+		this(c, Color.black, 500);
 	}
 	
 	/**
@@ -35,8 +38,8 @@ public class CameraFadeInTransition implements Transition {
 	 * 
 	 * @param color The color we're going to fade in from
 	 */
-	public CameraFadeInTransition(Color color) {
-		this(color, 500);
+	public CameraFadeInTransition(Camera c, Color color) {
+		this(c, color, 500);
 	}
 	
 	/**
@@ -45,10 +48,11 @@ public class CameraFadeInTransition implements Transition {
 	 * @param color The color we're going to fade in from
 	 * @param fadeTime The time it takes for the fade to occur
 	 */
-	public CameraFadeInTransition(Color color, int fadeTime) {
+	public CameraFadeInTransition(Camera camera, Color color, int fadeTime) {
 		this.color = new Color(color);
 		this.color.a = 1;
 		this.fadeTime = fadeTime;
+                this.camera = camera;
 	}
 	
 	/**

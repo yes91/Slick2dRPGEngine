@@ -25,7 +25,6 @@ public class Map {
     public TiledMap map;
     public Music BGM;
     public Image battleback;
-    public Camera camera;
     public ArrayList<Event> events;
     public ArrayList<GameObject> objs;
     public ArrayList<Rectangle> listRect;
@@ -37,7 +36,6 @@ public class Map {
         listRect = new ArrayList<>();
         objs = new ArrayList<>();
         map = mp;
-        camera = new Camera(map, map.getWidth()*map.getTileWidth(),map.getHeight()*map.getTileHeight());
         boundsX = map.getWidth()*map.getTileWidth();
         boundsY = map.getHeight()*map.getTileHeight();
         objs = new ArrayList<>();
@@ -79,13 +77,10 @@ public class Map {
                              }
                              
                              if("Enemy".equals(value)){
-                            Enemy e = EnemyReader.getEnemies().get(Integer.parseInt(map.getObjectProperty(0, Object, "Index", "0")));
-                             e.pos.x = (float)map.getObjectX(0, Object);
-                             e.pos.y = (float)map.getObjectY(0, Object);
-                             e.width = map.getObjectWidth(0, Object);
-                             e.height = map.getObjectHeight(0, Object);
-                            events.add(e);
-                            objs.add(e);
+                                GameCharacter e = new GameCharacter("092-Monster06");
+                                e.pos.x = (float)map.getObjectX(0, Object);
+                                e.pos.y = (float)map.getObjectY(0, Object);
+                                objs.add(e);
                             }
 	        }
                 objs.add(p);
@@ -103,6 +98,9 @@ public class Map {
     }
     
     public void update(GameContainer container, WorldPlayer p) throws SlickException {
+        for(GameObject go: objs){
+            go.update();
+        }
         for(Event e: events){
             if(Physics.checkCollisions(p, e.getActivationRect()) & p.getAction() == true){
                 if(e.getType().equals("Actor") | e.getType().equals("Npc")){
@@ -126,6 +124,7 @@ public class Map {
                 if(e.getType().equals("Teleport")){
                     container.pause();
                     SceneMap.map = new Map(new TiledMap(e.maploc, e.maploc2), p);
+                    SceneMap.setCamera(new Camera(SceneMap.map.map, SceneMap.map.map.getWidth()*64, SceneMap.map.map.getHeight()*64));
                     container.resume();
                 }
             }  

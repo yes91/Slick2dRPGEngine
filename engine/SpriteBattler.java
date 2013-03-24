@@ -49,17 +49,6 @@ public class SpriteBattler extends SpriteBase {
     public float distZ;
     public SpriteBattler target;
     public int pose;
-    private static final int IDLE = 0;
-    private static final int DAMAGE = 1;
-    private static final int CRITICAL = 2;
-    private static final int GUARD = 3;
-    private static final int APPROACH = 4;
-    private static final int RETREAT = 5;
-    private static final int ATTACK_HEAVY = 6;
-    private static final int ATTACK_LIGHT = 7;
-    private static final int CAST = 8;
-    private static final int VICTORY = 9;
-    private static final int COLLAPSE = 10;
 
     public SpriteBattler() {
     }
@@ -114,19 +103,20 @@ public class SpriteBattler extends SpriteBase {
         
         action.clear();
         try{
-        action.addAll(Arrays.asList(Actions.ACTION.get(kind)));
-        } finally{
+            action.addAll(Arrays.asList(Actions.ACTION.get(kind)));
             if(action.isEmpty()){
-                System.err.println("An error has occurred."
-                +"Action Sequence Key "+kind+" does not exist."
-                +"Define it first or make sure it is spelled correctly.");
+                throw new Exception();
             }
+        } catch(Exception e){
+            System.err.println("An error has occurred."
+            +"Action Sequence Key "+kind+" does not exist."
+            +"Define it first or make sure it is spelled correctly.");
         }
-        String active = action.poll();
+        String activeAct = action.poll();
         action.addLast("End");
-        activeAction = Animes.ANIME.get(active);
+        activeAction = Animes.ANIME.get(activeAct);
         if(activeAction == null){
-            wait = Integer.parseInt(active);
+            wait = Integer.parseInt(activeAct);
         }
         
         action();
@@ -209,9 +199,17 @@ public class SpriteBattler extends SpriteBase {
         }
     }
     
+    public void damageAction(Object[] action){
+        int damage = battler.HPchange;
+        
+        if(damage > 0){
+            startAction("HURT");
+        }
+    }
+    
     public void twoSwords(){
         
-        String active = action.poll();
+        String activeAct = action.poll();
         
         if(!battler.isActor()){
             return;
@@ -219,10 +217,10 @@ public class SpriteBattler extends SpriteBase {
             return;
         }
         
-        activeAction = Animes.ANIME.get(active);
+        activeAction = Animes.ANIME.get(activeAct);
         
-        if(activeAction == null && active != null){
-            wait = Integer.parseInt(active);
+        if(activeAction == null && activeAct != null){
+            wait = Integer.parseInt(activeAct);
         }
         
         action();
@@ -230,7 +228,7 @@ public class SpriteBattler extends SpriteBase {
     
     public void nonTwoSwords(){
         
-        String active = action.poll();
+        String activeAct = action.poll();
         
         if(!battler.isActor()){
             return;
@@ -238,10 +236,10 @@ public class SpriteBattler extends SpriteBase {
             return;
         }
         
-        activeAction = Animes.ANIME.get(active);
+        activeAction = Animes.ANIME.get(activeAct);
         
-        if(activeAction == null && active != null){
-            wait = Integer.parseInt(active);
+        if(activeAction == null && activeAct != null){
+            wait = Integer.parseInt(activeAct);
         }
         
         action();

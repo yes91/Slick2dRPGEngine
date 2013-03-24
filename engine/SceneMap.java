@@ -6,9 +6,6 @@ package engine;
 
 import effectutil.LightShader;
 import effectutil.ShaderProgram;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -19,7 +16,6 @@ import javax.script.ScriptContext;
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
 import javax.script.ScriptException;
-import org.lwjgl.opengl.GL11;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Font;
 import org.newdawn.slick.GameContainer;
@@ -31,7 +27,6 @@ import org.newdawn.slick.SlickException;
 import org.newdawn.slick.gui.AbstractComponent;
 import org.newdawn.slick.gui.ComponentListener;
 import org.newdawn.slick.gui.TextField;
-import org.newdawn.slick.imageout.ImageIOWriter;
 import org.newdawn.slick.state.StateBasedGame;
 
 /**
@@ -62,9 +57,8 @@ public class SceneMap extends SceneBase {
     private Music music;
     public static Window lastAdded;
     public static WindowMessage message;
-    private Image testbattler;
     //WorldPlayer worldPlayer;
-    Camera camera;
+    private static Camera camera;
     private Image buffer;
     private Image lightBuffer;
     private Graphics lg;
@@ -76,6 +70,7 @@ public class SceneMap extends SceneBase {
     private boolean isLit;
     static Image items;
     //public Input input;
+    public static String mapName = "testmap2";
     public static Map map;
     public Image light;
     private TextField console;
@@ -84,6 +79,12 @@ public class SceneMap extends SceneBase {
     public SceneMap(int stateID) {
 
         this.stateID = stateID;
+    }
+    
+    @Override
+    public void enter(GameContainer game, StateBasedGame sbg) throws SlickException{
+        super.enter(game, sbg);
+        camera = new Camera(map.map, map.map.getWidth()*map.map.getTileWidth(),map.map.getHeight()*map.map.getTileHeight());
     }
 
     @Override
@@ -98,7 +99,6 @@ public class SceneMap extends SceneBase {
         buffer = new Image(B_WIDTH, B_HEIGHT);
         allowClose = false;
         //container.setMaximumLogicUpdateInterval(60);
-        testbattler = new Image("res/yuan_3.png");
         worldPlayer = new WorldPlayer("steampunk_m4");
         blurH = ShaderProgram.loadProgram("engine/blurH.vert", "engine/blurH.frag");
         blurV = ShaderProgram.loadProgram("engine/blurV.vert", "engine/blurV.frag");
@@ -114,16 +114,17 @@ public class SceneMap extends SceneBase {
                     new Light(234, 567, 1f, 0.6f, new Color(59, 178, 30)),
                     new BeamLight(234, 567, 8f, 60f, 0.6f, "test_light", new Color(59, 178, 30))
                 }));
-        message = new WindowMessage();
         uielements = new ArrayList<>();
         //uielements.add(wind);
         EnemyReader.populateEnemies();
-        map = new Map(new TiledMapExtra("res/data/map/testmap2.tmx", "res/data/map"), worldPlayer);
+        map = new Map(new TiledMapExtra("res/data/map/"+mapName+".tmx", "res/data/map"), worldPlayer);
         uiFocus = false;
         music = new Music("res/fatefulencounter.wav");
         //isPlaying = true;
         //music.loop();
         light = new Image("res/LightRays.png");
+        camera = new Camera(map.map, map.map.getWidth()*map.map.getTileWidth(),map.map.getHeight()*map.map.getTileHeight());
+        message = new WindowMessage(camera);
         //System.out.println(new GameBattler().stat.getBaseHP());
         final ScriptEngine js = new ScriptEngineManager().getEngineByName("javascript");
         Bindings bindings = js.getBindings(ScriptContext.ENGINE_SCOPE);
@@ -153,6 +154,10 @@ public class SceneMap extends SceneBase {
         //System.out.println(delta);
         deltaG = delta;
         elapsed += delta;
+        mouseLight.x = (float) input.getMouseX() + Camera.viewPort.getX();
+        mouseLight.y = (float) input.getMouseY() + Camera.viewPort.getY();
+        mouseLight.scale = 1f + Math.abs((float) Math.sin(elapsed / 1000f));
+        lightArray.get(5).scale = 1f + Math.abs((float) Math.sin(elapsed / 1000f));
         if (input.isKeyPressed(Input.KEY_ESCAPE)) {
             container.exit();
         }
@@ -225,31 +230,24 @@ public class SceneMap extends SceneBase {
             shaderOption = 5;
         }
         if (input.isKeyPressed(Input.KEY_F4)) {
-            map.camera.setTarget(map.objs.get(0));
+            camera.setTarget(map.objs.get(0));
         }
     }
 
     @Override
     public void render(GameContainer container, StateBasedGame sbg, Graphics g) throws SlickException {
-        //effect.bind();        
-        mouseLight.x = (float) input.getMouseX() + Camera.viewPort.getX();
-        mouseLight.y = (float) input.getMouseY() + Camera.viewPort.getY();
-        mouseLight.scale = 1f + Math.abs((float) Math.sin(elapsed / 1000f));
-        lightArray.get(5).scale = 1f + Math.abs((float) Math.sin(elapsed / 1000f));
+        //effect.bind();            
         if (shaderOption != lastOption) {
             effect.setUniform1i("choice", shaderOption);
             lastOption = shaderOption;
         }
-        map.camera.translate(g);
+        camera.translate(g);
         map.render(worldPlayer, g);
-        //Sprite.animateSprite(testbattler, g, 200, 200, 423, 270, 4, 0, 4, 0, true);
-        //Sprite.drawSpriteFrame(testbattler, g, 200, 200, 4, 0, 423, 270);
 
         Collections.sort(map.objs, depthComp);
         for (GameObject go : map.objs) {
             go.render(g);
         }
-
 
         if (count > 2) {
             count = 0;
@@ -269,8 +267,8 @@ public class SceneMap extends SceneBase {
             lg.setColor(new Color(0.0f, 0.0f, 0.0f, 1f));
             lg.fillRect(0, 0, B_WIDTH, B_HEIGHT);
             for (Light l : lightArray) {
-                if (l.isVisible()) {
-                    l.render(lg);
+                if (l.isVisible(camera)) {
+                    l.render(lg, camera);
                 }
             }
             lg.flush();
@@ -280,18 +278,25 @@ public class SceneMap extends SceneBase {
         }
 
         /*g.setColor(Color.yellow);
-         g.drawRect(Camera.viewPort.getX() + 5, 
-         * Camera.viewPort.getY() + 5, s
-         * Camera.viewPort.getWidth() - 10, 
-         * Camera.viewPort.getHeight() - 10);*/
+         g.drawRect(camera.viewPort.getX() + 5, 
+          camera.viewPort.getY() + 5,
+          camera.viewPort.getWidth() - 10, 
+          camera.viewPort.getHeight() - 10);*/
 
         for (Window w : uielements) {
             w.render(g, sbg);
-            map.renderUI(worldPlayer);
         }
         console.render(container, cg);
         cg.flush();
         g.drawImage(consoleBuffer, Camera.viewPort.getX(), Camera.viewPort.getY());
+    }
+    
+    public static Camera getCamera(){
+        return camera;
+    }
+    
+    public static void setCamera(Camera c){
+        camera = c;
     }
 
     private void tpPlayer(int tileX, int tileY, WorldPlayer p) {
