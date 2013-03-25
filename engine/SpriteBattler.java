@@ -44,6 +44,7 @@ public class SpriteBattler extends SpriteBase {
     public float moveZ;
     public float basePosX, basePosY, basePosZ;
     public float deltaX, deltaY, deltaZ;
+    public float blah;
     public float distX;
     public float distY;
     public float distZ;
@@ -361,10 +362,6 @@ public class SpriteBattler extends SpriteBase {
         moveX += (deltaX/16f)*delta;
         moveY += (deltaY/16f)*delta;
         moveZ += (deltaZ/16f)*delta;
-        if(posX() > 20000 && posY() > 2000 && posZ() > 1000){
-            System.out.println("Oh no, it happened again!\nIt was him!: "+battler.name+"\nThis was the delta: "+delta);
-        }
-        //System.out.println(delta);
     }
 
     public void toPoint(float x, float y, float z) {

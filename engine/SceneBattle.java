@@ -44,6 +44,11 @@ public class SceneBattle extends SceneBase {
     private WindowSelectable targetEnemy; 
     private WindowBattleStatus stat;
     private SpritesetBattle spriteset;
+    private static enum BattleState{
+        PARTY_COMMAND, ACTOR_COMMAND, TARGET_ENEMY, TARGET_ACTOR, ITEM_SELECT, 
+        MAIN, ACTION_WAIT, END
+    }
+    private BattleState mode;
     private LinkedList<GameBattler> actionBattlers = new LinkedList<>();
     private int actorIndex;
     private GameBattler activeBattler;
@@ -261,6 +266,8 @@ public class SceneBattle extends SceneBase {
     }
     
     public void actionEnd(){
+        GameUnit group = activeBattler.action.getAllyUnit();
+        spriteset.setTarget(activeBattler.isActor(), group.getMembers().indexOf(activeBattler), null);
         activeBattler.clearActionResults();
     }
     
@@ -268,12 +275,9 @@ public class SceneBattle extends SceneBase {
         activeBattler.play = null;
         if(activeBattler.action.isAttack()){
             int index = activeBattler.action.targetIndex;
-            boolean actor = activeBattler.isActor();
-            GameBattler target = actor ? 
-                    gameTroop.getMembers().get(index):
-                    party.getMembers().get(index);
+            GameBattler target = activeBattler.action.getEnemyUnit().getMembers().get(index);
             target.attackEffect(activeBattler);
-            spriteset.setDamageAction(!actor, index, action);//TODO: Change to popDamage()
+            spriteset.setDamageAction(target.isActor(), index, action);//TODO: Change to popDamage()
             
         }
     }
@@ -523,7 +527,7 @@ public class SceneBattle extends SceneBase {
     }
     
     public void battleEnd(int result, StateBasedGame sbg){
-        sbg.enterState(1, new FadeOutTransition(), new CameraFadeInTransition(((SceneMap)sbg.getState(1)).getCamera()));
+        sbg.enterState(1, new FadeOutTransition(), new CameraFadeInTransition(SceneMap.getCamera()));
     }
 
     public static Music getBGM() {

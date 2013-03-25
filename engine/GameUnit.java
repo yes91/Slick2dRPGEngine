@@ -15,9 +15,9 @@ public abstract class GameUnit {
     
     public Random chance = new Random();
     
-    public abstract List getMembers();
+    public abstract List<GameBattler> getMembers();
     
-    public abstract List getLivingMembers();
+    public abstract List<GameBattler> getLivingMembers();
     
     public abstract boolean allDead();
     
