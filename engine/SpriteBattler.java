@@ -256,7 +256,7 @@ public class SpriteBattler extends SpriteBase {
         
         retreat();
         Object[] moveAnime = Animes.ANIME.get((String)activeAction[4]);
-        wait = 1;
+        wait += 1;
         if(moveAnime != null){
             activeAction = moveAnime;
             battlerAnime();
@@ -278,7 +278,7 @@ public class SpriteBattler extends SpriteBase {
         }
         
         Object[] moveAnime = Animes.ANIME.get((String)activeAction[6]);
-        wait = 1;
+        wait += 1;
         if(moveAnime != null){
             activeAction = moveAnime;
             battlerAnime();
@@ -345,9 +345,9 @@ public class SpriteBattler extends SpriteBase {
     }
 
     public void updateMove(float delta) {
-        distX += ((deltaX < 0 ? deltaX : -deltaX)/16f)*delta;
-        distY += ((deltaY < 0 ? deltaY : -deltaY)/16f)*delta;
-        distZ += ((deltaZ < 0 ? deltaZ : -deltaZ)/16f)*delta;
+        distX -= (Math.abs(deltaX)/16f)*delta;
+        distY -= (Math.abs(deltaY)/16f)*delta;
+        distZ -= (Math.abs(deltaZ)/16f)*delta;
         if (distX <= 0 && distY <= 0 && distZ <= 0) {
             distX = 0;
             distY = 0;
@@ -355,14 +355,17 @@ public class SpriteBattler extends SpriteBase {
             deltaX = 0;
             deltaY = 0;
             deltaZ = 0;
+            return;
         } else {
             animeEnd = false;
         }
         moveX += (deltaX/16f)*delta;
         moveY += (deltaY/16f)*delta;
         moveZ += (deltaZ/16f)*delta;
-        if(posX() > 20000 && posY() > 2000 && posZ() > 1000){
-            System.out.println("Oh no, it happened again!\nIt was him!: "+battler.name+"\nThis was the delta: "+delta);
+        if(Math.abs(moveX) > 300 && action.getFirst().equals("COORD_RESET")){
+            System.out.println("It was him!: "+battler.name+"\nThis was the delta: "+delta);
+            System.out.println("X Distance: "+distX);
+            System.out.println("DX: "+deltaX+" DY: "+deltaY+" DZ: "+deltaZ);
         }
         //System.out.println(delta);
     }
@@ -389,9 +392,14 @@ public class SpriteBattler extends SpriteBase {
         distX = Math.abs(basePosX - posX());
         distY = Math.abs(basePosY - posY());
         distZ = Math.abs(basePosZ - posZ());
-        deltaX = distX / moveSpeedX * (posX() - basePosX < 0 ? 1 : -1);
-        deltaY = distY / moveSpeedY * (posY() - basePosY < 0 ? 1 : -1);
-        deltaZ = distZ / moveSpeedZ * (posZ() - basePosZ < 0 ? 1 : -1);
+        deltaX = (distX / moveSpeedX) * (posX() - basePosX < 0 ? 1 : -1);
+        System.out.println("Battler: "+battler.name);
+        System.out.println("X Distance: "+Math.abs(basePosX - posX()));
+        System.out.println("DX: "+deltaX);
+        System.out.println("Move Speed X: "+moveSpeedX);
+        System.out.println("#######");
+        deltaY = (distY / moveSpeedY) * (posY() - basePosY < 0 ? 1 : -1);
+        deltaZ = (distZ / moveSpeedZ) * (posZ() - basePosZ < 0 ? 1 : -1);
     }
 
     public float posX() {
