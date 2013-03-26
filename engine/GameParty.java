@@ -11,7 +11,7 @@ import java.util.List;
  *
  * @author redblast71
  */
-public class GameParty extends GameUnit{
+public class GameParty extends GameUnit<GameActor>{
     
     private final int MAX_MEMBERS = 10;
     private List<GameActor> actors;

@@ -44,10 +44,21 @@ public class SceneBattle extends SceneBase {
     private WindowSelectable targetEnemy; 
     private WindowBattleStatus stat;
     private SpritesetBattle spriteset;
+    
     private static enum BattleState{
         PARTY_COMMAND, ACTOR_COMMAND, TARGET_ENEMY, TARGET_ACTOR, ITEM_SELECT, 
         MAIN, ACTION_WAIT, END
     }
+    
+    private static final BattleState PARTY_COMMAND = BattleState.PARTY_COMMAND;
+    private static final BattleState ACTOR_COMMAND = BattleState.ACTOR_COMMAND;
+    private static final BattleState TARGET_ENEMY = BattleState.TARGET_ENEMY;
+    private static final BattleState TARGET_ACTOR = BattleState.TARGET_ACTOR;
+    private static final BattleState ITEM_SELECT = BattleState.ITEM_SELECT;
+    private static final BattleState MAIN = BattleState.MAIN;
+    private static final BattleState ACTION_WAIT = BattleState.ACTION_WAIT;
+    private static final BattleState END = BattleState.END;
+    
     private BattleState mode;
     private LinkedList<GameBattler> actionBattlers = new LinkedList<>();
     private int actorIndex;
@@ -80,10 +91,11 @@ public class SceneBattle extends SceneBase {
       targetEnemy.index = 0;
       victory = false;
       defeat = false;
-      playingAction = false;
       for(GameEnemy e:gameTroop.getMembers()){
         e.currentHP = e.getMaxHP();
       }
+      activeWindow = partyCommand;
+      mode = PARTY_COMMAND;
       spriteset = new SpritesetBattle();
       actionBattlers.clear();
       actorIndex = 0;
@@ -181,8 +193,8 @@ public class SceneBattle extends SceneBase {
         }
 
         spriteset.update(delta, input);
-        if (!(victory || defeat)) {
-            if (!playingAction) {
+        if (!(mode == END)) {
+            if (!(mode == ACTION_WAIT)) {
                 if (judgeWinLoss()) {
                     return;
                 }
@@ -192,17 +204,17 @@ public class SceneBattle extends SceneBase {
                     actorCommand.initX = stat.width + xOffset;
                     activeWindow.update(inputp, delta);
                 }
-                if (activeWindow == partyCommand) {
+                if (mode == PARTY_COMMAND) {
                     updatePartyCommandSelection(sbg);
-                } else if (activeWindow == actorCommand) {
+                } else if (mode == ACTOR_COMMAND) {
                     updateActorCommandSelection();
-                } else if (activeWindow == targetEnemy) {
+                } else if (mode == TARGET_ENEMY) {
                     updateTargetEnemySelection();
-                } else if (activeWindow == itemWindow) {
+                } else if (mode == ITEM_SELECT) {
                     updateItemSelection();
-                } else if (activeWindow == stat) {
+                } else if (mode == TARGET_ACTOR) {
                     updateTargetActorSelection();
-                } else {
+                } else if(mode == MAIN){
                     stat.initX = partyCommand.width / 2 + 4;
                     actorCommand.initX = SceneMap.B_WIDTH;
                     processAction();
@@ -216,8 +228,8 @@ public class SceneBattle extends SceneBase {
                         } else {
                             spriteset.setActive(activeBattler.isActor(), gameTroop.getMembers().indexOf(activeBattler), false);
                         }
+                        mode = MAIN;
                         actionEnd();
-                        playingAction = false;
                     } else if (activeBattler.play[0].equals("OBJ_ANIM")) {
                         Object[] temp = Arrays.copyOfRange(activeBattler.play, 1, activeBattler.play.length);
                         damageAction(temp);
@@ -238,9 +250,11 @@ public class SceneBattle extends SceneBase {
     
     public boolean judgeWinLoss(){
         if(party.allDead()){
+            mode = END;
             defeat = true;
             return true;
         } else if(gameTroop.allDead()){
+            mode = END;
             victory = true;
             BGM.fade(1500, 0.05f, true);
             BGM.addListener(new MusicListener(){ 
@@ -275,7 +289,7 @@ public class SceneBattle extends SceneBase {
         activeBattler.play = null;
         if(activeBattler.action.isAttack()){
             int index = activeBattler.action.targetIndex;
-            GameBattler target = activeBattler.action.getEnemyUnit().getMembers().get(index);
+            GameBattler target = (GameBattler)activeBattler.action.getEnemyUnit().getMembers().get(index);
             target.attackEffect(activeBattler);
             spriteset.setDamageAction(target.isActor(), index, action);//TODO: Change to popDamage()
             
@@ -293,6 +307,7 @@ public class SceneBattle extends SceneBase {
         }  
         partyCommand.index = 0;
         activeWindow = partyCommand;
+        mode = PARTY_COMMAND;
     }
     
     public void updatePartyCommandSelection(StateBasedGame sbg){
@@ -322,6 +337,7 @@ public class SceneBattle extends SceneBase {
         partyCommand.index = -1;
         spriteset.setTarget(true, party.getMembers().indexOf(activeBattler), null);
         spriteset.setAction(true, party.getMembers().indexOf(activeBattler), "COMMAND_INPUT");
+        mode = ACTOR_COMMAND;
     }
     
     public void updateActorCommandSelection(){
@@ -361,15 +377,21 @@ public class SceneBattle extends SceneBase {
     }
     
     public void startTargetEnemySelection(){
+        targetEnemy.itemMax = gameTroop.getLivingMembers().size();
         activeWindow = targetEnemy;
+        mode = TARGET_ENEMY;
     }
     
     public void updateTargetEnemySelection(){
-        help.setBattleText(gameTroop.getMembers().get(targetEnemy.index));
-        spriteset.setCursorTarget(false, targetEnemy.index);
+        if(targetEnemy.index > targetEnemy.itemMax - 1){
+            targetEnemy.index = targetEnemy.itemMax - 1;
+        }
+        int index = gameTroop.getMembers().indexOf(gameTroop.getLivingMembers().get(targetEnemy.index));
+        spriteset.setCursorTarget(false, index);
+        help.setBattleText(gameTroop.getMembers().get(index));
         if(inputp.isCommandControlPressed(action)){
             Sounds.decision.play();
-            activeBattler.action.targetIndex = targetEnemy.index;
+            activeBattler.action.targetIndex = index;
             if(!nextActor()){
                 startActorCommandSelection();
             } else {
@@ -377,7 +399,9 @@ public class SceneBattle extends SceneBase {
             }
         } else if(inputp.isCommandControlPressed(cancel)){
             Sounds.cancel.play();
+            activeBattler.action.clear();
             activeWindow = actorCommand;
+            mode = ACTOR_COMMAND;
             actorCommand.index = 0;
         }
     }
@@ -386,6 +410,7 @@ public class SceneBattle extends SceneBase {
         activeWindow = stat;
         stat.index = 0;
         spriteset.setCursorTarget(true, 0);
+        mode = TARGET_ACTOR;
     }
     
     public void updateTargetActorSelection(){
@@ -404,17 +429,19 @@ public class SceneBattle extends SceneBase {
             Sounds.cancel.play();
             stat.index = -1;
             activeWindow = actorCommand;
+            mode = ACTOR_COMMAND;
             actorCommand.index = 0;
         }
     }
     
     public void startItemSelection(){        
         activeWindow = itemWindow;
+        mode = ITEM_SELECT;
     }
     
     public void updateItemSelection(){
         help.setText(itemWindow.getItem().getDesc());
-        if(inputp.isCommandControlPressed(action)){
+        if(inputp.isCommandControlPressed(action) && inputp.isCommandControlDown(action)){
             Sounds.decision.play();
             activeBattler.action.setItem(GameData.items.indexOf(itemWindow.getItem()));
             if(((Consumable)itemWindow.getItem()).forAlly() || ((Consumable)itemWindow.getItem()).forDeadAlly()){
@@ -424,7 +451,9 @@ public class SceneBattle extends SceneBase {
             }
         } else if(inputp.isCommandControlPressed(cancel)){
             Sounds.cancel.play();
+            activeBattler.action.clear();
             activeWindow = actorCommand;
+            mode = ACTOR_COMMAND;
             actorCommand.index = 0;
         }
     }
@@ -468,6 +497,7 @@ public class SceneBattle extends SceneBase {
         gameTroop.makeActions();
         makeActionOrders();
         activeWindow = null;
+        mode = MAIN;
     }
     
     public void makeActionOrders(){
@@ -514,16 +544,13 @@ public class SceneBattle extends SceneBase {
     }
     
     public void executeAttack(){
-        playingAction = true;
-        if(activeBattler.isActor()){
-            spriteset.setActive(activeBattler.isActor(), party.getMembers().indexOf(activeBattler), true);
-            spriteset.setTarget(activeBattler.isActor(), party.getMembers().indexOf(activeBattler), activeBattler.action.targetIndex);
-            spriteset.setAction(activeBattler.isActor(), party.getMembers().indexOf(activeBattler), "NORMAL_ATTACK");
-        } else {
-            spriteset.setActive(activeBattler.isActor(), gameTroop.getMembers().indexOf(activeBattler), true);
-            spriteset.setTarget(activeBattler.isActor(), gameTroop.getMembers().indexOf(activeBattler), activeBattler.action.targetIndex);
-            spriteset.setAction(activeBattler.isActor(), gameTroop.getMembers().indexOf(activeBattler), "NORMAL_ATTACK");
+        mode = ACTION_WAIT;
+        if(((GameBattler)activeBattler.action.getEnemyUnit().getMembers().get(activeBattler.action.targetIndex)).isDead()){
+            activeBattler.action.targetIndex = activeBattler.action.getEnemyUnit().getMembers().indexOf(activeBattler.action.getEnemyUnit().getRandomTarget());
         }
+        spriteset.setActive(activeBattler.isActor(), activeBattler.action.getAllyUnit().getMembers().indexOf(activeBattler), true);
+        spriteset.setTarget(activeBattler.isActor(), activeBattler.action.getAllyUnit().getMembers().indexOf(activeBattler), activeBattler.action.targetIndex);
+        spriteset.setAction(activeBattler.isActor(), activeBattler.action.getAllyUnit().getMembers().indexOf(activeBattler), "NORMAL_ATTACK");
     }
     
     public void battleEnd(int result, StateBasedGame sbg){

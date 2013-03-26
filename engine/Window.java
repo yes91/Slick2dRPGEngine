@@ -110,25 +110,55 @@ public class Window {
     }
 
     public void drawCursorRect(Graphics g2d) {
-        float u = x + 16;//x + 16 + cursorRect.getX();
-        float v = y + 16;//y + 16 + cursorRect.getY();
-        //float cWidth = cursorRect.getWidth();
-        //float cHeight = cursorRect.getHeight();
+        float u = x + 16 + cursorRect.getX();
+        float v = y + 16 + cursorRect.getY();
+        float cWidth = cursorRect.getWidth();
+        float cHeight = cursorRect.getHeight();
         if (time > 12.5) {
             time = 0;
         }
         time += .1;
-        skin.setAlpha(Math.max(Math.abs((float) Math.sin(time)*0.8f), 0.1f));
-        /*skin.getSubImage(64, 64, 2, 2).draw(u, v);
-        g2d.fillRect(u + 2, v, cWidth - 4, 2, skin.getSubImage(64+4, 64, 2, 2), 0, 0);
-        skin.getSubImage(64+32-2, 64, 2, 2).draw(u + cWidth - 4, v);
-        g2d.fillRect(u, v + 2, 2, cHeight - 4, skin.getSubImage(64, 64+4, 2, 2), 0, 0);
-        skin.getSubImage(64, 64+32-2, 2, 2).draw(u, v + cHeight - 4);
-        g2d.fillRect(u + 2, v + cHeight - 4, cWidth - 4, 2, skin.getSubImage(64+2, 64+32-2, 2, 2), 0, 0);
-        skin.getSubImage(64+32-2, 64+32-2, 2, 2).draw(u + cWidth - 4, v + cHeight - 4);
-        g2d.fillRect(u + cWidth - 4, v, 2, cHeight - 4, skin.getSubImage(64+32-2, 64+2, 2, 2), 0, 0);
-        g2d.drawImage(skin, u, v, u + cWidth, v + cHeight, 72, 72, 80, 80);*/
-        g2d.drawImage(skin, u + 8 + cursorRect.getX(), v + 8 + cursorRect.getY(), u - 8 + cursorRect.getWidth() + cursorRect.getX(), v - 8 + cursorRect.getHeight() + cursorRect.getY(), 72, 72, 80, 80);
+        float alpha = scaleRange((float)Math.sin(time*2), -1.0f, 1.0f, 0.6f, 1.0f);
+        skin.setAlpha(alpha);
+        
+        Image topLeft = skin.getSubImage(64, 64, 2, 2);
+        topLeft.setAlpha(alpha);
+        Image topRight = skin.getSubImage(94, 64, 2, 2);
+        topRight.setAlpha(alpha);
+        Image bottomLeft = skin.getSubImage(64, 94, 2, 2);
+        bottomLeft.setAlpha(alpha);
+        Image bottomRight = skin.getSubImage(94, 94, 2, 2);
+        bottomRight.setAlpha(alpha);
+        
+        Image topStrip = skin.getSubImage(66, 64, 4, 2);
+        topStrip.setAlpha(alpha);
+        Image leftStrip = skin.getSubImage(64, 66, 2, 4);
+        leftStrip.setAlpha(alpha);
+        Image rightStrip = skin.getSubImage(94, 66, 2, 4);
+        rightStrip.setAlpha(alpha);
+        Image bottomStrip = skin.getSubImage(66, 94, 4, 2);
+        bottomStrip.setAlpha(alpha);
+                
+        g2d.drawImage(skin, u, v, u + cWidth - 2, v + cHeight - 2, 66, 66, 94, 94);
+        
+        topLeft.draw(u, v);
+        
+        g2d.fillRect(u + 2, v, cWidth - 6, 2, topStrip, 0, 0);
+        
+        topRight.draw(u + cWidth - 4, v);
+        
+        g2d.fillRect(u, v + 2, 2, cHeight - 6, leftStrip, 0, 0);
+        
+        bottomLeft.draw(u, v + cHeight - 4);
+        
+        g2d.fillRect(u + cWidth - 4, v + 2, 2, cHeight - 6, rightStrip, 0, 0);
+        
+        bottomRight.draw(u + cWidth - 4, v + cHeight - 4);
+        
+        g2d.fillRect(u + 2, v + cHeight - 4, cWidth - 6, 2, bottomStrip, 0, 0);
+        
+        
+        /*g2d.drawImage(skin, u + 8 + cursorRect.getX(), v + 8 + cursorRect.getY(), u - 8 + cursorRect.getWidth() + cursorRect.getX(), v - 8 + cursorRect.getHeight() + cursorRect.getY(), 72, 72, 80, 80);
         Sprite.drawSpriteFrame(skin, g2d, u + cursorRect.getX(), v + cursorRect.getY(), 16, 136, 8, 8);
         if ((cursorRect.getWidth() % 8) == 0) {
             for (int i = 0; i < ((cursorRect.getWidth() / 8) - 2); i++) {
@@ -169,7 +199,11 @@ public class Window {
                 Sprite.drawSpriteFrame(skin, g2d, u + (cursorRect.getWidth()) - 8 + cursorRect.getX(), v + (l * 8) + 8 + cursorRect.getY(), 16, 155, 8, 8);
             }
         }
-        g2d.flush();
+        g2d.flush();*/
+    }
+    
+    private float scaleRange(float in, float oldMin, float oldMax, float newMin, float newMax){
+        return (in / ((oldMax - oldMin) / (newMax - newMin))) + newMin;
     }
 
     public int getWidth() {

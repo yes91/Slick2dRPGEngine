@@ -109,13 +109,23 @@ public class Demo {
         testAction.setCondition(EnemyAction.Condition.ALWAYS);
         actionList.add(testAction);
         testEnemy.actions = actionList;
+        
         GameEnemy enemy2 = GameData.kryo.copy(testEnemy);
         enemy2.spriteName = "wanderer";
         enemy2.name = "Wanderer";
+        
+        GameEnemy enemy3 = GameData.kryo.copy(testEnemy);
+        enemy3.spriteName = "snake_1";
+        enemy3.name = "Frog";
+        
+        GameEnemy enemy4 = GameData.kryo.copy(testEnemy);
+        enemy4.spriteName = "jackall";
+        enemy4.name = "Jackal";
+        
         testEnemies.add(testEnemy);
         testEnemies.add(enemy2);
-        testEnemies.add(GameData.kryo.copy(testEnemy));
-        testEnemies.add(GameData.kryo.copy(testEnemy));
+        testEnemies.add(enemy3);
+        testEnemies.add(enemy4);
     }
     
 }

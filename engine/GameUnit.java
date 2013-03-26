@@ -11,13 +11,13 @@ import java.util.Random;
  *
  * @author redblast71
  */
-public abstract class GameUnit {
+public abstract class GameUnit<T extends GameBattler> {
     
     public Random chance = new Random();
     
-    public abstract List<GameBattler> getMembers();
+    public abstract List<T> getMembers();
     
-    public abstract List<GameBattler> getLivingMembers();
+    public abstract List<T> getLivingMembers();
     
     public abstract boolean allDead();
     

@@ -11,6 +11,7 @@ import java.util.List;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.Input;
+import org.newdawn.slick.SpriteSheet;
 
 /**
  *
@@ -19,22 +20,22 @@ import org.newdawn.slick.Input;
 public class SpritesetBattle {
     
     private static float[][] position = new float[][]{
-        new float[]{875.0f, 285.0f, 141.0f},
-        new float[]{967.0f, 317.0f, 167.0f},
-        new float[]{1087.0f, 371.0f, 231.0f},
-        new float[]{1153.0f, 451.0f, 288.0f}
+        new float[]{875.0f, 285.0f + 50, 141.0f},
+        new float[]{967.0f, 317.0f + 50, 167.0f},
+        new float[]{1087.0f, 371.0f + 50, 231.0f},
+        new float[]{1153.0f, 451.0f + 50, 288.0f}
     };
     
     private static float[][] enemyPos = new float[][]{
-        new float[]{1280-875.0f, 285.0f, 141.0f},
-        new float[]{1280-967.0f, 317.0f, 167.0f},
-        new float[]{1280-1087.0f, 371.0f, 231.0f},
-        new float[]{1280-1153.0f, 451.0f, 288.0f}
+        new float[]{1280-875.0f, 285.0f + 50, 141.0f},
+        new float[]{1280-967.0f, 317.0f + 50, 167.0f},
+        new float[]{1280-1087.0f, 371.0f + 50, 231.0f},
+        new float[]{1280-1153.0f, 451.0f + 50, 288.0f}
     };
     
     public Cursor cursor;
     private DepthBuffCompare comparator = new DepthBuffCompare();
-    private final int DEPTH_BUFFER_SIZE = 360;
+    public static final int DEPTH_BUFFER_SIZE = 360;
     private List<SpriteBattler> enemySprites;
     private List<SpriteBattler> actorSprites;
     
@@ -51,14 +52,14 @@ public class SpritesetBattle {
         int index = 0;
         for(SpriteBattler a: actorSprites){
           a.basePosX = position[index][0];
-          a.basePosY = position[index][1];
+          a.basePosY = position[index][1] - (((float)a.image.getHeight()/a.image.getVerticalCount())*0.7f)/2f;
           a.basePosZ = position[index][2];
           index++;
         }
         index = 0;
         for(SpriteBattler a: enemySprites){
           a.basePosX = enemyPos[index][0];
-          a.basePosY = enemyPos[index][1];
+          a.basePosY = enemyPos[index][1] - (((float)a.image.getHeight()/a.image.getVerticalCount())*0.7f)/2f;
           a.basePosZ = enemyPos[index][2];
           index++;
       }
@@ -178,7 +179,7 @@ public class SpritesetBattle {
             y = 0;
             yOffset = 0;
             Image sheet = GameCache.system("cursor.png");
-            org.newdawn.slick.SpriteSheet s = new org.newdawn.slick.SpriteSheet(sheet, sheet.getWidth(), sheet.getHeight()/2);
+            SpriteSheet s = new SpriteSheet(sheet, sheet.getWidth(), sheet.getHeight()/2);
             anim = new Animation(s, 0, 0, 0, 1, true, 350, true);
         }
         
@@ -187,7 +188,8 @@ public class SpritesetBattle {
         }
         
         public void setTarget(SpriteBattler b){
-            yOffset = b.image.getHeight()/b.image.getVerticalCount();
+            yOffset = (int)(((float)b.image.getHeight()/(float)b.image.getVerticalCount()) * 0.70f);
+            yOffset *= 2.0f * (b.posZ()/DEPTH_BUFFER_SIZE);
             x = b.posX();
             y = b.posY();
         }

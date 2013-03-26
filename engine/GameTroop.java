@@ -11,7 +11,7 @@ import java.util.List;
  *
  * @author redblast71
  */
-public class GameTroop extends GameUnit{
+public class GameTroop extends GameUnit<GameEnemy>{
     
     private final int MAX_MEMBERS = 10;
     private List<GameEnemy> enemies;
@@ -43,7 +43,7 @@ public class GameTroop extends GameUnit{
 
     @Override
     public GameBattler getRandomTarget() {
-        return enemies.get(chance.nextInt(enemies.size()));
+        return getLivingMembers().get(chance.nextInt(getLivingMembers().size()));
     }
 
     @Override

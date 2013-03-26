@@ -274,7 +274,8 @@ public class SpriteBattler extends SpriteBase {
         if(target == null){
             moveAmount((int)activeAction[1], (int)activeAction[2], 0);
         } else {
-            int inFront = (target.posX() - posX() > 0) ? -100:100;
+            int inFront = (int)(((target.posX() - posX() > 0) ? -100f:100f) * 
+                    (2.0f * (target.posZ()/SpritesetBattle.DEPTH_BUFFER_SIZE)));
             toPoint(target.posX() + inFront, target.posY(), target.posZ());
         }
         
