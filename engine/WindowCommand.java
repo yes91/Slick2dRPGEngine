@@ -27,25 +27,25 @@ public class WindowCommand extends WindowSelectable{
     
     @Override
     public void render(Graphics g,StateBasedGame sbg){
-        //Graphics.setCurrent(g);
         super.render(g,sbg);
-        //cg.clear(); 
+        cg.clear();
         if(itemMax > 0 && index >= 0){
             drawCursorRect(g);
         }
         for(int i = 0; i < itemMax; i++){
             drawItem(i);
         }
+        g.drawImage(contents, x + 16, y + 16);
+        cg.flush();
     }
     
     public void drawItem(int ind){
         Rectangle rect = getItemRect(ind);
         rect.setX(rect.getX() + 4);
         rect.setWidth(rect.getX() - 8);
-        //Graphics.setCurrent(cg);
-        //for(int i = 0; i < 10; i++){
-        GameCache.getFont().drawString(x+16+rect.getX()+8, y+16+rect.getY()+2, commands[ind]);
-        //}
+        for(int i = 0; i < 4; i++){
+            cg.drawString(commands[ind], rect.getX(), rect.getY()+2);
+        }
     }
     
 }
