@@ -1,5 +1,6 @@
 package engine;
 
+import com.sun.istack.internal.Nullable;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
@@ -37,7 +38,7 @@ public class Window {
         this.width = w;
         this.height = h;
         contents = new Image(width - 32, height - 32);
-        skin = GameCache.system("Neo Classic.png");
+        skin = GameCache.system("SteamPunk.png");
         cg = contents.getGraphics();
         cg.setFont(GameCache.getFont());
     }
@@ -130,13 +131,13 @@ public class Window {
         Image bottomRight = skin.getSubImage(94, 94, 2, 2);
         bottomRight.setAlpha(alpha);
         
-        Image topStrip = skin.getSubImage(66, 64, 4, 2);
+        Image topStrip = skin.getSubImage(66, 64, 28, 2);
         topStrip.setAlpha(alpha);
-        Image leftStrip = skin.getSubImage(64, 66, 2, 4);
+        Image leftStrip = skin.getSubImage(64, 66, 2, 28);
         leftStrip.setAlpha(alpha);
-        Image rightStrip = skin.getSubImage(94, 66, 2, 4);
+        Image rightStrip = skin.getSubImage(94, 66, 2, 28);
         rightStrip.setAlpha(alpha);
-        Image bottomStrip = skin.getSubImage(66, 94, 4, 2);
+        Image bottomStrip = skin.getSubImage(66, 94, 28, 2);
         bottomStrip.setAlpha(alpha);
                 
         g2d.drawImage(skin, u, v, u + cWidth - 2, v + cHeight - 2, 66, 66, 94, 94);
@@ -226,8 +227,23 @@ public class Window {
         cg.setColor(enabled ? Color.white:transp);
         Sprite.drawSpriteFrame(GameCache.system("IconSet.png"), cg, x, y, 16, item.getIndex(), 24, 24, cg.getColor());
         for (int i = 0; i < 4; i++) {
-            cg.drawString(item.getName(), 24 + x, y);
+            cg.drawString(item.getName(), 24 + x, y + 2);
         }
+    }
+    
+    public void drawItemName(String text, float x, float y, boolean enabled, int icon){
+        cg.setColor(enabled ? Color.white:transp);
+        if(icon >= 0){
+            Sprite.drawSpriteFrame(GameCache.system("IconSet.png"), cg, x, y, 16, icon, 24, 24, cg.getColor());
+            for (int i = 0; i < 4; i++) {
+                cg.drawString(text, 24 + x, y + 2);
+            }
+        } else {
+            for (int i = 0; i < 4; i++) {
+                cg.drawString(text, x, y + 2);
+            }
+        }
+        
     }
     
     public void drawFace(String faceName, int faceIndex, float x, float y, int size){

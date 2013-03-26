@@ -40,15 +40,7 @@ public class SceneMenu extends SceneBase {
     @Override
     public void init(GameContainer gc, StateBasedGame sbg) throws SlickException {
         input = gc.getInput();
-        String[] coms = new String[]{
-            "Item",
-            "Skill",
-            "Equip",
-            "Status",
-            "Save",
-            "Options"
-        };
-        command = new WindowCommand(120, coms, 1, 0);
+        command = new WindowMenuCommand(150, 1, 6);
         menuStatus = new WindowMenuStatus(command.width, 0);
         target = new WindowMenuStatus(0, 0);
         target.index = 0;

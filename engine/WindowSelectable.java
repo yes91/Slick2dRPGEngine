@@ -5,6 +5,7 @@
 package engine;
 
 import org.newdawn.slick.Graphics;
+import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.command.InputProvider;
 import org.newdawn.slick.geom.Rectangle;
@@ -32,6 +33,17 @@ public class WindowSelectable extends Window {
     @Override
     public void render(Graphics g, StateBasedGame sbg) {
         super.render(g, sbg);
+        Image arrowUp = skin.getSubImage(64+26, 16, 14, 8);
+        Image arrowDown = skin.getSubImage(64+26, 16+16+8, 14, 8);
+        if(getPageItemMax() != itemMax && itemMax != 0){
+            //int row = index / columnMax;
+            if(getBottomRow() != itemMax - 1){
+                arrowDown.draw((x + width/2) - 7, y + height - 8 - 4);
+            }
+            if(getTopRow() != 0){
+                arrowUp.draw((x + width/2) - 7, y + 4);
+            }
+        }
         
     }
 

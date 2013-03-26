@@ -43,9 +43,7 @@ public class WindowCommand extends WindowSelectable{
         Rectangle rect = getItemRect(ind);
         rect.setX(rect.getX() + 4);
         rect.setWidth(rect.getX() - 8);
-        for(int i = 0; i < 4; i++){
-            cg.drawString(commands[ind], rect.getX(), rect.getY()+2);
-        }
+        drawItemName(commands[ind], rect.getX(), rect.getY() - oy, true, -1);
     }
     
 }
