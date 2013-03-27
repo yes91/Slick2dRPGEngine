@@ -1,6 +1,5 @@
 package engine;
 
-import com.sun.istack.internal.Nullable;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
@@ -38,7 +37,7 @@ public class Window {
         this.width = w;
         this.height = h;
         contents = new Image(width - 32, height - 32);
-        skin = GameCache.system("SteamPunk.png");
+        skin = GameCache.system("Neo Classic.png");
         cg = contents.getGraphics();
         cg.setFont(GameCache.getFont());
     }
@@ -225,7 +224,7 @@ public class Window {
     
     public void drawItemName(BaseItem item, float x, float y, boolean enabled){
         cg.setColor(enabled ? Color.white:transp);
-        Sprite.drawSpriteFrame(GameCache.system("IconSet.png"), cg, x, y, 16, item.getIndex(), 24, 24, cg.getColor());
+        Sprite.drawSpriteFrame(GameCache.system("IconSet.png"), cg, x, y - 2, 16, item.getIndex(), 24, 24, cg.getColor());
         for (int i = 0; i < 4; i++) {
             cg.drawString(item.getName(), 24 + x, y + 2);
         }
@@ -234,7 +233,7 @@ public class Window {
     public void drawItemName(String text, float x, float y, boolean enabled, int icon){
         cg.setColor(enabled ? Color.white:transp);
         if(icon >= 0){
-            Sprite.drawSpriteFrame(GameCache.system("IconSet.png"), cg, x, y, 16, icon, 24, 24, cg.getColor());
+            Sprite.drawSpriteFrame(GameCache.system("IconSet.png"), cg, x, y - 2, 16, icon, 24, 24, cg.getColor());
             for (int i = 0; i < 4; i++) {
                 cg.drawString(text, 24 + x, y + 2);
             }
@@ -275,7 +274,7 @@ public class Window {
         }
         cg.setColor(normalColor());
         for(int i = 0; i < 4; i++){
-            cg.drawString(""+ga.stats.level, x + 32, y);
+            cg.drawString(""+ga.stats.getLevel(), x + 32, y);
         }
     }
 

@@ -54,11 +54,6 @@ public abstract class GameBattler {
     }
     
     
-    
-    public void updateLevel(){
-        stats.updateLevel();
-    }
-    
     public void clearExtraValues(){
         HPplus = 0;
         MPplus = 0;

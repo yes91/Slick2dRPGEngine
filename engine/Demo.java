@@ -4,7 +4,6 @@
  */
 package engine;
 
-import com.esotericsoftware.kryo.Kryo;
 import java.util.ArrayList;
 
 /**
@@ -29,8 +28,7 @@ public class Demo {
         battleTester.faceIndex = 0;
         battleTester.characterName = "mutsu";
         battleTester.characterIndex = -1;
-        battleTester.stats.level = 22;
-        battleTester.stats.EXP = battleTester.stats.getEXP(22);
+        battleTester.stats = new BattleStats(22);
         battleTester.currentHP = battleTester.getMaxHP();
         battleTester.currentMP = battleTester.getMaxMP();
         battleTester.setTwoSwords(false);
@@ -41,8 +39,7 @@ public class Demo {
         tester2.faceIndex = 0;
         tester2.characterName = "";
         tester2.characterIndex = -1;
-        tester2.stats.level = 8;
-        tester2.stats.EXP = tester2.stats.getEXP(8);
+        tester2.stats = new BattleStats(8);
         tester2.currentHP = tester2.getMaxHP();
         tester2.currentMP = tester2.getMaxMP();
         
@@ -52,8 +49,7 @@ public class Demo {
         tester3.faceIndex = 5;
         tester3.characterName = "";
         tester3.characterIndex = -1;
-        tester3.stats.level = 45;
-        tester3.stats.EXP = tester3.stats.getEXP(45);
+        tester3.stats = new BattleStats(45);
         tester3.currentHP = tester3.getMaxHP();
         tester3.currentMP = tester3.getMaxMP();
         
@@ -63,8 +59,7 @@ public class Demo {
         tester4.faceIndex = 4;
         tester4.characterName = "";
         tester4.characterIndex = -1;
-        tester4.stats.level = 85;
-        tester4.stats.EXP = tester4.stats.getEXP(85);
+        tester4.stats = new BattleStats(38);
         tester4.currentHP = tester4.getMaxHP();
         tester4.currentMP = tester4.getMaxMP();
         
@@ -74,8 +69,7 @@ public class Demo {
         tester5.faceIndex = 4;
         tester5.characterName = "";
         tester5.characterIndex = -1;
-        tester5.stats.level = 25;
-        tester5.stats.EXP = tester5.stats.getEXP(25);
+        tester5.stats = new BattleStats(25);
         tester5.currentHP = tester5.getMaxHP();
         tester5.currentMP = tester5.getMaxMP();
         
@@ -85,8 +79,7 @@ public class Demo {
         tester6.faceIndex = 6;
         tester6.characterName = "";
         tester6.characterIndex = -1;
-        tester6.stats.level = 15;
-        tester6.stats.EXP = tester6.stats.getEXP(15);
+        tester6.stats = new BattleStats(15);
         tester6.currentHP = tester6.getMaxHP();
         tester6.currentMP = tester6.getMaxMP();
         
@@ -99,8 +92,7 @@ public class Demo {
         
         GameEnemy testEnemy = new GameEnemy("slime");
         testEnemy.name = "Slime";
-        testEnemy.stats.level = 50;
-        testEnemy.stats.EXP = testEnemy.stats.getEXP(50);
+        testEnemy.stats = new BattleStats(30);
         testEnemy.currentHP = testEnemy.getMaxHP();
         ArrayList<EnemyAction> actionList = new ArrayList<>();
         EnemyAction testAction = new EnemyAction();
@@ -124,8 +116,8 @@ public class Demo {
         
         testEnemies.add(testEnemy);
         testEnemies.add(enemy2);
-        testEnemies.add(enemy3);
-        testEnemies.add(enemy4);
+        testEnemies.add(GameData.kryo.copy(testEnemy));
+        testEnemies.add(GameData.kryo.copy(testEnemy));
     }
     
 }

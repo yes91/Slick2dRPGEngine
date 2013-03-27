@@ -35,7 +35,7 @@ public class WindowSelectable extends Window {
         super.render(g, sbg);
         Image arrowUp = skin.getSubImage(64+26, 16, 14, 8);
         Image arrowDown = skin.getSubImage(64+26, 16+16+8, 14, 8);
-        if(getPageItemMax() != itemMax && itemMax != 0){
+        if(itemMax > getPageItemMax() && itemMax != 0){
             //int row = index / columnMax;
             if(getBottomRow() != itemMax - 1){
                 arrowDown.draw((x + width/2) - 7, y + height - 8 - 4);
