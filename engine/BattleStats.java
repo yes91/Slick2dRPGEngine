@@ -20,7 +20,7 @@ public class BattleStats{
     private HashMap<String, HashMap<Integer, Integer>> table;
     private int basis = 30;
     private double inflation = 35;
-    private int level;
+    public int level;
     public int EXP;
     
     public BattleStats(){
@@ -72,12 +72,10 @@ public class BattleStats{
     }
     
     private void makeTable(){
-        table.put("HP", generateCurve(400, 9999, 0));
+        table.put("HP", generateCurve(450, 7000, 1.5f));
         System.out.println(table.get("HP").toString());
-        table.put("MP", generateCurve(100, 4545, 10f));
-        System.out.println(table.get("MP").toString());
-        table.put("ATK", generateCurve(18, 427, 0.5f));
-        //System.out.println(table.get("ATK").toString());
+        table.put("MP", generateCurve(100, 4500, 10f));
+        table.put("ATK", generateCurve(18, 430, 0.5f));
         table.put("MATK", generateCurve(10, 300, 1f));
         table.put("DEF", generateCurve(25, 200, 1f));
         table.put("MDEF", generateCurve(15, 400, 1f));
@@ -85,36 +83,25 @@ public class BattleStats{
     }
     
     private HashMap<Integer, Integer> generateCurve(int start, int end, float speed){
-        HashMap<Integer, Integer> map = new HashMap<>();
         
-        /*for(int i = 1; i <= levels; i++){
-            
-            double b = Math.log((double)end/ start) / (levels - 1);
-            
-            double a = (double)start / (Math.exp(b) - 1.0);
-            
-            int old_value = (int)Math.round(a * Math.exp(b * (i - 1)));
-            int new_value = (int)Math.round(a * Math.exp(b * i));
-            
-            map.put(i, (new_value - old_value));  
-            
-        }*/
+        HashMap<Integer, Integer> map = new HashMap<>();
         
         speed = MathHelper.clamp(speed, -10f, 10f);
         
-        speed = MathHelper.scaleRange(speed, -10f, 10f, -((float)levels/2), ((float)levels/2));
-        
+        speed = MathHelper.scaleRange(speed, -10f, 10f, -((float)levels/2), ((float)levels/2));        
         
         Vector2f control = (new Vector2f((float)levels/2, (float)end/2).add(new Vector2f( 1,  - ((float)end/(float)levels)).scale(speed)));
         
-        int i = 1;    
-        for (double t = 0.0; t <= 1; t += 0.01) {
             
-            float x = (float) ((1 - t) * (1 - t) * 1 + 2 * (1 - t) * t * control.x + t * t * levels);
+        for (int i = 1; i <= levels; i++) {
+            
+            float t = (i - 1)/(float)(levels-1);
+            
             float y = (float) ((1 - t) * (1 - t) * start + 2 * (1 - t) * t * control.y + t * t * end);
             
-            map.put(i, (int)y);
-            i++;
+            y = MathHelper.clamp(y, start, end);
+            
+            map.put(i, (int)Math.ceil(y));
         }
         
         return map;
@@ -124,13 +111,12 @@ public class BattleStats{
         return expList[level];
     }
     
-    public int getLevel(){
+    public void updateLevel(){
         for(int i = 1; i <= levels; i++){
             if(EXP >= expList[i]){
                 level = i;
             }
         }
-        return level;
     }
     
     

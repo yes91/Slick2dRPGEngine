@@ -274,7 +274,7 @@ public class Window {
         }
         cg.setColor(normalColor());
         for(int i = 0; i < 4; i++){
-            cg.drawString(""+ga.stats.getLevel(), x + 32, y);
+            cg.drawString(""+ga.stats.level, x + 32, y);
         }
     }
 

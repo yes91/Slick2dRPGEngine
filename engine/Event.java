@@ -17,7 +17,7 @@ public class Event extends GameObject{
     String type;
     String maploc;
     String maploc2;
-    public List<EventCommand> list;
+    public List<EventCommand> commands;
     public String text = "Hey, I'm an NPC.\\| I'm aware I just broke the fourth wall,\n"
                 + "but why does that matter in a tech demo?\\.\\. \\C[31]Kieran\\C[0]'s pretty talented\n"
                 + "for a \\C[10]novice programmer\\C[0], eh? You know, \\.\\..\\.\\..\\.\\..\\| he did spend far too long on \n"
@@ -29,8 +29,8 @@ public class Event extends GameObject{
         super.pos.y = y;
         super.height = height;
         super.width = width;
-        list = new ArrayList<>();
-        list.add(new EventCommand(new Object[]{"People1", 0, 0, 2, "Hey there, \\C[0]buddy\\R. How's life?"}, 0, 0));
+        commands = new ArrayList<>();
+        commands.add(new EventCommand("SHOW_TEXT", new Object[]{ "", 0, 0, 0, ""}));
         type = type1;
         maploc = map;
         maploc2 = map2;

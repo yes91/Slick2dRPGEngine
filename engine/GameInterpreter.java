@@ -71,12 +71,12 @@ public class GameInterpreter {
         index++;
     }
     
-    public boolean executeCommands(){
-        params = list.get(index).parameters;
-        int indent = list.get(index).indent;
-        switch(list.get(index).code){
-            case 0: return showText();
-        }
+    public boolean executeCommands() {
+         params = list.get(index).params;
+         //int indent = list.get(index).indent;
+         switch(list.get(index).ID){
+            case "SHOW_TEXT": return showText();
+         }
         return true;
     }
     

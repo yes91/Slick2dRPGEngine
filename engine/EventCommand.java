@@ -8,16 +8,14 @@ package engine;
  *
  * @author redblast71
  */
-public class EventCommand {
+public final class EventCommand {
     
-    public int code;
-    public Object[] parameters;
-    public int indent;
+    public final String ID;
+    public final Object[] params;
     
-    
-    public EventCommand(Object[] params, int code, int indent){
-        this.parameters = params;
-        this.code = code;
-        this.indent = indent;
+    public EventCommand(String ID, Object[] params){
+        this.ID = ID;
+        this.params = params;
     }
+    
 }
