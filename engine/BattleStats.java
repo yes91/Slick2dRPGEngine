@@ -4,7 +4,10 @@
  */
 package engine;
 
+import java.util.Collections;
 import java.util.HashMap;
+import org.newdawn.slick.geom.Vector2f;
+import util.MathHelper;
 
 /**
  *
@@ -69,9 +72,10 @@ public class BattleStats{
     }
     
     private void makeTable(){
-        table.put("HP", generateCurve(405, 9999, 0));
-        //System.out.println(table.get("HP").toString());
-        table.put("MP", generateCurve(150, 9999, -3.5f));
+        table.put("HP", generateCurve(400, 9999, 0));
+        System.out.println(table.get("HP").toString());
+        table.put("MP", generateCurve(100, 4545, 10f));
+        System.out.println(table.get("MP").toString());
         table.put("ATK", generateCurve(18, 427, 0.5f));
         //System.out.println(table.get("ATK").toString());
         table.put("MATK", generateCurve(10, 300, 1f));
@@ -83,27 +87,35 @@ public class BattleStats{
     private HashMap<Integer, Integer> generateCurve(int start, int end, float speed){
         HashMap<Integer, Integer> map = new HashMap<>();
         
-        for(int i = 1; i <= levels; i++){
+        /*for(int i = 1; i <= levels; i++){
             
-            /*double b = Math.log((double)end/ start) / (levels - 1);
+            double b = Math.log((double)end/ start) / (levels - 1);
             
             double a = (double)start / (Math.exp(b) - 1.0);
             
             int old_value = (int)Math.round(a * Math.exp(b * (i - 1)));
             int new_value = (int)Math.round(a * Math.exp(b * i));
             
-            map.put(i, (new_value - old_value));*/  
+            map.put(i, (new_value - old_value));  
             
-        }
+        }*/
         
-        speed = Math.max(-10f, Math.min( speed, 10f));
+        speed = MathHelper.clamp(speed, -10f, 10f);
+        
+        speed = MathHelper.scaleRange(speed, -10f, 10f, -((float)levels/2), ((float)levels/2));
+        
+        
+        Vector2f control = (new Vector2f((float)levels/2, (float)end/2).add(new Vector2f( 1,  - ((float)end/(float)levels)).scale(speed)));
+        
+        int i = 1;    
+        for (double t = 0.0; t <= 1; t += 0.01) {
             
+            float x = (float) ((1 - t) * (1 - t) * 1 + 2 * (1 - t) * t * control.x + t * t * levels);
+            float y = (float) ((1 - t) * (1 - t) * start + 2 * (1 - t) * t * control.y + t * t * end);
             
-            for(int i = 1; i <= levels; i++){  
-                double t = (double)i/(double)levels;
-                int y = (int) (  Math.pow(1-t, 2)*start + 2*(1-t)*t*(speed * 100)+Math.pow(t, 2)*end );  
-                map.put(i, y);
-            }
+            map.put(i, (int)y);
+            i++;
+        }
         
         return map;
     }
@@ -124,31 +136,31 @@ public class BattleStats{
     
     
     public int getBaseHP(){
-        return table.get("HP").get(getLevel());
+        return table.get("HP").get(level);
     }
     
     public int getBaseMP(){
-       return table.get("MP").get(getLevel());
+       return table.get("MP").get(level);
     }
     
     public int getBaseATK(){
-        return table.get("ATK").get(getLevel());
+        return table.get("ATK").get(level);
     }
     
     public int getBaseMATK(){
-        return table.get("MATK").get(getLevel());
+        return table.get("MATK").get(level);
     }
     
     public int getBaseDEF(){
-        return table.get("DEF").get(getLevel());
+        return table.get("DEF").get(level);
     }
     
     public int getBaseMDEF(){
-        return table.get("MDEF").get(getLevel());
+        return table.get("MDEF").get(level);
     }
     
     public int getBaseSPD(){
-        return table.get("SPD").get(getLevel());
+        return table.get("SPD").get(level);
     }
     
 }
