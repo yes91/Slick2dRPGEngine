@@ -8,6 +8,7 @@ import org.lwjgl.LWJGLUtil;
 import org.newdawn.slick.AppGameContainer;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.SlickException;
+import org.newdawn.slick.opengl.renderer.Renderer;
 import org.newdawn.slick.state.StateBasedGame;
 
 public class RPG extends StateBasedGame {
@@ -21,7 +22,7 @@ public class RPG extends StateBasedGame {
     public static void main(String[] arguments) {
         System.setProperty("org.lwjgl.librarypath", new File(new File(System.getProperty("user.dir"), "native"), LWJGLUtil.getPlatformName()).getAbsolutePath());
         System.setProperty("net.java.games.input.librarypath", System.getProperty("org.lwjgl.librarypath"));
-        try {    
+        try {
             AppGameContainer app = new AppGameContainer(new RPG());
             app.setSmoothDeltas(true);
             app.setTargetFrameRate(60);
@@ -38,6 +39,7 @@ public class RPG extends StateBasedGame {
     @Override
     public void initStatesList(GameContainer gc) throws SlickException{
         try {
+            Renderer.setRenderer(Renderer.VERTEX_ARRAY_RENDERER);
             gc.getInput().initControllers();
             Demo.init();
             GameData.editorMode = false;

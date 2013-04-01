@@ -25,7 +25,7 @@ import org.newdawn.slick.state.transition.FadeOutTransition;
  */
 public class SceneBattle extends SceneBase {
 
-    public static final boolean DEBUG_UTIL = true;
+    public static final boolean DEBUG_UTIL = false;
     private float zoom = 1.0f;
     private Vector2f screenPos = new Vector2f(0, 0);
     private boolean playingAction = false;

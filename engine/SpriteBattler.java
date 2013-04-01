@@ -80,7 +80,11 @@ public class SpriteBattler extends SpriteBase {
         float sx = posX() - (width * scale / 2);
         float sy = posY() - (height * scale / 2);
         
-        g.setDrawMode(blendType);
+        if(blendType == Graphics.MODE_ADD){
+            modeAdd();
+        } else {
+            g.setDrawMode(blendType);
+        }
         if(battler instanceof GameEnemy){
             Image spriteFrame = image.getSubImage((int)srcRect.getX(), (int)srcRect.getY(), width, height).getFlippedCopy(true, false);
             spriteFrame.setAlpha(opacity);
@@ -94,7 +98,7 @@ public class SpriteBattler extends SpriteBase {
         }
         g.setDrawMode(Graphics.MODE_NORMAL);
         
-        for(Sprite s : animationSprites){
+        for(Sprite s : animationSprites){ 
             s.render(g, scale);
         }
         

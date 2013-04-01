@@ -41,9 +41,7 @@ public class Sprite {
     public void render(Graphics g, float scale){
         if (visible) {
             if(blendType == MODE_ADD){
-                GL.glEnable(SGL.GL_BLEND);
-                GL.glColorMask(true, true, true, true);
-                GL.glBlendFunc(SGL.GL_SRC_ALPHA, SGL.GL_ONE);
+                modeAdd();
             } else {
                 g.setDrawMode(blendType);
             }
@@ -64,6 +62,12 @@ public class Sprite {
             image.setAlpha(1f);
             g.setDrawMode(Graphics.MODE_NORMAL);
         }
+    }
+    
+    public void modeAdd(){
+        GL.glEnable(SGL.GL_BLEND);
+        GL.glColorMask(true, true, true, true);
+        GL.glBlendFunc(SGL.GL_SRC_ALPHA, SGL.GL_ONE);
     }
     
 
