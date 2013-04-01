@@ -4,9 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.lwjgl.LWJGLException;
 import org.lwjgl.LWJGLUtil;
-import org.lwjgl.input.Controllers;
 import org.newdawn.slick.AppGameContainer;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.SlickException;
@@ -24,17 +22,15 @@ public class RPG extends StateBasedGame {
         System.setProperty("org.lwjgl.librarypath", new File(new File(System.getProperty("user.dir"), "native"), LWJGLUtil.getPlatformName()).getAbsolutePath());
         System.setProperty("net.java.games.input.librarypath", System.getProperty("org.lwjgl.librarypath"));
         try {    
-            
-            Controllers.create();
             AppGameContainer app = new AppGameContainer(new RPG());
             app.setSmoothDeltas(true);
             app.setTargetFrameRate(60);
+            app.setVerbose(true);
             app.setDisplayMode(SceneMap.B_WIDTH, SceneMap.B_HEIGHT, false);
             app.setVSync(true);
             app.setShowFPS(true);
             app.start();
-            Controllers.destroy();  
-        } catch (LWJGLException | SlickException ex) {
+        } catch (SlickException ex) {
             Logger.getLogger(RPG.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
@@ -42,6 +38,7 @@ public class RPG extends StateBasedGame {
     @Override
     public void initStatesList(GameContainer gc) throws SlickException{
         try {
+            gc.getInput().initControllers();
             Demo.init();
             GameData.editorMode = false;
             GameData.populate();

@@ -42,6 +42,11 @@ public class GameActor extends GameBattler {
         return true;
     }
     
+    @Override
+    public void performCollapse(){
+        Sounds.playActorCollapse();
+    }
+    
     public List<Weapon> getWeapons(){
         List<Weapon> weps = new ArrayList<>();
         if(GameData.items.get(weaponID) instanceof Weapon){

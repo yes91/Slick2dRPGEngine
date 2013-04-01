@@ -26,6 +26,11 @@ public class GameEnemy extends GameBattler{
         return false;
     }
     
+    @Override
+    public void performCollapse(){
+        
+    }
+    
     public boolean isActionConditionMet(EnemyAction action){
         return true;
     }

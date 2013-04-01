@@ -36,6 +36,7 @@ public class Map {
         listRect = new ArrayList<>();
         objs = new ArrayList<>();
         map = mp;
+        BGM = GameCache.bgm("fatefulencounter.wav");
         boundsX = map.getWidth()*map.getTileWidth();
         boundsY = map.getHeight()*map.getTileHeight();
         objs = new ArrayList<>();

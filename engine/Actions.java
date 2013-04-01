@@ -23,7 +23,7 @@ public class Actions {
         ACTION.put("WAIT-CRITICAL", new String[]{ "NO_MOVE", "WAIT(FIXED)", "22"});
         ACTION.put("COMMAND_INPUT", new String[]{ "BEFORE_MOVE" });
         ACTION.put("COMMAND_SELECT", new String[]{ "COORD_RESET"});
-        ACTION.put("NORMAL_ATTACK", new String[]{"PREV_MOVING_TARGET","WPN_SWING_V",
+        ACTION.put("NORMAL_ATTACK", new String[]{"16", "PREV_MOVING_TARGET","WPN_SWING_V",
                           "OBJ_ANIM_WAIT", "12","WPN_SWING_VL",
                           "OBJ_ANIM_L", "Two Wpn Only", "16",
                           "Can Collapse","FLEE_RESET"});

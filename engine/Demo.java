@@ -4,7 +4,11 @@
  */
 package engine;
 
+import engine.EffectAnimation.Frame;
+import engine.EffectAnimation.Frame.Cell;
+import engine.EffectAnimation.Timing;
 import java.util.ArrayList;
+import org.newdawn.slick.Graphics;
 
 /**
  *
@@ -21,6 +25,56 @@ public class Demo {
     public static void init(){
         testActors = new ArrayList<>();
         testEnemies = new ArrayList<>();
+        
+        EffectAnimation testAni = new EffectAnimation();
+        testAni.animationName = "Sword1";
+        testAni.frameMax = 6;
+        Frame frame1 = new Frame();
+        Cell cell1 = new Cell();
+        cell1.pattern = 1;
+        cell1.blendType = Graphics.MODE_ADD;
+        frame1.cellData.add(cell1);
+        Frame frame2 = new Frame();
+        Cell cell2 = new Cell();
+        cell2.pattern = 2;
+        cell2.blendType = Graphics.MODE_ADD;
+        frame2.cellData.add(cell1);
+        Frame frame3 = new Frame();
+        Cell cell3 = new Cell();
+        cell3.pattern = 2;
+        cell3.blendType = Graphics.MODE_ADD;
+        frame3.cellData.add(cell3);
+        Frame frame4 = new Frame();
+        Cell cell4 = new Cell();
+        cell4.pattern = 3;
+        cell4.blendType = Graphics.MODE_ADD;
+        frame4.cellData.add(cell4);
+        Frame frame5 = new Frame();
+        Cell cell5 = new Cell();
+        cell5.pattern = 4;
+        cell5.blendType = Graphics.MODE_ADD;
+        frame5.cellData.add(cell5);
+        Frame frame6 = new Frame();
+        Cell cell6 = new Cell();
+        cell6.pattern = 5;
+        cell6.blendType = Graphics.MODE_ADD;
+        frame6.cellData.add(cell6);
+        
+        Timing time1 = new Timing();
+        time1.frame = 1;
+        time1.se = "Slash1.ogg";
+        
+        testAni.frames.add(frame1);
+        testAni.frames.add(frame2);
+        testAni.frames.add(frame3);
+        testAni.frames.add(frame4);
+        testAni.frames.add(frame5);
+        testAni.frames.add(frame6);
+        
+        testAni.timings.add(time1);
+        
+        GameData.animations.add(null);
+        GameData.animations.add(testAni);
         
         GameActor battleTester = new GameActor("mutsu_1");
         battleTester.name = "Nozomi";

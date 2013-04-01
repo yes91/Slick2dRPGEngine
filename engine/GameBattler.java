@@ -7,6 +7,7 @@ package engine;
 import engine.Effect.Scope;
 import java.util.Random;
 import org.newdawn.slick.Input;
+import util.MathHelper;
 
 /**
  *
@@ -25,11 +26,19 @@ public abstract class GameBattler {
     public int currentMP;
     public int HPchange;
     public int MPchange;
-    public boolean skipped;
-    public boolean missed;
-    public boolean evaded;
-    public boolean critical;
-    public boolean absorbed;
+    public transient int animationID;
+    
+    public transient boolean whiteFlash;
+    public transient boolean blink;
+    public transient boolean appear;
+    public transient boolean disappear;
+    public transient boolean collapse;
+    
+    public transient boolean skipped;
+    public transient boolean missed;
+    public transient boolean evaded;
+    public transient boolean critical;
+    public transient boolean absorbed;
     public int HPplus;
     public int MPplus;
     public int ATKplus;
@@ -73,6 +82,8 @@ public abstract class GameBattler {
         critical = false;
         absorbed = false;
     }
+    
+    public abstract void performCollapse();
     
     public void debugUpdate(Input in){
         if(in.isKeyPressed(Input.KEY_Q)){
@@ -129,8 +140,8 @@ public abstract class GameBattler {
     public void doDamage(){
         this.currentHP -= HPchange;
         this.currentMP -= MPchange;
-        currentHP = Math.max(Math.min(getMaxHP(), currentHP), 0);
-        currentMP = Math.max(Math.min(getMaxMP(), currentMP), 0);
+        currentHP = MathHelper.clamp(currentHP, 0, getMaxHP());
+        currentMP = MathHelper.clamp(currentMP, 0, getMaxMP());
     }
     
     public void makeEffectDamageValue(GameBattler user, Effect effect){
@@ -240,39 +251,39 @@ public abstract class GameBattler {
     }
     
     public int getMaxHP(){
-        return Math.min(Math.max(stats.getBaseHP() + HPplus, 1), HP_LIMIT);
+        return MathHelper.clamp(stats.getBaseHP() + HPplus, 1, HP_LIMIT);
     }
     
     public int getMaxMP(){
-        return Math.min(Math.max(stats.getBaseMP() + MPplus, 1), 9999);
+        return MathHelper.clamp(stats.getBaseMP() + MPplus, 1, 9999);
     }
     
     public int getMaxATK(){
-        return Math.min(Math.max(stats.getBaseATK() + ATKplus, 1), 999);
+        return MathHelper.clamp(stats.getBaseATK() + ATKplus, 1, 999);
     }
     
     public int getMaxMATK(){
-        return Math.min(Math.max(stats.getBaseMATK() + MATKplus, 1), 999);
+        return MathHelper.clamp(stats.getBaseMATK() + MATKplus, 1, 999);
     }
     
     public int getMaxDEF(){
-        return Math.min(Math.max(stats.getBaseDEF() + DEFplus, 1), 999);
+        return MathHelper.clamp(stats.getBaseDEF() + DEFplus, 1, 999);
     }
     
     public int getMaxMDEF(){
-        return Math.min(Math.max(stats.getBaseMDEF() + MDEFplus, 1), 999);
+        return MathHelper.clamp(stats.getBaseMDEF() + MDEFplus, 1, 999);
     }
     
     public int getMaxSPD(){
-        return Math.min(Math.max(stats.getBaseSPD() + SPDplus, 1), 999);
+        return MathHelper.clamp(stats.getBaseSPD() + SPDplus, 1, 999);
     }
     
     public int getATKplus() {
         return ATKplus;
     }
     
-    public void setATKplus(int aTK) {
-        ATKplus = aTK;
+    public void setATKplus(int atk) {
+        ATKplus = atk;
     }
 
     public int getHPplus() {

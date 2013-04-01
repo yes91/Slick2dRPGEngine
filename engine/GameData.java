@@ -56,6 +56,7 @@ public class GameData {
     public static ArrayList<GameClass> classes;
     public static ArrayList<GameActor> actors;
     public static ArrayList<GameEnemy> enemies;
+    public static ArrayList<EffectAnimation> animations = new ArrayList<>();
 
     public static void populate() throws IOException, ClassNotFoundException {
         items = new ArrayList<>();
@@ -69,7 +70,7 @@ public class GameData {
         //writeItems();
         //readSkills();
         //readClasses();
-        writeActors();
+        //writeActors();
         if(editorMode){
             readEditorActors();
         } else {

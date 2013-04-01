@@ -20,17 +20,17 @@ import org.newdawn.slick.SpriteSheet;
 public class SpritesetBattle {
     
     private static float[][] position = new float[][]{
-        new float[]{875.0f, 285.0f + 50, 141.0f},
-        new float[]{967.0f, 317.0f + 50, 167.0f},
-        new float[]{1087.0f, 371.0f + 50, 231.0f},
-        new float[]{1153.0f, 451.0f + 50, 288.0f}
+        new float[]{890.0f, 389.0f, 130.0f},
+        new float[]{954.0f, 417.0f, 167.0f},
+        new float[]{1072.0f, 453.0f, 231.0f},
+        new float[]{1208.0f, 517.0f, 293.0f}
     };
     
     private static float[][] enemyPos = new float[][]{
-        new float[]{1280-875.0f, 285.0f + 50, 141.0f},
-        new float[]{1280-967.0f, 317.0f + 50, 167.0f},
-        new float[]{1280-1087.0f, 371.0f + 50, 231.0f},
-        new float[]{1280-1153.0f, 451.0f + 50, 288.0f}
+        new float[]{1280-890.0f, 389.0f, 130.0f},
+        new float[]{1280-954.0f, 417.0f, 167.0f},
+        new float[]{1280-1072.0f, 453.0f, 231.0f},
+        new float[]{1280-1208.0f, 517.0f, 293.0f}
     };
     
     public Cursor cursor;
@@ -94,13 +94,13 @@ public class SpritesetBattle {
             } else if (input.isKeyDown(Input.KEY_X)) {
                 position[activePos][2] += 1f;
             }
-            /*int index = 0;
+            int index = 0;
             for(SpriteBattler a: actorSprites){
                 a.basePosX = position[index][0];
-                a.basePosY = position[index][1];
+                a.basePosY = position[index][1] - (((float)a.image.getHeight()/a.image.getVerticalCount())*0.7f)/2f;
                 a.basePosZ = position[index][2];
                 index++;
-            }*/
+            }
     }
     
     public final void createEnemies(){
@@ -120,7 +120,6 @@ public class SpritesetBattle {
         switch (action) {
             case "COMMAND_INPUT":
                 t.startAction(action);
-                //t.moveAmount(50, 0, 0);
                 return;
         }
         t.startAction(action);
@@ -156,7 +155,7 @@ public class SpritesetBattle {
         drawList.addAll(actorSprites);
         Collections.sort(drawList, comparator);
         for(SpriteBattler b : drawList){
-            b.render(g, b.posX(), b.posY(), 2.0f * (b.posZ()/DEPTH_BUFFER_SIZE));
+            b.render(g);
         }
     }
     
@@ -189,7 +188,7 @@ public class SpritesetBattle {
         
         public void setTarget(SpriteBattler b){
             yOffset = (int)(((float)b.image.getHeight()/(float)b.image.getVerticalCount()) * 0.70f);
-            yOffset *= 2.0f * (b.posZ()/DEPTH_BUFFER_SIZE);
+            yOffset *= b.getScale();
             x = b.posX();
             y = b.posY();
         }

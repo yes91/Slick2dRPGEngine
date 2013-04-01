@@ -11,6 +11,7 @@ import org.newdawn.slick.AngelCodeFont;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.Music;
 import org.newdawn.slick.SlickException;
+import org.newdawn.slick.Sound;
 
 /**
  *
@@ -22,6 +23,11 @@ public class GameCache {
     //private static AngelCodeFont font;
     private static final  HashMap<String, Image> images = new HashMap<>();
     private static final  HashMap<String, Music> music = new HashMap<>();
+    private static final  HashMap<String, Sound> sounds = new HashMap<>();
+    
+    public static Image animation(String filename){
+        return loadImage("res/animation/", filename);
+    }
     
     public static Image image(String filename){
         return loadImage("res/", filename);
@@ -54,6 +60,19 @@ public class GameCache {
             try {
                 result = new Music("res/Audio/BGM/"+name);
                 music.put(name, result);
+            } catch (SlickException ex) {
+                Logger.getLogger(GameCache.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        return result;
+    }
+    
+    public static Sound se(String name){
+        Sound result = sounds.get(name);
+        if(result == null){
+            try {
+                result = new Sound("res/Audio/SE/"+name);
+                sounds.put(name, result);
             } catch (SlickException ex) {
                 Logger.getLogger(GameCache.class.getName()).log(Level.SEVERE, null, ex);
             }

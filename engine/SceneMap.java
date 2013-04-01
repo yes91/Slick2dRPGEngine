@@ -207,7 +207,8 @@ public class SceneMap extends SceneBase {
             isPlaying = !isPlaying;
         }
         if (input.isKeyPressed(Input.KEY_0) && !console.hasFocus()) {
-            ((SceneBattle) sbg.getState(3)).setBattleBack(GameCache.res("Cobblestones3.png"));
+            ((SceneBattle) sbg.getState(3)).setBattleBack(GameCache.res("DecorativeTile.png"));
+            ((SceneBattle) sbg.getState(3)).setBattleOverlay(GameCache.res("Temple.png"));
             sbg.enterState(3);
         }
         if (input.isKeyPressed(Input.KEY_1)) {

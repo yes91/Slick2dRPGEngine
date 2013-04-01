@@ -72,8 +72,8 @@ public class BattleStats{
     }
     
     private void makeTable(){
-        table.put("HP", generateCurve(450, 7000, 1.5f));
-        System.out.println(table.get("HP").toString());
+        table.put("HP", generateCurve(450, 8000, 1.5f));
+        //System.out.println(table.get("HP").toString());
         table.put("MP", generateCurve(100, 4500, 10f));
         table.put("ATK", generateCurve(18, 430, 0.5f));
         table.put("MATK", generateCurve(10, 300, 1f));

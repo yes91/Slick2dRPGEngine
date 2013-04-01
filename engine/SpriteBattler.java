@@ -19,17 +19,22 @@ import org.newdawn.slick.geom.Rectangle;
 public class SpriteBattler extends SpriteBase {
 
     public GameBattler battler;
+    
+    private enum EffectType {
+        WHITEN, BLINK, APPEAR, DISAPPEAR, COLLAPSE
+    }
+    private EffectType effectType;
+    private int effectDuration;
+    
     public boolean active;
     private LinkedList<String> action;
     private Object[] activeAction;
     private String repeatAction = "WAIT";
-    
     private int wait;
     private boolean animeEnd;
     private boolean patternBack;
     private boolean nonRepeat;
     private boolean reverse;
-    private Rectangle srcRect;
     private float moveSpeedX, moveSpeedY, moveSpeedZ;
     private int pattern;
     private int animeKind;
@@ -68,35 +73,43 @@ public class SpriteBattler extends SpriteBase {
     
     
 
-    public void render(Graphics g, float x, float y, float scale) {
-        /*
-        int width = getCurrentAni().getWidth();
-        int height = getCurrentAni().getHeight();
-
-        // get scaled draw coordinates (sx, sy)
-        float sx = x - (width * scale / 2);
-        float sy = y - (height * scale / 2);
-
-        getCurrentAni().draw(sx, sy, width * scale, height * scale);*/
-
+    public void render(Graphics g) {
         
+        float scale = getScale();
         
-        float sx = x - (width * scale / 2);
-        float sy = y - (height * scale / 2);
+        float sx = posX() - (width * scale / 2);
+        float sy = posY() - (height * scale / 2);
+        
+        g.setDrawMode(blendType);
         if(battler instanceof GameEnemy){
-            image.draw(sx, sy, sx + width * scale, sy + height * scale, srcRect.getWidth(), srcRect.getY(), srcRect.getX(), srcRect.getHeight());
+            Image spriteFrame = image.getSubImage((int)srcRect.getX(), (int)srcRect.getY(), width, height).getFlippedCopy(true, false);
+            spriteFrame.setAlpha(opacity);
+            spriteFrame.draw((int)sx, (int)sy, (int)(width * scale), (int)(height * scale));
+            spriteFrame.drawFlash((int)sx, (int)sy, (int)(width * scale), (int)(height * scale), color);
         } else {
-            image.draw(sx, sy, sx + width * scale, sy + height * scale, srcRect.getX(), srcRect.getY(), srcRect.getWidth(), srcRect.getHeight());
+            Image spriteFrame = image.getSubImage((int)srcRect.getX(), (int)srcRect.getY(), width, height);
+            spriteFrame.setAlpha(opacity);
+            spriteFrame.draw((int)sx, (int)sy, (int)(width * scale), (int)(height * scale));
+            spriteFrame.drawFlash((int)sx, (int)sy, (int)(width * scale), (int)(height * scale), color);
+        }
+        g.setDrawMode(Graphics.MODE_NORMAL);
+        
+        for(Sprite s : animationSprites){
+            s.render(g, scale);
         }
         
         if (SceneBattle.DEBUG_UTIL) {
             g.setColor(Color.cyan);
-            g.drawLine(x + 10, y, x - 10, y);
-            g.drawLine(x, y + 10, x, y - 10);
+            g.drawLine(posX() + 10, posY(), posX() - 10, posY());
+            g.drawLine(posX(), posY() + 10, posX(), posY() - 10);
         }
     }
     
-    public void startAction(String kind){
+    public float getScale(){
+        return (2.0f * (posZ()/SpritesetBattle.DEPTH_BUFFER_SIZE));
+    }
+    
+    public final void startAction(String kind){
         
         reset();
         
@@ -204,6 +217,7 @@ public class SpriteBattler extends SpriteBase {
         int damage = battler.HPchange;
         
         if(damage > 0){
+            battler.blink = true;
             startAction("HURT");
         }
     }
@@ -274,8 +288,7 @@ public class SpriteBattler extends SpriteBase {
         if(target == null){
             moveAmount((int)activeAction[1], (int)activeAction[2], 0);
         } else {
-            int inFront = (int)(((target.posX() - posX() > 0) ? -100f:100f) * 
-                    (2.0f * (target.posZ()/SpritesetBattle.DEPTH_BUFFER_SIZE)));
+            int inFront = (int)(((target.posX() - posX() > 0) ? -100f:100f) * target.getScale());
             toPoint(target.posX() + inFront, target.posY(), target.posZ());
         }
         
@@ -342,8 +355,10 @@ public class SpriteBattler extends SpriteBase {
         
         Object[] damageAction = new Object[]{ animeID, false, true };
         battler.play = new Object[]{ "OBJ_ANIM", damageAction };
-        return; 
-        //wait = 24;
+        
+        target.battler.animationID = 1;
+        
+        wait = GameData.animations.get(1).frameMax * 4;
     }
 
     public void updateMove(float delta) {
@@ -406,6 +421,8 @@ public class SpriteBattler extends SpriteBase {
 
     public void update(int delta) {
         
+        super.update();
+        
         frame -= delta;
         
         //battlerJoin();
@@ -423,7 +440,66 @@ public class SpriteBattler extends SpriteBase {
         //if (animeMoving) updateMoveAnime();
         
         //if (damage != null) damage.update();
+        setupNewEffect();
         
+        updateEffect();
+        
+    }
+    
+    @Override
+    public void updateAnimation(){
+        animationOX = (int)(posX() - (96 * getScale()));
+        animationOY = (int)(posY() - (96 * getScale()));
+        super.updateAnimation();
+    }
+    
+    public void setupNewEffect(){
+        if(battler.whiteFlash){
+            effectType = EffectType.WHITEN;
+            effectDuration = 16;
+            battler.whiteFlash = false;
+        } else if (battler.blink){
+            effectType = EffectType.BLINK;
+            effectDuration = 20;
+            battler.blink = false;
+        }
+        if(battler.animationID != 0){
+            EffectAnimation animation = GameData.animations.get(battler.animationID);
+            battler.animationID = 0;
+            startAnimation(animation, false);
+        }
+    }
+    
+    public void updateEffect(){
+        if(effectDuration > 0){
+            effectDuration--;
+            switch(effectType){
+                case WHITEN: 
+                    updateWhiten();
+                    break;
+                case BLINK:
+                    updateBlink();
+                    break;
+                case COLLAPSE:
+                    updateCollapse();
+                    break;
+            }
+        }
+    }
+    
+    public void updateWhiten(){
+        color = new Color(255, 255, 255, 128);
+        opacity = 1f;
+        color.a = (128 - (16 - effectDuration) * 10)/255f;
+    }
+    
+    public void updateBlink(){
+        color = new Color(1f, 0.3f, 0.3f, 1f);
+        opacity = 1f;
+        color.a = (255 - (20 - effectDuration) * 12.75f)/255f;
+    } 
+    
+    public void updateCollapse(){
         
     }
     

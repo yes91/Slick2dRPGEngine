@@ -12,7 +12,6 @@ import java.util.LinkedList;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
-import org.newdawn.slick.Input;
 import org.newdawn.slick.Music;
 import org.newdawn.slick.MusicListener;
 import org.newdawn.slick.SlickException;
@@ -26,12 +25,13 @@ import org.newdawn.slick.state.transition.FadeOutTransition;
  */
 public class SceneBattle extends SceneBase {
 
-    public static final boolean DEBUG_UTIL = false;
+    public static final boolean DEBUG_UTIL = true;
     private float zoom = 1.0f;
     private Vector2f screenPos = new Vector2f(0, 0);
     private boolean playingAction = false;
     private int stateID = -1;
     private static Image battleBack;
+    private static Image battleOverlay;
     private static Music BGM;
     private int xOffset = 0;
     private boolean victory;
@@ -94,14 +94,11 @@ public class SceneBattle extends SceneBase {
       for(GameEnemy e:gameTroop.getMembers()){
         e.currentHP = e.getMaxHP();
       }
-      activeWindow = partyCommand;
-      mode = PARTY_COMMAND;
       spriteset = new SpritesetBattle();
       actionBattlers.clear();
-      actorIndex = 0;
-      activeBattler = party.getMembers().get(actorIndex);
-      setBGM("Trial_by_fire.ogg");
+      setBGM("Earthquake.ogg");
       BGM.loop();
+      startPartyCommandSelection();
     }
 
     public void createInfoView() throws SlickException {
@@ -133,7 +130,10 @@ public class SceneBattle extends SceneBase {
         g.scale(zoom, zoom);
         g.translate(screenPos.x, screenPos.y);
         if (battleBack != null) {
-            battleBack.draw(0, 0, SceneMap.B_WIDTH, SceneMap.B_HEIGHT, 0, 0, 580, 444);
+            battleBack.draw(0, 0, SceneMap.B_WIDTH, SceneMap.B_HEIGHT, 0, 0, battleBack.getWidth(), battleBack.getHeight());
+        }
+        if (battleOverlay != null) {
+            battleOverlay.draw(0, 0, SceneMap.B_WIDTH, SceneMap.B_HEIGHT, 0, 0, battleOverlay.getWidth(), battleOverlay.getHeight());
         }
         //gameParty.getMembers().get(0).battleSprite.aSeq.play(768.0f, 273.0f);
         spriteset.render(g);
@@ -153,46 +153,44 @@ public class SceneBattle extends SceneBase {
     public void update(GameContainer gc, StateBasedGame sbg, int delta) throws SlickException {
         
         if(DEBUG_UTIL){
-            if(input.isKeyDown(Input.KEY_T)){
-                screenPos.y -= 1f;
-            }
             
-            if(input.isKeyDown(Input.KEY_G)){
-                screenPos.y += 1f;
-            }
+            int zoomaxis = 4;
+            int X = 3;
+            int Y = 2;
             
-            if(input.isKeyDown(Input.KEY_F)){
-                screenPos.x -= 1f;
-            }
-            
-            if(input.isKeyDown(Input.KEY_H)){
-                screenPos.x += 1f;
-            }
-            
-            if(input.isKeyDown(Input.KEY_F) && input.isKeyDown(Input.KEY_T)){
-                screenPos.y -= 1f; screenPos.x -= 1f;
-            }
-            
-            if(input.isKeyDown(Input.KEY_H) && input.isKeyDown(Input.KEY_T)){
-                screenPos.y -= 1f; screenPos.x += 1f;
-            }
-            
-            if(input.isKeyDown(Input.KEY_F) && input.isKeyDown(Input.KEY_G)){
-                screenPos.y += 1f; screenPos.x -= 1f;
-            }
-            
-            if(input.isKeyDown(Input.KEY_H) && input.isKeyDown(Input.KEY_G)){
-                screenPos.y += 1f; screenPos.x += 1f;
-            }
-            
-            if (input.isKeyDown(Input.KEY_BACKSLASH)) {
-                zoom /= 1.1;
-            } else if(input.isKeyDown(Input.KEY_TAB)){
-                zoom *= 1.1;
+            if (input.getAxisCount(0) >= 4) {
+                
+                
+                
+                if(Math.abs(input.getAxisValue(0, X)) > 0.2 && Math.abs(input.getAxisValue(0, Y)) > 0.2){
+                    screenPos.x -= input.getAxisValue(0, X) * 5f;
+                    screenPos.y -= input.getAxisValue(0, Y) * 5f;
+                } else {
+
+                    if (Math.abs(input.getAxisValue(0, X)) > 0.2) {
+                        screenPos.x -= input.getAxisValue(0, X) * 5f;
+                    }
+
+                    if (Math.abs(input.getAxisValue(0, Y)) > 0.2) {
+                        screenPos.y -= input.getAxisValue(0, Y) * 5f;
+                    }
+                }
+                
+                if(input.isButtonPressed(5, 0)){
+                    zoom = 1f;
+                    screenPos.x = 0;
+                    screenPos.y = 0;
+                }
+
+                if (input.getAxisValue(0, zoomaxis) > 0.2) {
+                    zoom -= input.getAxisValue(0, zoomaxis) / 60f;
+                }
+                if (input.getAxisValue(0, zoomaxis) < -0.2) {
+                    zoom += Math.abs(input.getAxisValue(0, zoomaxis)) / 60f;
+                }
             }
         }
 
-        spriteset.update(delta, input);
         if (!(mode == END)) {
             if (!(mode == ACTION_WAIT)) {
                 if (judgeWinLoss()) {
@@ -234,6 +232,7 @@ public class SceneBattle extends SceneBase {
                         Object[] temp = Arrays.copyOfRange(activeBattler.play, 1, activeBattler.play.length);
                         damageAction(temp);
                     } else if (activeBattler.play[0].equals("Can Collapse")){
+                        doDeaths();
                         activeBattler.play = null;
                     }
                 }
@@ -246,6 +245,7 @@ public class SceneBattle extends SceneBase {
         } else if (defeat) {
             
         }
+        spriteset.update(delta, input);
     }
     
     public boolean judgeWinLoss(){
@@ -277,6 +277,14 @@ public class SceneBattle extends SceneBase {
             return true;
         }
         return false;
+    }
+    
+    public void doDeaths(){
+        GameUnit unit = activeBattler.action.getEnemyUnit();
+        GameBattler b = (GameBattler)unit.getMembers().get(activeBattler.action.targetIndex);
+        if(b.isDead()){
+            b.performCollapse();
+        }
     }
     
     public void actionEnd(){
@@ -325,7 +333,19 @@ public class SceneBattle extends SceneBase {
                     if (inputp.isCommandControlPressed(action)) {
                         Sounds.decision.play();
                         BGM.fade(1500, 0.05f, true);
-                        sbg.enterState(1, new FadeOutTransition(), new CameraFadeInTransition(((SceneMap)sbg.getState(1)).getCamera()));
+                        final StateBasedGame game = sbg;
+                        mode = END;
+                        BGM.addListener(new MusicListener() {
+                            @Override
+                            public void musicEnded(Music music) {
+                                BGM.removeListener(this);
+                                battleEnd(2, game);
+                            }
+
+                            @Override
+                            public void musicSwapped(Music music, Music newMusic) {
+                            }
+                        });
                     }
                     break;
             }
@@ -460,7 +480,8 @@ public class SceneBattle extends SceneBase {
     
     public boolean nextActor(){
         actorIndex++;
-        if(actorIndex > gameParty.getMembers().size() - 1){
+        if(actorIndex > gameParty.getMembers().indexOf(gameParty.getLivingMembers().get(
+            gameParty.getLivingMembers().size() - 1))){
             actorIndex = 0;
             //Turn end
             return true;
@@ -513,6 +534,7 @@ public class SceneBattle extends SceneBase {
         }
         if(setNextActiveBattler()){
             if(activeBattler.action.isValid()){
+                activeBattler.whiteFlash = true;
                 executeAction();
             }
         }
@@ -556,6 +578,16 @@ public class SceneBattle extends SceneBase {
     public void battleEnd(int result, StateBasedGame sbg){
         sbg.enterState(1, new FadeOutTransition(), new CameraFadeInTransition(SceneMap.getCamera()));
     }
+    
+    @Override
+    public void leave(GameContainer container, StateBasedGame game) throws SlickException {
+        super.leave(container, game);
+        BGM.stop();
+        BGM = null;
+        SceneMap.map.BGM.loop();
+        battleBack = null;
+        
+    }
 
     public static Music getBGM() {
         return BGM;
@@ -563,6 +595,14 @@ public class SceneBattle extends SceneBase {
 
     public static void setBGM(String music) {
         BGM = GameCache.bgm(music);
+    }
+
+    public static Image getBattleOverlay() {
+        return battleOverlay;
+    }
+
+    public static void setBattleOverlay(Image battleOverlay) {
+        SceneBattle.battleOverlay = battleOverlay;
     }
 
     public void setBattleBack(Image b) {
