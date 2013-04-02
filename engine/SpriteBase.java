@@ -24,7 +24,7 @@ public class SpriteBase extends Sprite{
     
     protected List<Sprite> animationSprites;
     private EffectAnimation animation;
-    private Image animationImage;
+    private SpriteSheet animationImage;
     private boolean animationMirror;
     protected int animationOX, animationOY;
     private boolean useSprite;
@@ -69,7 +69,7 @@ public class SpriteBase extends Sprite{
     }
     
     public void loadAnimationImage(){
-        this.animationImage = GameCache.animation(this.animation.animationName+".png");
+        this.animationImage = new SpriteSheet(GameCache.animation(this.animation.animationName+".png"), 1, 1);
     }
     
     public void updateAnimation(){
@@ -102,7 +102,7 @@ public class SpriteBase extends Sprite{
                 continue;
             }
             if(pattern < 100){
-                sprite.image = new SpriteSheet(animationImage, 1, 1);
+                sprite.image = animationImage;
             } else {
                 
             }

@@ -23,14 +23,14 @@ public class SpritesetBattle {
         new float[]{890.0f, 389.0f, 130.0f},
         new float[]{954.0f, 417.0f, 167.0f},
         new float[]{1072.0f, 453.0f, 231.0f},
-        new float[]{1208.0f, 517.0f, 293.0f}
+        new float[]{1162.0f, 517.0f, 293.0f}
     };
     
     private static float[][] enemyPos = new float[][]{
         new float[]{1280-890.0f, 389.0f, 130.0f},
         new float[]{1280-954.0f, 417.0f, 167.0f},
         new float[]{1280-1072.0f, 453.0f, 231.0f},
-        new float[]{1280-1208.0f, 517.0f, 293.0f}
+        new float[]{1280-1162.0f, 517.0f, 293.0f}
     };
     
     public Cursor cursor;

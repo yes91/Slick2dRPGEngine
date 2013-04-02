@@ -191,8 +191,8 @@ public class SceneBattle extends SceneBase {
             }
         }
 
-        if (!(mode == END)) {
-            if (!(mode == ACTION_WAIT)) {
+        if (mode != END) {
+            if (mode != ACTION_WAIT) {
                 if (judgeWinLoss()) {
                     return;
                 }
