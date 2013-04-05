@@ -16,6 +16,9 @@ import javax.script.ScriptContext;
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
 import javax.script.ScriptException;
+import org.lwjgl.opengl.GL13;
+import org.lwjgl.opengl.GL14;
+import org.lwjgl.opengl.GL20;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Font;
 import org.newdawn.slick.GameContainer;
@@ -38,6 +41,7 @@ public class SceneMap extends SceneBase {
     private ShaderProgram blurH;
     private ShaderProgram blurV;
     private LightShader effect;
+    private ShaderProgram composite;
     private int lastOption;
     private int shaderOption;
     private ArrayList<Light> lightArray;
@@ -103,6 +107,7 @@ public class SceneMap extends SceneBase {
         blurH = ShaderProgram.loadProgram("engine/blurH.vert", "engine/blurH.frag");
         blurV = ShaderProgram.loadProgram("engine/blurV.vert", "engine/blurV.frag");
         effect = new LightShader("engine/oilpaint.vert", "engine/oilpaint.frag");
+        composite = ShaderProgram.loadProgram("engine/compositeV.glsl", "engine/compositeF.glsl");
         mouseLight = new Light(500f, 2400f, 1f, 0.5f, "test_light", new Color(105, 150, 50));
         lightArray = new ArrayList(Arrays.asList(new Light[]{
                     mouseLight,
@@ -265,17 +270,13 @@ public class SceneMap extends SceneBase {
         //ShaderProgram.unbind();
         if (isLit) {
             lg.clear();
-            lg.setColor(new Color(0.0f, 0.0f, 0.0f, 1f));
-            lg.fillRect(0, 0, B_WIDTH, B_HEIGHT);
             for (Light l : lightArray) {
                 if (l.isVisible(camera)) {
-                    l.render(lg, camera);
+                    l.render(lg);
                 }
             }
             lg.flush();
-            g.setDrawMode(Graphics.MODE_COLOR_MULTIPLY);
             lightBuffer.draw(Camera.viewPort.getX(), Camera.viewPort.getY());
-            g.setDrawMode(Graphics.MODE_NORMAL);
         }
 
         /*g.setColor(Color.yellow);

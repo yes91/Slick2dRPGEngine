@@ -4,19 +4,35 @@
  */
 package engine;
 
-import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL14;
+import effectutil.LightShader;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
+import org.newdawn.slick.SlickException;
+import org.newdawn.slick.opengl.renderer.Renderer;
+import org.newdawn.slick.opengl.renderer.SGL;
+import util.MathHelper;
 
 /**
  *
  * @author Kieran
  */
 public class Light {
+    
+    protected SGL GL = Renderer.get();
 
     protected final Image lightSprite;
+    
+    public static LightShader program = null;
+    static {
+        try {
+            program = new LightShader("engine/lightV.glsl", "engine/lightF.glsl");
+        } catch (SlickException ex) {
+            Logger.getLogger(Light.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
     /**
      * The position of the light
      */
@@ -61,26 +77,45 @@ public class Light {
         this(x, y, scale, 1f, Color.white);
     }
 
-    public void render(Graphics g, Camera cam) {
-        GL14.glBlendColor(tint.r * intensity, tint.g * intensity, tint.b * intensity, tint.a);
+    public void render(Graphics g) {
+        /*GL14.glBlendColor(tint.r * intensity, tint.g * intensity, tint.b * intensity, tint.a);
         //GL11.glEnable(GL11.GL_BLEND);
         GL11.glBlendFunc(GL11.GL_CONSTANT_COLOR, GL11.GL_SRC_ALPHA);
         lightSprite.setRotation(0);
         float xOff = lightSprite.getWidth() / 2f * scale;
         float yOff = lightSprite.getHeight() / 2f * scale;
-        lightSprite.draw(screenX(cam) - xOff, screenY(cam) - yOff, scale);
+        lightSprite.draw(screenX(cam) - xOff, screenY(cam) - yOff, scale);*/
+        
+        GL.glBlendFunc(SGL.GL_ONE, SGL.GL_ONE);
+        program.bind();
+        
+        program.setUniformLight("light", this);
+        
+        GL.glPushMatrix();
+        GL.glTranslatef(screenX(), screenY(), 0);
+        float radius = MathHelper.scaleRange(scale, 1f, 10f, 100, 1000);
+        GL.glScalef(radius, radius, 0f);
+        GL.glBegin(SGL.GL_QUADS);
+        GL.glVertex3f(-1.0f, -1.0f, 0.0f);
+        GL.glVertex3f(1.0f, -1.0f, 0.0f);
+        GL.glVertex3f(1.0f, 1.0f, 0.0f);
+        GL.glVertex3f(-1.0f, 1.0f, 0.0f);
+        GL.glEnd();
+        GL.glPopMatrix();
+        
+        LightShader.unbind();
     }
     
     public void update(long elapsed){
         scale = scaleOrig + 0.5f * (float)Math.sin(elapsed /1000f);
     }
 
-    public float screenX(Camera c) {
-        return x - c.viewPort.getX();
+    public float screenX() {
+        return x - Camera.viewPort.getX();
     }
 
-    public float screenY(Camera c) {
-        return y - c.viewPort.getY();
+    public float screenY() {
+        return y - Camera.viewPort.getY();
     }
 
     public boolean isVisible(Camera c) {
