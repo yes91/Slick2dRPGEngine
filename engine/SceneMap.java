@@ -17,8 +17,6 @@ import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
 import javax.script.ScriptException;
 import org.lwjgl.opengl.GL13;
-import org.lwjgl.opengl.GL14;
-import org.lwjgl.opengl.GL20;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Font;
 import org.newdawn.slick.GameContainer;
@@ -30,6 +28,11 @@ import org.newdawn.slick.SlickException;
 import org.newdawn.slick.gui.AbstractComponent;
 import org.newdawn.slick.gui.ComponentListener;
 import org.newdawn.slick.gui.TextField;
+import org.newdawn.slick.opengl.InternalTextureLoader;
+import org.newdawn.slick.opengl.Texture;
+import org.newdawn.slick.opengl.TextureLoader;
+import org.newdawn.slick.opengl.renderer.Renderer;
+import org.newdawn.slick.opengl.renderer.SGL;
 import org.newdawn.slick.state.StateBasedGame;
 
 /**
@@ -41,6 +44,7 @@ public class SceneMap extends SceneBase {
     private ShaderProgram blurH;
     private ShaderProgram blurV;
     private LightShader effect;
+    private SGL GL = Renderer.get();
     private ShaderProgram composite;
     private int lastOption;
     private int shaderOption;
@@ -213,7 +217,7 @@ public class SceneMap extends SceneBase {
         }
         if (input.isKeyPressed(Input.KEY_0) && !console.hasFocus()) {
             ((SceneBattle) sbg.getState(3)).setBattleBack(GameCache.res("DecorativeTile.png"));
-            ((SceneBattle) sbg.getState(3)).setBattleOverlay(GameCache.res("Temple.png"));
+            SceneBattle.setBattleOverlay(GameCache.res("Temple.png"));
             sbg.enterState(3);
         }
         if (input.isKeyPressed(Input.KEY_1)) {
@@ -242,7 +246,19 @@ public class SceneMap extends SceneBase {
 
     @Override
     public void render(GameContainer container, StateBasedGame sbg, Graphics g) throws SlickException {
-        //effect.bind();            
+        //effect.bind();
+        if (isLit) {
+            lg.clear();
+            lg.setColor(Color.black);
+            lg.fillRect(0, 0, B_WIDTH, B_HEIGHT);
+            for (Light l : lightArray) {
+                if (l.isVisible(camera)) {
+                    l.render(lg);
+                }
+            }
+            lg.flush();
+        }
+        
         if (shaderOption != lastOption) {
             effect.setUniform1i("choice", shaderOption);
             lastOption = shaderOption;
@@ -254,6 +270,8 @@ public class SceneMap extends SceneBase {
         for (GameObject go : map.objs) {
             go.render(g);
         }
+        
+        
 
         if (count > 2) {
             count = 0;
@@ -264,21 +282,24 @@ public class SceneMap extends SceneBase {
             fire2.draw(1536, 1710);
         }
         count += 0.04f;
-
-        //light.draw(0, 0, 1280, 720);
-
-        //ShaderProgram.unbind();
-        if (isLit) {
-            lg.clear();
-            for (Light l : lightArray) {
-                if (l.isVisible(camera)) {
-                    l.render(lg);
-                }
-            }
-            lg.flush();
+        
+        if(isLit){
+            /*g.setDrawMode(Graphics.MODE_COLOR_MULTIPLY);
             lightBuffer.draw(Camera.viewPort.getX(), Camera.viewPort.getY());
+            g.setDrawMode(Graphics.MODE_NORMAL);*/
+            g.copyArea(buffer, 0, 0);
+            g.clear();
+            composite.bind();
+            GL13.glActiveTexture(GL13.GL_TEXTURE10);
+            lightBuffer.bind();
+            composite.setUniform1i("lightBuffer", 10);
+            GL13.glActiveTexture(GL13.GL_TEXTURE0);
+            buffer.draw(Camera.viewPort.getX(), Camera.viewPort.getY());
+            g.copyArea(buffer, 0, 0);
+            ShaderProgram.unbind();
         }
-
+        
+        g.copyArea(buffer, 0, 0);
         /*g.setColor(Color.yellow);
          g.drawRect(camera.viewPort.getX() + 5, 
           camera.viewPort.getY() + 5,
@@ -334,7 +355,6 @@ public class SceneMap extends SceneBase {
 
     public void makeMenuBack(GameContainer gc) {
         Graphics g = gc.getGraphics();
-        g.copyArea(buffer, 0, 0);
         gc.pause();
         blurH.bind();
         g.drawImage(buffer, 0, 0);

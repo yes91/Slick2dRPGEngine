@@ -7,6 +7,7 @@ package engine;
 import effectutil.LightShader;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.lwjgl.opengl.GL11;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
@@ -86,14 +87,14 @@ public class Light {
         float yOff = lightSprite.getHeight() / 2f * scale;
         lightSprite.draw(screenX(cam) - xOff, screenY(cam) - yOff, scale);*/
         
-        GL.glBlendFunc(SGL.GL_ONE, SGL.GL_ONE);
+        g.setDrawMode(Graphics.MODE_ADD);
         program.bind();
         
         program.setUniformLight("light", this);
         
         GL.glPushMatrix();
-        GL.glTranslatef(screenX(), screenY(), 0);
-        float radius = MathHelper.scaleRange(scale, 1f, 10f, 100, 1000);
+        GL.glTranslatef(screenX(), 720-screenY(), 0);
+        float radius = MathHelper.scaleRange(scale, 1f, 2f, 128, 256);
         GL.glScalef(radius, radius, 0f);
         GL.glBegin(SGL.GL_QUADS);
         GL.glVertex3f(-1.0f, -1.0f, 0.0f);
@@ -104,10 +105,11 @@ public class Light {
         GL.glPopMatrix();
         
         LightShader.unbind();
+        g.setDrawMode(Graphics.MODE_NORMAL);
     }
     
     public void update(long elapsed){
-        scale = scaleOrig + 0.5f * (float)Math.sin(elapsed /1000f);
+        scale = scaleOrig + MathHelper.scaleRange((float)Math.sin(elapsed /1000f), -1.0f, 1.0f, 1f/4f, 4f);
     }
 
     public float screenX() {
