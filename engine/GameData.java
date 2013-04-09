@@ -17,6 +17,8 @@ import java.io.ObjectInputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.jdom2.Document;
 import org.jdom2.JDOMException;
 import org.jdom2.input.SAXBuilder;
@@ -30,9 +32,7 @@ import org.objenesis.strategy.StdInstantiatorStrategy;
  */
 public class GameData {
     
-    public static Kryo kryo = new Kryo();
-    
-    public static boolean editorMode = false;
+    public static final Kryo kryo = new Kryo();
     
     static{
         kryo.setInstantiatorStrategy(new StdInstantiatorStrategy());
@@ -71,14 +71,19 @@ public class GameData {
         //readSkills();
         //readClasses();
         //writeActors();
-        if(editorMode){
-            readEditorActors();
-        } else {
-            readGameActors();
+        readActors();
+        //readEnemies();  
+    }
+    
+    public static void save(){
+        try {
+            writeItems();
+            writeActors();
+            writeEnemies();
+            writeAnimations();
+        } catch (IOException ex) {
+            Logger.getLogger(GameData.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
-        //readEnemies();
-        
     }
 
     private static void readItems() {
@@ -205,65 +210,49 @@ public class GameData {
         }
         
     }
-    
-    private static void readEditorActors() throws FileNotFoundException {
-        Input input = new Input(ResourceLoader.getResourceAsStream("data/actors.jrdata"));
-        int length = input.readInt();
-        for(int i = 0; i < length; i++){
-            GameActor actor = kryo.readObject(input, GameActor.class);
-            actors.add(actor);
-        }
-    }
 
-    private static void readGameActors() throws IOException, ClassNotFoundException {
-        /*
-         * int number of actors
-         * for each actor
-         *  int initial level
-         *  int basis
-         *  int inflation
-         *  String actor name
-         *  int class id
-         * end
-         */
+    private static void readActors() throws IOException, ClassNotFoundException {
         Input input = new Input(ResourceLoader.getResourceAsStream("data/actors.jrdata"));
         int length = input.readInt();
         for(int i = 0; i < length; i++){
             GameActor actor = kryo.readObject(input, GameActor.class);
             actors.add(actor);
         }
-        
-        
-        /*
-        ObjectInputStream actorData = new ObjectInputStream(new FileInputStream(new File("src/actors.jrdata")));
-        if(actorData.readUTF().equals("JRD")){
-            for(int i = 1; i < actorData.readInt(); i++){
-                actors.add(GameActor.readObject(actorData));
-            }
-        }*/
-        
-        /*for (int i = 0; i < actorData.readInt(); i++) {
-            GameActor actor = new GameActor("");
-            actor.stats = new BattleStats(actorData.readInt(), actorData.readInt(), actorData.readInt());
-            actor.name = actorData.readUTF();
-            actor.classID = actorData.readInt();
-            actor.currentHP = actor.getMaxHP();
-            actor.currentMP = actor.getMaxMP();
-            actor.stats.EXP = actor.stats.getEXP(actor.stats.level);
-            actors.add(actor);
-        }*/
     }
     
     private static void writeActors() throws IOException{
         try (Output output = new Output(new FileOutputStream("src/data/actors.jrdata"))) {
-            output.writeInt(Demo.testActors.size());
-            for(GameActor a: Demo.testActors){
+            output.writeInt(actors.size());
+            for(GameActor a: actors){
                 kryo.writeObject(output, a);
             }
         }
     }
     
     private static void readEnemies(){
-        
+        Input input = new Input(ResourceLoader.getResourceAsStream("data/enemy.jrdata"));
+        int length = input.readInt();
+        for(int i = 0; i < length; i++){
+            GameEnemy enemy = kryo.readObject(input, GameEnemy.class);
+            enemies.add(enemy);
+        }
+    }
+    
+    private static void writeEnemies() throws FileNotFoundException{
+        try (Output output = new Output(new FileOutputStream("src/data/enemy.jrdata"))) {
+            output.writeInt(enemies.size());
+            for(GameEnemy e: enemies){
+                kryo.writeObject(output, e);
+            }
+        }
+    }
+
+    private static void writeAnimations() throws FileNotFoundException {
+        try (Output output = new Output(new FileOutputStream("src/data/animations.jrdata"))) {
+            output.writeInt(animations.size());
+            for(EffectAnimation a: animations){
+                kryo.writeObject(output, a);
+            }
+        }
     }
 }

@@ -47,7 +47,6 @@ public class RPG extends StateBasedGame {
             GL30.glClampColor(GL30.GL_CLAMP_FRAGMENT_COLOR, GL11.GL_FALSE);*/
             gc.getInput().initControllers();
             Demo.init();
-            GameData.editorMode = false;
             GameData.populate();
             Sounds.load();
         } catch (IOException | ClassNotFoundException ex) {
