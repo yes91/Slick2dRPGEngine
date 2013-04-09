@@ -360,9 +360,9 @@ public class SpriteBattler extends SpriteBase {
         Object[] damageAction = new Object[]{ animeID, false, true };
         battler.play = new Object[]{ "OBJ_ANIM", damageAction };
         
-        target.battler.animationID = 1;
+        target.battler.animationID = 0;
         
-        wait = GameData.animations.get(1).frameMax * 4;
+        wait = GameData.animations.get(0).frameMax * 4;
     }
 
     public void updateMove(float delta) {
@@ -467,9 +467,9 @@ public class SpriteBattler extends SpriteBase {
             effectDuration = 20;
             battler.blink = false;
         }
-        if(battler.animationID != 0){
+        if(battler.animationID != -1){
             EffectAnimation animation = GameData.animations.get(battler.animationID);
-            battler.animationID = 0;
+            battler.animationID = -1;
             startAnimation(animation, false);
         }
     }

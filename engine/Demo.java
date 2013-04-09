@@ -4,9 +4,9 @@
  */
 package engine;
 
-import engine.EffectAnimation.Frame;
-import engine.EffectAnimation.Frame.Cell;
-import engine.EffectAnimation.Timing;
+import engine.Frame;
+import engine.Cell;
+import engine.Timing;
 import java.util.ArrayList;
 import org.newdawn.slick.Graphics;
 
@@ -19,12 +19,11 @@ public class Demo {
      * This class is a lovely place full of hacks, trickery, and dark magic
      * I will use for prototyping.
      */
-    public static ArrayList<GameActor> testActors;
-    public static ArrayList<GameEnemy> testEnemies;
+    public static ArrayList<GameActor> testActors = new ArrayList<>();
+    public static ArrayList<GameEnemy> testEnemies = new ArrayList<>();
+    public static ArrayList<EffectAnimation> testAnis = new ArrayList<>();
     
     public static void init(){
-        testActors = new ArrayList<>();
-        testEnemies = new ArrayList<>();
         
         EffectAnimation testAni = new EffectAnimation();
         testAni.animationName = "Sword1";
@@ -73,7 +72,12 @@ public class Demo {
         
         testAni.timings.add(time1);
         
-        GameData.animations.add(null);
+        testAnis.add(testAni);
+        
+        GameData.animations.clear();
+        GameData.animations.addAll(testAnis);
+        
+        
         GameData.animations.add(testAni);
         
         GameActor battleTester = new GameActor("mutsu_1");
@@ -144,6 +148,9 @@ public class Demo {
         testActors.add(tester5);
         testActors.add(tester6);
         
+        GameData.actors.clear();
+        GameData.actors.addAll(testActors);
+        
         GameEnemy testEnemy = new GameEnemy("slime");
         testEnemy.name = "Slime";
         testEnemy.stats = new BattleStats(30);
@@ -172,6 +179,10 @@ public class Demo {
         testEnemies.add(enemy2);
         testEnemies.add(GameData.kryo.copy(testEnemy));
         testEnemies.add(GameData.kryo.copy(testEnemy));
+        
+        GameData.enemies.clear();
+        GameData.enemies.addAll(testEnemies);
+        
     }
     
 }

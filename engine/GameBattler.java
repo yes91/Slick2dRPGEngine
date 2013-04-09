@@ -26,7 +26,7 @@ public abstract class GameBattler {
     public int currentMP;
     public int HPchange;
     public int MPchange;
-    public transient int animationID;
+    public transient int animationID = -1;
     
     public transient boolean whiteFlash;
     public transient boolean blink;

@@ -190,7 +190,7 @@ public class SceneTitle extends SceneBase{
             gameParty.giveItem(i, 99);
         }
         gameParty.setMembers(GameData.actors.subList(0, 4));
-        gameTroop.setMembers(Demo.testEnemies);
+        gameTroop.setMembers(GameData.enemies.subList(0, 4));
         uielements = new ArrayList<>();
         back = GameCache.res("TitleBack.png");
         options = new WindowSystem(2, 1);

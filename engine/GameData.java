@@ -42,37 +42,26 @@ public class GameData {
                 return new GameActor();
             }
         };
-        
         kryo.getRegistration(GameActor.class).setInstantiator(objInst);
-        //kryo.setInstantiatorStrategy(new DefaultInstantiatorStrategy());
-        //FieldSerializer serializer = new FieldSerializer(kryo, GameBattler.class);
-        //serializer.removeField("battleSprite");
-        //serializer.getField("battleSprite").setCanBeNull(true);
-        //kryo.register(GameBattler.class, serializer);
     }
 
-    public static ArrayList<Item> items;
-    public static ArrayList<Skill> skills;
-    public static ArrayList<GameClass> classes;
-    public static ArrayList<GameActor> actors;
-    public static ArrayList<GameEnemy> enemies;
+    public static ArrayList<Item> items = new ArrayList<>();
+    public static ArrayList<Skill> skills = new ArrayList<>();
+    public static ArrayList<GameClass> classes = new ArrayList<>();
+    public static ArrayList<GameActor> actors = new ArrayList<>();
+    public static ArrayList<GameEnemy> enemies = new ArrayList<>();
     public static ArrayList<EffectAnimation> animations = new ArrayList<>();
 
     public static void populate() throws IOException, ClassNotFoundException {
-        items = new ArrayList<>();
-        skills = new ArrayList<>();
-        classes = new ArrayList<>();
-        actors = new ArrayList<>();
-        enemies = new ArrayList<>();
         
-        //readItems();
-        readItemBin();
-        //writeItems();
+        readItems();
         //readSkills();
         //readClasses();
-        //writeActors();
+        readAnimations();
         readActors();
-        //readEnemies();  
+        readEnemies();
+        
+        save();
     }
     
     public static void save(){
@@ -86,7 +75,7 @@ public class GameData {
         }
     }
 
-    private static void readItems() {
+    private static void readItemXML() {
         SAXBuilder builder = new SAXBuilder();
 
         try {
@@ -131,7 +120,7 @@ public class GameData {
         }
     }
     
-    private static void readItemBin() throws FileNotFoundException{
+    private static void readItems() throws FileNotFoundException{
         Input input = new Input(ResourceLoader.getResourceAsStream("data/consumables.jrdata"));
         int lengthCons = input.readInt();
         for(int i = 0; i < lengthCons; i++){
@@ -244,6 +233,15 @@ public class GameData {
             for(GameEnemy e: enemies){
                 kryo.writeObject(output, e);
             }
+        }
+    }
+    
+    private static void readAnimations() throws FileNotFoundException {
+        Input input = new Input(ResourceLoader.getResourceAsStream("data/animations.jrdata"));
+        int length = input.readInt();
+        for(int i = 0; i < length; i++){
+            EffectAnimation ani = kryo.readObject(input, EffectAnimation.class);
+            animations.add(ani);
         }
     }
 

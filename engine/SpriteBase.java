@@ -4,9 +4,9 @@
  */
 package engine;
 
-import engine.EffectAnimation.Frame;
-import engine.EffectAnimation.Frame.Cell;
-import engine.EffectAnimation.Timing;
+import engine.Frame;
+import engine.Cell;
+import engine.Timing;
 import java.util.ArrayList;
 import java.util.List;
 import org.newdawn.slick.Image;

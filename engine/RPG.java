@@ -5,11 +5,10 @@ import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.lwjgl.LWJGLUtil;
-import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL30;
 import org.newdawn.slick.AppGameContainer;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.SlickException;
+import org.newdawn.slick.opengl.renderer.Renderer;
 import org.newdawn.slick.state.StateBasedGame;
 
 public class RPG extends StateBasedGame {
@@ -46,7 +45,7 @@ public class RPG extends StateBasedGame {
             GL30.glClampColor(GL30.GL_CLAMP_READ_COLOR, GL11.GL_FALSE); //Kind of unnecessary but whatever
             GL30.glClampColor(GL30.GL_CLAMP_FRAGMENT_COLOR, GL11.GL_FALSE);*/
             gc.getInput().initControllers();
-            Demo.init();
+            //Demo.init();
             GameData.populate();
             Sounds.load();
         } catch (IOException | ClassNotFoundException ex) {
