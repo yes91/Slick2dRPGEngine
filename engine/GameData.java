@@ -42,7 +42,14 @@ public class GameData {
                 return new GameActor();
             }
         };
+        ObjectInstantiator listInst = new ObjectInstantiator(){
+            @Override
+            public Object newInstance(){ 
+                return new ArrayList<>();
+            }
+        };
         kryo.getRegistration(GameActor.class).setInstantiator(objInst);
+        kryo.getRegistration(ArrayList.class).setInstantiator(listInst);
     }
 
     public static ArrayList<Item> items = new ArrayList<>();
@@ -57,9 +64,9 @@ public class GameData {
         readItems();
         //readSkills();
         //readClasses();
-        readAnimations();
-        readActors();
-        readEnemies();
+        //readAnimations();
+        //readActors();
+        //readEnemies();
         
         save();
     }

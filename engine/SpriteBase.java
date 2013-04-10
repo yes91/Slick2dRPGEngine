@@ -4,12 +4,11 @@
  */
 package engine;
 
-import engine.Frame;
-import engine.Cell;
-import engine.Timing;
+import engine.EffectAnimation.Frame;
+import engine.EffectAnimation.Frame.Cell;
+import engine.EffectAnimation.Timing;
 import java.util.ArrayList;
 import java.util.List;
-import org.newdawn.slick.Image;
 import org.newdawn.slick.SpriteSheet;
 
 /**
@@ -50,7 +49,9 @@ public class SpriteBase extends Sprite{
     public void startAnimation(EffectAnimation animation, boolean mirror){
         this.animation = animation;
         animationMirror = mirror;
-        if(this.animation == null) return;
+        if(this.animation == null) {
+            return;
+        }
         loadAnimationImage();
         animationDuration = this.animation.frameMax * 4 + 1;
         animationSprites = new ArrayList<>();
@@ -95,7 +96,9 @@ public class SpriteBase extends Sprite{
         for(int i = 0; i <= frame.cellData.size() - 1; i++){
             Cell cell = frame.cellData.get(i);
             Sprite sprite = animationSprites.get(i);
-            if(sprite == null) continue;
+            if(sprite == null) {
+                continue;
+            }
             int pattern = cell.pattern;
             if(pattern == -1){
                 sprite.visible = false;
