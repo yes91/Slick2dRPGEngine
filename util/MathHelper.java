@@ -23,15 +23,15 @@ public final class MathHelper {
     }
     
     public static int scaleRange(int i, int min, int max, int newMin, int newMax) {
-        return (i / ((max - min) / (newMax - newMin))) + newMin;
+        return (((newMax-newMin)*(i - min))/(max - min)) + newMin;
     }
     
     public static float scaleRange(float i, float min, float max, float newMin, float newMax) {
-        return (i / ((max - min) / (newMax - newMin))) + newMin;
+        return (((newMax-newMin)*(i - min))/(max - min)) + newMin;
     }
     
     public static double scaleRange(double i, double min, double max, double newMin, double newMax) {
-        return (i / ((max - min) / (newMax - newMin))) + newMin;
+        return (((newMax-newMin)*(i - min))/(max - min)) + newMin;
     }
     
 }

@@ -4,7 +4,6 @@
  */
 package engine;
 
-import java.util.Collections;
 import java.util.HashMap;
 import org.newdawn.slick.geom.Vector2f;
 import util.MathHelper;
@@ -72,30 +71,30 @@ public class BattleStats{
     }
     
     private void makeTable(){
-        table.put("HP", generateCurve(450, 8000, 1.5f));
+        table.put("HP", generateCurve(450, 8000, 0));
         //System.out.println(table.get("HP").toString());
-        table.put("MP", generateCurve(100, 4500, 10f));
-        table.put("ATK", generateCurve(18, 430, 0.5f));
-        table.put("MATK", generateCurve(10, 300, 1f));
-        table.put("DEF", generateCurve(25, 200, 1f));
-        table.put("MDEF", generateCurve(15, 400, 1f));
-        table.put("SPD", generateCurve(5, 50, 1f));
+        table.put("MP", generateCurve(100, 4500, 5));
+        table.put("ATK", generateCurve(18, 430, 1));
+        table.put("MATK", generateCurve(10, 300, 1));
+        table.put("DEF", generateCurve(25, 200, 1));
+        table.put("MDEF", generateCurve(15, 400, 1));
+        table.put("SPD", generateCurve(5, 50, 1));
     }
     
-    private HashMap<Integer, Integer> generateCurve(int start, int end, float speed){
+    private HashMap<Integer, Integer> generateCurve(int start, int end, int speed){
         
         HashMap<Integer, Integer> map = new HashMap<>();
         
-        speed = MathHelper.clamp(speed, -10f, 10f);
+        float adjustedSpeed = MathHelper.clamp(speed, -10f, 10f);
         
-        speed = MathHelper.scaleRange(speed, -10f, 10f, -((float)levels/2), ((float)levels/2));        
+        adjustedSpeed = MathHelper.scaleRange(adjustedSpeed, -10f, 10f, -(float)levels/5.85f, (float)levels/5.85f);        
         
-        Vector2f control = (new Vector2f((float)levels/2, (float)end/2).add(new Vector2f( 1,  - ((float)end/(float)levels)).scale(speed)));
-        
+        Vector2f control = new Vector2f(0, 0);
+        control.set(new Vector2f((float)levels/2, (float)end/2).add(new Vector2f( 1,  - ((float)end/(float)levels)).scale(adjustedSpeed)));
             
         for (int i = 1; i <= levels; i++) {
             
-            float t = (i - 1)/(float)(levels-1);
+            float t = (float)(Math.sqrt(levels*i-levels+Math.pow(control.x, 2)-2*control.x*i+i)-control.x+1)/(levels-2*control.x+1);
             
             float y = (float) ((1 - t) * (1 - t) * start + 2 * (1 - t) * t * control.y + t * t * end);
             
@@ -118,7 +117,6 @@ public class BattleStats{
             }
         }
     }
-    
     
     
     public int getBaseHP(){
