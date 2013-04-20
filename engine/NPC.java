@@ -13,20 +13,9 @@ import org.newdawn.slick.Image;
  */
 public class NPC extends Event {
 
-    private Image image;
-    private int frame;
-    
 
-    public NPC(float x, float y, int width, int height, String dg, Image i) {
-        super(x, y, width, height, "Npc", dg, null, null);
-        this.image = i;
-        frame = 0;
-    }
-
-    @Override
-    public void render(Graphics g) {
-
-        Sprite.drawSpriteFrame(image, g, pos.x, pos.y, 4, frame, 64, 96);
+    public NPC(float x, float y, String image) {
+        super(x, y, "Npc", image);
     }
 
     public void activate() {
@@ -39,10 +28,5 @@ public class NPC extends Event {
         SceneMap.message.startMessage();
         SceneMap.uiFocus = true;
         //SceneMap.interpreter.setup(list, 0);
-    }
-
-    public void setFrame(int f) {
-
-        frame = f;
-    }
+    } 
 }

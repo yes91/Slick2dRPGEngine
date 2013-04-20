@@ -12,11 +12,9 @@ import org.newdawn.slick.geom.Rectangle;
  *
  * @author redblast71
  */
-public class Event extends GameObject{
+public class Event extends GameCharacter{
     
-    String type;
-    String maploc;
-    String maploc2;
+    public String type;
     public List<EventCommand> commands;
     public String text = "Hey, I'm an NPC.\\| I'm aware I just broke the fourth wall,\n"
                 + "but why does that matter in a tech demo?\\.\\. \\C[31]Kieran\\C[0]'s pretty talented\n"
@@ -24,16 +22,13 @@ public class Event extends GameObject{
                 + "this particular feature, though.\\.\\. I'm having a really nice time on this \n"
                 + "grassy field. How are you?";
     
-    public Event(float x, float y, int width, int height,String type1,String dg, String map, String map2){
+    public Event(float x, float y, String type, String image){
+        super(image);
         super.pos.x = x;
         super.pos.y = y;
-        super.height = height;
-        super.width = width;
         commands = new ArrayList<>();
         commands.add(new EventCommand("SHOW_TEXT", new Object[]{ "", 0, 0, 0, ""}));
-        type = type1;
-        maploc = map;
-        maploc2 = map2;
+        this.type = type;
         
     }
     
@@ -43,8 +38,7 @@ public class Event extends GameObject{
     }
     
     public Rectangle getActivationRect(){
-        
-        return new Rectangle(pos.x-4,pos.y-4,width+10,height+10);
+        return new Rectangle(pos.x - width/2 - 4, pos.y - height/2 - 4, width + 8, height + 8);
     }
     
     

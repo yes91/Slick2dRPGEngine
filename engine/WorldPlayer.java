@@ -9,7 +9,6 @@ import org.newdawn.slick.tiled.TiledMap;
 public class WorldPlayer extends GameCharacter {
 
     private boolean action;
-    private Rectangle bounds;
 
     public WorldPlayer(String image) {
         super(image);
@@ -34,7 +33,6 @@ public class WorldPlayer extends GameCharacter {
         }
         lastPos.set(pos);
         pos.add(deltaPos);
-        bounds.setLocation(pos.x - width/2 + (width/8), pos.y);
         super.update();
     }
     
@@ -45,8 +43,15 @@ public class WorldPlayer extends GameCharacter {
             blocked = true;
         }
         for(Rectangle o: SceneMap.map.listRect){
-            if (Physics.checkCollisions(this, o)) {
+            if (this.bounds.intersects(o)) {
                 blocked = true;
+            }
+        }
+        for(GameObject o: SceneMap.map.objs){
+            if(o instanceof GameCharacter && o != this){
+                if (this.bounds.intersects(((GameCharacter)o).bounds)) {
+                    blocked = true;
+                }
             }
         }
         return blocked;

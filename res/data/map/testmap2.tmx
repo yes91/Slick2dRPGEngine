@@ -31,11 +31,9 @@
   </data>
  </layer>
  <objectgroup color="#a45849" name="Event" width="50" height="50">
-  <object name="Rea" type="Npc" x="1728" y="1280" width="64" height="96">
+  <object name="Rea" type="Npc" x="1755" y="1230" width="64" height="96">
    <properties>
-    <property name="image" value="res/003-Fighter03.png"/>
-    <property name="script" value=""/>
-    <property name="text" value="Hello Atticus!"/>
+    <property name="image" value="003-Fighter03"/>
    </properties>
   </object>
   <object name="Event3" type="Teleport" x="1914" y="1466" width="74" height="74">
@@ -44,9 +42,19 @@
     <property name="map2" value="res/data/map"/>
    </properties>
   </object>
-  <object name="Slime" type="Enemy" x="1476" y="1281" width="96" height="96">
+  <object name="Slime" type="Enemy" x="1472" y="1280" width="64" height="64">
    <properties>
     <property name="Index" value="0"/>
+   </properties>
+  </object>
+  <object name="Ralph" type="Npc" x="1986" y="1278" width="64" height="96">
+   <properties>
+    <property name="image" value="001-Fighter01"/>
+   </properties>
+  </object>
+  <object name="Golem" type="Npc" x="1864" y="1015" width="64" height="96">
+   <properties>
+    <property name="image" value="098-Monster12"/>
    </properties>
   </object>
  </objectgroup>

@@ -76,7 +76,7 @@ public class SceneMap extends SceneBase {
     static Image items;
     //public Input input;
     public static String mapName = "testmap2";
-    public static Map map;
+    public static GameMap map;
     public Image light;
     private TextField console;
     private static ArrayList<Window> uielements;
@@ -89,7 +89,7 @@ public class SceneMap extends SceneBase {
     @Override
     public void enter(GameContainer game, StateBasedGame sbg) throws SlickException{
         super.enter(game, sbg);
-        camera = new Camera(map.map, map.map.getWidth()*map.map.getTileWidth(),map.map.getHeight()*map.map.getTileHeight());
+        camera = new Camera(map, map.getWidth()*map.getTileWidth(),map.getHeight()*map.getTileHeight());
     }
 
     @Override
@@ -122,14 +122,13 @@ public class SceneMap extends SceneBase {
                 }));
         uielements = new ArrayList<>();
         //uielements.add(wind);
-        EnemyReader.populateEnemies();
-        map = new Map(new TiledMapExtra("res/data/map/"+mapName+".tmx", "res/data/map"), worldPlayer);
+        map = new GameMap("res/data/map/"+mapName+".tmx", worldPlayer);
         uiFocus = false;
         music = new Music("res/fatefulencounter.wav");
         //isPlaying = true;
         //music.loop();
         light = new Image("res/LightRays.png");
-        camera = new Camera(map.map, map.map.getWidth()*map.map.getTileWidth(),map.map.getHeight()*map.map.getTileHeight());
+        camera = new Camera(map, map.getWidth()*map.getTileWidth(),map.getHeight()*map.getTileHeight());
         message = new WindowMessage(camera);
         //System.out.println(new GameBattler().stat.getBaseHP());
         final ScriptEngine js = new ScriptEngineManager().getEngineByName("javascript");
@@ -261,7 +260,7 @@ public class SceneMap extends SceneBase {
             lastOption = shaderOption;
         }
         camera.translate(g);
-        map.render(worldPlayer, g);
+        map.render(g);
 
         Collections.sort(map.objs, depthComp);
         for (GameObject go : map.objs) {
@@ -321,8 +320,8 @@ public class SceneMap extends SceneBase {
 
     private void tpPlayer(int tileX, int tileY, WorldPlayer p) {
 
-        p.setX(tileX * map.map.getTileWidth());
-        p.setY(tileY * map.map.getTileHeight());
+        p.setX(tileX * map.getTileWidth());
+        p.setY(tileY * map.getTileHeight());
 
     }
 

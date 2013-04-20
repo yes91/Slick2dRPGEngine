@@ -18,7 +18,7 @@ public class Enemy extends Event{
     private Animation ani;
     
     public Enemy(Image i,String n,int hp, int mp,int atk, int def,int matk,int mdef){   
-        super(0,0,0,0,"Enemy",null,null,null);
+        super(0,0,"Enemy", n);
         SpriteSheet sheet = new SpriteSheet(i, 4, 4);
         this.width = sheet.getWidth()/sheet.getHorizontalCount();
         this.height = sheet.getHeight()/sheet.getVerticalCount();

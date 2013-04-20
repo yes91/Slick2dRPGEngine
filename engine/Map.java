@@ -20,8 +20,9 @@ import org.newdawn.slick.tiled.TiledMap;
  *
  * @author Kieran
  */
+@Deprecated
 public class Map {
-    
+    /*
     public TiledMap map;
     public Music BGM;
     public Image battleback;
@@ -132,5 +133,5 @@ public class Map {
         }
         
     }
-    
+    */
 }

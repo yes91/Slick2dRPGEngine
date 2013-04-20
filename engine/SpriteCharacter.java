@@ -53,7 +53,12 @@ public class SpriteCharacter extends SpriteBase {
     public Animation getIdle() {
         return idle;
     }
+    
+    public void setState(int state){
+        idle = states[state];
+    }
 
+    @Override
     public void update() {
         if (gChar.deltaPos.x > 0) {
             idle = states[IDLE_RIGHT];
