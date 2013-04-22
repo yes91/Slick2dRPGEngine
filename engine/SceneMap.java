@@ -25,12 +25,14 @@ import org.newdawn.slick.Image;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.Music;
 import org.newdawn.slick.SlickException;
+import org.newdawn.slick.geom.Rectangle;
 import org.newdawn.slick.gui.AbstractComponent;
 import org.newdawn.slick.gui.ComponentListener;
 import org.newdawn.slick.gui.TextField;
 import org.newdawn.slick.opengl.renderer.Renderer;
 import org.newdawn.slick.opengl.renderer.SGL;
 import org.newdawn.slick.state.StateBasedGame;
+import util.MathHelper;
 
 /**
  *
@@ -68,6 +70,8 @@ public class SceneMap extends SceneBase {
     private Image lightBuffer;
     private Graphics lg;
     private Image consoleBuffer;
+    private Image miniMap;
+    private Graphics mg;
     private Graphics cg;
     private Image fire1;
     private Image fire2;
@@ -102,6 +106,9 @@ public class SceneMap extends SceneBase {
         consoleBuffer = new Image(B_WIDTH, B_HEIGHT);
         cg = consoleBuffer.getGraphics();
         buffer = new Image(B_WIDTH, B_HEIGHT);
+        miniMap = new Image(400, 400);
+        mg = miniMap.getGraphics();
+        mg.setAntiAlias(true);
         allowClose = false;
         //container.setMaximumLogicUpdateInterval(60);
         worldPlayer = new WorldPlayer("steampunk_m4");
@@ -305,10 +312,94 @@ public class SceneMap extends SceneBase {
         for (Window w : uielements) {
             w.render(g, sbg);
         }
+        
+        if(input.isKeyDown(Input.KEY_EQUALS)){
+            mScale += 0.05f;
+        } else if(input.isKeyDown(Input.KEY_MINUS)){
+            mScale -= 0.05f;
+        }
+        
+        mScale = MathHelper.clamp(mScale, 1.0f, 10.0f);
+        
+        drawMiniMap(mg, mScale);
+        mg.flush();
+        miniMap.setAlpha(0.5f);
+        miniMap.draw(Camera.viewPort.getX() + B_WIDTH - 10 - 200, Camera.viewPort.getY() + 10, 200, 200);
+        
         console.render(container, cg);
         cg.flush();
         g.drawImage(consoleBuffer, Camera.viewPort.getX(), Camera.viewPort.getY());
     }
+    
+    float mScale = 1.0f;
+    
+    public void drawMiniMap(Graphics g, float scale){
+        Color previous = g.getColor();
+        g.setColor(Color.white);
+        int width = miniMap.getWidth();
+        int height = miniMap.getHeight();
+        
+        //float scale = 2.0f;
+        
+        g.fillRect(0, 0, width, height);
+        g.setColor(Color.darkGray);
+        g.fillRect(5, 5, width - 10, height - 10);
+        //g.setClip(5, 5, width - 10, height - 10);
+        g.setColor(Color.white);
+        Rectangle mapBounds = new Rectangle(0, 0, map.boundsX, map.boundsY);
+        Rectangle e = mapRect(mapBounds, 0, scale);
+        g.setLineWidth(2);
+        g.drawRect(e.getX(), e.getY(), e.getWidth(), e.getHeight());
+        
+        for(Rectangle r: map.listRect){
+            Rectangle t = mapRect(r, 0, scale);
+            g.fillRect(t.getX(), t.getY(), t.getWidth(), t.getHeight());
+        }
+        
+        for(GameObject o: map.objs){
+            if(o instanceof GameCharacter){
+                
+            float scaleFix = MathHelper.clamp(24*scale, 24, 24*10.0f);
+            
+            Rectangle r = new Rectangle(o.pos.x - scaleFix, o.pos.y - scaleFix, 2*scaleFix, 2*scaleFix);
+            g.setColor(Color.white);
+            fillOval(g, mapRect(r, 0, scale));
+                if(o instanceof WorldPlayer){
+                    g.setColor(Color.cyan);
+                } else if(o instanceof NPC){
+                    g.setColor(Color.green);
+                } else {
+                    g.setColor(Color.red);
+                }
+                int offset = width/100;
+                fillOval(g, mapRect(r, offset, scale));
+            }
+        }
+        g.clearClip();
+        g.setColor(previous);
+    }
+    
+    public void fillOval(Graphics g, Rectangle r){
+        g.fillOval(r.getX(), r.getY(), r.getWidth(), r.getHeight());
+    }
+    
+    public Rectangle mapRect(Rectangle r, int offset, float scale){
+        int width = miniMap.getWidth();
+        int height = miniMap.getHeight();
+        int aspectWidth = 16 * (height/9);
+        
+        Rectangle cam = Camera.viewPort;
+        Rectangle sample = new Rectangle(-(B_WIDTH/2f)*scale + cam.getCenterX(), -(B_HEIGHT/2f)*scale + cam.getCenterY(), B_WIDTH*scale, B_HEIGHT*scale);
+        
+        float x = MathHelper.scaleRange(r.getX() - sample.getX(), 0, sample.getWidth(), 0, aspectWidth) - ((aspectWidth - width)/2) + offset;
+        float y = MathHelper.scaleRange(r.getY() - sample.getY(), 0, sample.getHeight(), 0, height) + offset;
+        float rWidth = MathHelper.scaleRange(r.getWidth(), 0, sample.getWidth(), 0, aspectWidth) - 2*offset; 
+        float rHeight = MathHelper.scaleRange(r.getHeight(), 0, sample.getHeight(), 0, height) - 2*offset;
+        
+        return new Rectangle(x, y, rWidth, rHeight);
+    }
+    
+    
     
     public static Camera getCamera(){
         return camera;
@@ -316,13 +407,6 @@ public class SceneMap extends SceneBase {
     
     public static void setCamera(Camera c){
         camera = c;
-    }
-
-    private void tpPlayer(int tileX, int tileY, WorldPlayer p) {
-
-        p.setX(tileX * map.getTileWidth());
-        p.setY(tileY * map.getTileHeight());
-
     }
 
     public static Image getImage() {
