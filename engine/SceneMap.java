@@ -32,6 +32,7 @@ import org.newdawn.slick.gui.TextField;
 import org.newdawn.slick.opengl.renderer.Renderer;
 import org.newdawn.slick.opengl.renderer.SGL;
 import org.newdawn.slick.state.StateBasedGame;
+import org.newdawn.slick.util.MaskUtil;
 import util.MathHelper;
 
 /**
@@ -106,6 +107,7 @@ public class SceneMap extends SceneBase {
         cg = consoleBuffer.getGraphics();
         buffer = new Image(B_WIDTH, B_HEIGHT);
         miniMap = new Image(400, 400);
+        miniMap.setFilter(SGL.GL_LINEAR);
         mg = miniMap.getGraphics();
         mg.setAntiAlias(true);
         allowClose = false;
@@ -284,6 +286,7 @@ public class SceneMap extends SceneBase {
             fire2.draw(1536, 1710);
         }
         count += 0.04f;
+         
         
         if(isLit){
             /*g.setDrawMode(Graphics.MODE_COLOR_MULTIPLY);
@@ -301,7 +304,7 @@ public class SceneMap extends SceneBase {
             ShaderProgram.unbind();
         }
         
-        g.copyArea(buffer, 0, 0);
+        
         /*g.setColor(Color.yellow);
          g.drawRect(camera.viewPort.getX() + 5, 
           camera.viewPort.getY() + 5,
@@ -320,8 +323,8 @@ public class SceneMap extends SceneBase {
         
         mScale = MathHelper.clamp(mScale, 1.0f, 10.0f);
         
+        //mg.setAntiAlias(true);
         drawMiniMap(mg, mScale);
-        mg.flush();
         miniMap.setAlpha(0.5f);
         miniMap.draw(Camera.viewPort.getX() + B_WIDTH - 10 - 200, Camera.viewPort.getY() + 10, 200, 200);
         
@@ -430,6 +433,7 @@ public class SceneMap extends SceneBase {
 
     public void makeMenuBack(GameContainer gc) {
         Graphics g = gc.getGraphics();
+        g.copyArea(buffer, 0, 0);
         gc.pause();
         blurH.bind();
         g.drawImage(buffer, 0, 0);
