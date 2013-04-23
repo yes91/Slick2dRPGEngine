@@ -26,8 +26,6 @@ public class GameMap extends TiledMap {
     public ArrayList<Event> events;
     public ArrayList<GameObject> objs;
     public ArrayList<Rectangle> listRect;
-    public int boundsX;
-    public int boundsY;
 
     public GameMap(String res, WorldPlayer p) throws SlickException {
         super(res);
@@ -35,8 +33,6 @@ public class GameMap extends TiledMap {
         listRect = new ArrayList<>();
         objs = new ArrayList<>();
         BGM = GameCache.bgm("fatefulencounter.wav");
-        boundsX = getWidth() * getTileWidth();
-        boundsY = getHeight() * getTileHeight();
         objs = new ArrayList<>();
         listRect = new ArrayList<>();
         for (int xAxis = 0; xAxis < getWidth(); xAxis++) {
@@ -74,6 +70,14 @@ public class GameMap extends TiledMap {
         }
         objs.add(p);
         p.tp(Float.parseFloat(getMapProperty("startPosx", "1")) * 64 + p.bounds.getWidth(), Float.parseFloat(getMapProperty("startPosy", "1")) * 64 + p.bounds.getHeight());
+    }
+    
+    public int getPixelWidth(){
+        return getWidth() * getTileWidth();
+    }
+    
+    public int getPixelHeight(){
+        return getHeight() * getTileHeight();
     }
 
     public void render(Graphics g) {

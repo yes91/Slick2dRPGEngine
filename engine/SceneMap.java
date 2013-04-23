@@ -32,6 +32,7 @@ import org.newdawn.slick.gui.TextField;
 import org.newdawn.slick.opengl.renderer.Renderer;
 import org.newdawn.slick.opengl.renderer.SGL;
 import org.newdawn.slick.state.StateBasedGame;
+import org.newdawn.slick.util.MaskUtil;
 import util.MathHelper;
 
 /**
@@ -93,7 +94,7 @@ public class SceneMap extends SceneBase {
     @Override
     public void enter(GameContainer game, StateBasedGame sbg) throws SlickException{
         super.enter(game, sbg);
-        camera = new Camera(map, map.getWidth()*map.getTileWidth(),map.getHeight()*map.getTileHeight());
+        camera = new Camera(map, map.getPixelWidth(),map.getPixelHeight());
     }
 
     @Override
@@ -107,6 +108,7 @@ public class SceneMap extends SceneBase {
         cg = consoleBuffer.getGraphics();
         buffer = new Image(B_WIDTH, B_HEIGHT);
         miniMap = new Image(400, 400);
+        miniMap.setFilter(SGL.GL_LINEAR);
         mg = miniMap.getGraphics();
         mg.setAntiAlias(true);
         allowClose = false;
@@ -285,6 +287,7 @@ public class SceneMap extends SceneBase {
             fire2.draw(1536, 1710);
         }
         count += 0.04f;
+         
         
         if(isLit){
             /*g.setDrawMode(Graphics.MODE_COLOR_MULTIPLY);
@@ -302,7 +305,7 @@ public class SceneMap extends SceneBase {
             ShaderProgram.unbind();
         }
         
-        g.copyArea(buffer, 0, 0);
+        
         /*g.setColor(Color.yellow);
          g.drawRect(camera.viewPort.getX() + 5, 
           camera.viewPort.getY() + 5,
@@ -321,8 +324,8 @@ public class SceneMap extends SceneBase {
         
         mScale = MathHelper.clamp(mScale, 1.0f, 10.0f);
         
+        //mg.setAntiAlias(true);
         drawMiniMap(mg, mScale);
-        mg.flush();
         miniMap.setAlpha(0.5f);
         miniMap.draw(Camera.viewPort.getX() + B_WIDTH - 10 - 200, Camera.viewPort.getY() + 10, 200, 200);
         
@@ -334,19 +337,16 @@ public class SceneMap extends SceneBase {
     float mScale = 1.0f;
     
     public void drawMiniMap(Graphics g, float scale){
-        Color previous = g.getColor();
-        g.setColor(Color.white);
+        g.clear();
+        g.setColor(Color.darkGray);
         int width = miniMap.getWidth();
         int height = miniMap.getHeight();
-        
-        //float scale = 2.0f;
-        
-        g.fillRect(0, 0, width, height);
-        g.setColor(Color.darkGray);
-        g.fillRect(5, 5, width - 10, height - 10);
-        //g.setClip(5, 5, width - 10, height - 10);
+        g.fillOval(0, 0, width, height);
         g.setColor(Color.white);
-        Rectangle mapBounds = new Rectangle(0, 0, map.boundsX, map.boundsY);
+        g.fillOval(5, 5, width - 10, height - 10);
+        g.setDrawMode(Graphics.MODE_ALPHA_BLEND);
+        g.setColor(Color.darkGray);
+        Rectangle mapBounds = new Rectangle(0, 0, map.getPixelWidth(), map.getPixelHeight());
         Rectangle e = mapRect(mapBounds, 0, scale);
         g.setLineWidth(2);
         g.drawRect(e.getX(), e.getY(), e.getWidth(), e.getHeight());
@@ -362,7 +362,7 @@ public class SceneMap extends SceneBase {
             float scaleFix = MathHelper.clamp(24*scale, 24, 24*10.0f);
             
             Rectangle r = new Rectangle(o.pos.x - scaleFix, o.pos.y - scaleFix, 2*scaleFix, 2*scaleFix);
-            g.setColor(Color.white);
+            g.setColor(Color.darkGray);
             fillOval(g, mapRect(r, 0, scale));
                 if(o instanceof WorldPlayer){
                     g.setColor(Color.cyan);
@@ -375,8 +375,7 @@ public class SceneMap extends SceneBase {
                 fillOval(g, mapRect(r, offset, scale));
             }
         }
-        g.clearClip();
-        g.setColor(previous);
+        g.flush();
     }
     
     public void fillOval(Graphics g, Rectangle r){
@@ -435,6 +434,7 @@ public class SceneMap extends SceneBase {
 
     public void makeMenuBack(GameContainer gc) {
         Graphics g = gc.getGraphics();
+        g.copyArea(buffer, 0, 0);
         gc.pause();
         blurH.bind();
         g.drawImage(buffer, 0, 0);
