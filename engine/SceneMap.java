@@ -93,7 +93,6 @@ public class SceneMap extends SceneBase {
     @Override
     public void enter(GameContainer game, StateBasedGame sbg) throws SlickException{
         super.enter(game, sbg);
-        camera = new Camera(map, map.getWidth()*map.getTileWidth(),map.getHeight()*map.getTileHeight());
     }
 
     @Override
@@ -135,7 +134,7 @@ public class SceneMap extends SceneBase {
         //isPlaying = true;
         //music.loop();
         light = new Image("res/LightRays.png");
-        camera = new Camera(map, map.getWidth()*map.getTileWidth(),map.getHeight()*map.getTileHeight());
+        camera = new Camera(map);
         message = new WindowMessage(camera);
         //System.out.println(new GameBattler().stat.getBaseHP());
         final ScriptEngine js = new ScriptEngineManager().getEngineByName("javascript");
@@ -335,18 +334,15 @@ public class SceneMap extends SceneBase {
     
     public void drawMiniMap(Graphics g, float scale){
         Color previous = g.getColor();
-        g.setColor(Color.white);
+        g.setColor(Color.darkGray);
         int width = miniMap.getWidth();
         int height = miniMap.getHeight();
-        
-        //float scale = 2.0f;
-        
-        g.fillRect(0, 0, width, height);
-        g.setColor(Color.darkGray);
-        g.fillRect(5, 5, width - 10, height - 10);
-        //g.setClip(5, 5, width - 10, height - 10);
+        g.fillOval(0, 0, width, height);
         g.setColor(Color.white);
-        Rectangle mapBounds = new Rectangle(0, 0, map.boundsX, map.boundsY);
+        g.fillOval(5, 5, width - 10, height - 10);
+        g.setDrawMode(Graphics.MODE_ALPHA_BLEND);
+        g.setColor(Color.darkGray);
+        Rectangle mapBounds = new Rectangle(0, 0, map.getPixelWidth(), map.getPixelHeight());
         Rectangle e = mapRect(mapBounds, 0, scale);
         g.setLineWidth(2);
         g.drawRect(e.getX(), e.getY(), e.getWidth(), e.getHeight());
@@ -362,7 +358,7 @@ public class SceneMap extends SceneBase {
             float scaleFix = MathHelper.clamp(24*scale, 24, 24*10.0f);
             
             Rectangle r = new Rectangle(o.pos.x - scaleFix, o.pos.y - scaleFix, 2*scaleFix, 2*scaleFix);
-            g.setColor(Color.white);
+            g.setColor(Color.darkGray);
             fillOval(g, mapRect(r, 0, scale));
                 if(o instanceof WorldPlayer){
                     g.setColor(Color.cyan);
@@ -375,7 +371,7 @@ public class SceneMap extends SceneBase {
                 fillOval(g, mapRect(r, offset, scale));
             }
         }
-        g.clearClip();
+        g.setDrawMode(Graphics.MODE_NORMAL);
         g.setColor(previous);
     }
     
@@ -399,14 +395,13 @@ public class SceneMap extends SceneBase {
         return new Rectangle(x, y, rWidth, rHeight);
     }
     
-    
+    public static void setMap(GameMap newMap){
+        map = newMap;
+        camera.setMap(newMap);
+    }
     
     public static Camera getCamera(){
         return camera;
-    }
-    
-    public static void setCamera(Camera c){
-        camera = c;
     }
 
     public static Image getImage() {

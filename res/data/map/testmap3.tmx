@@ -29,8 +29,7 @@
  <objectgroup name="Event" width="25" height="25">
   <object name="Event1" type="Teleport" x="826" y="890" width="74" height="74">
    <properties>
-    <property name="map" value="res/data/map/testmap2.tmx"/>
-    <property name="map2" value="res/data/map"/>
+    <property name="map" value="testmap2"/>
    </properties>
   </object>
  </objectgroup>

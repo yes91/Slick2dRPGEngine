@@ -25,14 +25,19 @@ public class Camera {
 	 * be able to move this rectangle across the map. */
  
  
-	public Camera(TiledMap map, int mapWidth, int mapHeight) {
+	public Camera(GameMap map) {
 		transX = 0;
 		transY = 0;
 		viewPort = new Rectangle(0, 0, SceneMap.B_WIDTH, SceneMap.B_HEIGHT);
-		this.mapWidth = mapWidth;
-		this.mapHeight = mapHeight;
+		this.mapWidth = map.getPixelWidth();
+		this.mapHeight = map.getPixelHeight();
                 target = SceneBase.worldPlayer;
 	}
+        
+        public void setMap(GameMap map){
+            this.mapWidth = map.getPixelWidth();
+            this.mapHeight = map.getPixelHeight();
+        }
         
         public void setTarget(GameObject go){
             target = go;

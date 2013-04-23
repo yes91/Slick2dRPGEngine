@@ -26,8 +26,6 @@ public class GameMap extends TiledMap {
     public ArrayList<Event> events;
     public ArrayList<GameObject> objs;
     public ArrayList<Rectangle> listRect;
-    public int boundsX;
-    public int boundsY;
 
     public GameMap(String res, WorldPlayer p) throws SlickException {
         super(res);
@@ -35,16 +33,12 @@ public class GameMap extends TiledMap {
         listRect = new ArrayList<>();
         objs = new ArrayList<>();
         BGM = GameCache.bgm("fatefulencounter.wav");
-        boundsX = getWidth() * getTileWidth();
-        boundsY = getHeight() * getTileHeight();
-        objs = new ArrayList<>();
-        listRect = new ArrayList<>();
         for (int xAxis = 0; xAxis < getWidth(); xAxis++) {
             for (int yAxis = 0; yAxis < getHeight(); yAxis++) {
                 int tileID = getTileId(xAxis, yAxis, 2);
                 String value = getTileProperty(tileID, "blocked", "false");
                 if ("true".equals(value)) {
-                    listRect.add(new Rectangle(xAxis * 64, yAxis * 64, getTileWidth(), getTileHeight()));
+                    listRect.add(new Rectangle(xAxis * getTileWidth(), yAxis * getTileHeight(), getTileWidth(), getTileHeight()));
                 }
             }
         }
@@ -62,7 +56,9 @@ public class GameMap extends TiledMap {
 
             }
             if ("Teleport".equals(value)) {
-                events.add(new Event(getObjectX(0, Object), getObjectY(0, Object), value, null));
+                Event e = new Event(getObjectX(0, Object), getObjectY(0, Object), value, null);
+                e.map = getObjectProperty(0, Object, "map", "");
+                events.add(e);
             }
 
             if ("Enemy".equals(value)) {
@@ -75,6 +71,14 @@ public class GameMap extends TiledMap {
         objs.add(p);
         p.tp(Float.parseFloat(getMapProperty("startPosx", "1")) * 64 + p.bounds.getWidth(), Float.parseFloat(getMapProperty("startPosy", "1")) * 64 + p.bounds.getHeight());
     }
+    
+    public int getPixelWidth(){
+        return getWidth() * getTileWidth();
+    }
+    
+    public int getPixelHeight(){
+        return getHeight() * getTileHeight();
+    }
 
     public void render(Graphics g) {
         render(0, 0, 0);
@@ -86,7 +90,7 @@ public class GameMap extends TiledMap {
             go.update();
         }
         for (Event e : events) {
-            if (Physics.checkCollisions(p, e.getActivationRect()) && p.getAction() == true) {
+            if (p.bounds.intersects(e.getActivationRect()) && p.getAction() == true) {
                 if (e.getType().equals("Actor") || e.getType().equals("Npc")) {
                     NPC npc = (NPC) e;
                     if (e.getType().equals("Npc")) {
@@ -110,8 +114,7 @@ public class GameMap extends TiledMap {
                 }
                 if (e.getType().equals("Teleport")) {
                     container.pause();
-                    SceneMap.map = new GameMap("", p);
-                    SceneMap.setCamera(new Camera(SceneMap.map, SceneMap.map.getWidth() * 64, SceneMap.map.getHeight() * 64));
+                    SceneMap.setMap(new GameMap("res/data/map/"+e.map+".tmx", p));
                     container.resume();
                 }
             }

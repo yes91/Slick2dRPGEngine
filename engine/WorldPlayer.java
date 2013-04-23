@@ -39,7 +39,7 @@ public class WorldPlayer extends GameCharacter {
     @Override
     public boolean collide(){
         boolean blocked = false;
-        if(pos.x + width/2  > SceneMap.map.boundsX || pos.y + height/2 > SceneMap.map.boundsY || pos.x - width/2 < 0 || pos.y - height/2 < 0){
+        if(pos.x + width/2  > SceneMap.map.getPixelWidth() || pos.y + height/2 > SceneMap.map.getPixelHeight() || pos.x - width/2 < 0 || pos.y - height/2 < 0){
             blocked = true;
         }
         for(Rectangle o: SceneMap.map.listRect){

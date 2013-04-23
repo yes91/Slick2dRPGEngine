@@ -6,6 +6,7 @@ package engine;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Properties;
 import org.newdawn.slick.geom.Rectangle;
 
 /**
@@ -15,6 +16,7 @@ import org.newdawn.slick.geom.Rectangle;
 public class Event extends GameCharacter{
     
     public String type;
+    public String map;
     public List<EventCommand> commands;
     public String text = "Hey, I'm an NPC.\\| I'm aware I just broke the fourth wall,\n"
                 + "but why does that matter in a tech demo?\\.\\. \\C[31]Kieran\\C[0]'s pretty talented\n"

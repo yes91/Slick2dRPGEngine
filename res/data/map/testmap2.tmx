@@ -38,8 +38,7 @@
   </object>
   <object name="Event3" type="Teleport" x="1914" y="1466" width="74" height="74">
    <properties>
-    <property name="map" value="res/data/map/testmap3.tmx"/>
-    <property name="map2" value="res/data/map"/>
+    <property name="map" value="testmap3"/>
    </properties>
   </object>
   <object name="Slime" type="Enemy" x="1472" y="1280" width="64" height="64">
