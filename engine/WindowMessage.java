@@ -31,14 +31,14 @@ public class WindowMessage extends WindowSelectable {
     private int contY = 0;
 
     public WindowMessage() throws SlickException {
-        super(0, (int) (SceneMap.B_HEIGHT * 0.82), SceneMap.B_WIDTH, (int) (SceneMap.B_HEIGHT * 0.18));
+        super(0, SceneMap.B_HEIGHT - ((24 * 4) + 32), SceneMap.B_WIDTH, (24 * 4) + 32);
         this.index = -1;
         this.itemMax = 0;
         this.gameMessage = SceneBase.gameMessage;
     }
     
     public WindowMessage(Camera camera) throws SlickException {
-        super(0, (int) (SceneMap.B_HEIGHT * 0.82), SceneMap.B_WIDTH, (int) (SceneMap.B_HEIGHT * 0.18));
+        super(0, SceneMap.B_HEIGHT - ((24 * 4) + 32), SceneMap.B_WIDTH, (24 * 4) + 32);
         this.index = -1;
         this.itemMax = 0;
         this.gameMessage = SceneBase.gameMessage;

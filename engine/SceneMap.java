@@ -25,15 +25,12 @@ import org.newdawn.slick.Image;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.Music;
 import org.newdawn.slick.SlickException;
-import org.newdawn.slick.geom.Rectangle;
 import org.newdawn.slick.gui.AbstractComponent;
 import org.newdawn.slick.gui.ComponentListener;
 import org.newdawn.slick.gui.TextField;
 import org.newdawn.slick.opengl.renderer.Renderer;
 import org.newdawn.slick.opengl.renderer.SGL;
 import org.newdawn.slick.state.StateBasedGame;
-import org.newdawn.slick.util.MaskUtil;
-import util.MathHelper;
 
 /**
  *
@@ -71,15 +68,13 @@ public class SceneMap extends SceneBase {
     private Image lightBuffer;
     private Graphics lg;
     private Image consoleBuffer;
-    private Image miniMap;
-    private Graphics mg;
     private Graphics cg;
     private Image fire1;
     private Image fire2;
     private float count;
     private boolean isLit;
     static Image items;
-    //public Input input;
+    public MiniMap mini;
     public static String mapName = "testmap2";
     public static GameMap map;
     public Image light;
@@ -106,10 +101,7 @@ public class SceneMap extends SceneBase {
         consoleBuffer = new Image(B_WIDTH, B_HEIGHT);
         cg = consoleBuffer.getGraphics();
         buffer = new Image(B_WIDTH, B_HEIGHT);
-        miniMap = new Image(400, 400);
-        miniMap.setFilter(SGL.GL_LINEAR);
-        mg = miniMap.getGraphics();
-        mg.setAntiAlias(true);
+        mini = new MiniMap();
         allowClose = false;
         //container.setMaximumLogicUpdateInterval(60);
         worldPlayer = new WorldPlayer("steampunk_m4");
@@ -189,7 +181,9 @@ public class SceneMap extends SceneBase {
             sbg.getState(2).update(container, sbg, delta);
             sbg.enterState(2);
         }
-
+        
+        mini.update(input);
+          
         if (uiFocus == true) {
             if (inputp.isCommandControlDown(cancel) && allowClose) {
                 uielements.remove(lastAdded);
@@ -274,8 +268,6 @@ public class SceneMap extends SceneBase {
         for (GameObject go : map.objs) {
             go.render(g);
         }
-        
-        
 
         if (count > 2) {
             count = 0;
@@ -310,93 +302,18 @@ public class SceneMap extends SceneBase {
           camera.viewPort.getY() + 5,
           camera.viewPort.getWidth() - 10, 
           camera.viewPort.getHeight() - 10);*/
-
-        for (Window w : uielements) {
-            w.render(g, sbg);
-        }
         
-        if(input.isKeyDown(Input.KEY_EQUALS)){
-            mScale += 0.05f;
-        } else if(input.isKeyDown(Input.KEY_MINUS)){
-            mScale -= 0.05f;
-        }
-        
-        mScale = MathHelper.clamp(mScale, 1.0f, 10.0f);
-        
-        //mg.setAntiAlias(true);
-        drawMiniMap(mg, mScale);
-        miniMap.setAlpha(0.5f);
-        miniMap.draw(Camera.viewPort.getX() + B_WIDTH - 10 - 200, Camera.viewPort.getY() + 10, 200, 200);
+        mini.render(g, map);
         
         console.render(container, cg);
         cg.flush();
         g.drawImage(consoleBuffer, Camera.viewPort.getX(), Camera.viewPort.getY());
+        
+        for (Window w : uielements) {
+            w.render(g, sbg);
+        } 
     }
     
-    float mScale = 1.0f;
-    
-    public void drawMiniMap(Graphics g, float scale){
-        Color previous = g.getColor();
-        g.setColor(Color.darkGray);
-        int width = miniMap.getWidth();
-        int height = miniMap.getHeight();
-        g.fillOval(0, 0, width, height);
-        g.setColor(Color.white);
-        g.fillOval(5, 5, width - 10, height - 10);
-        g.setDrawMode(Graphics.MODE_ALPHA_BLEND);
-        g.setColor(Color.darkGray);
-        Rectangle mapBounds = new Rectangle(0, 0, map.getPixelWidth(), map.getPixelHeight());
-        Rectangle e = mapRect(mapBounds, 0, scale);
-        g.setLineWidth(2);
-        g.drawRect(e.getX(), e.getY(), e.getWidth(), e.getHeight());
-        
-        for(Rectangle r: map.listRect){
-            Rectangle t = mapRect(r, 0, scale);
-            g.fillRect(t.getX(), t.getY(), t.getWidth(), t.getHeight());
-        }
-        
-        for(GameObject o: map.objs){
-            if(o instanceof GameCharacter){
-                
-            float scaleFix = MathHelper.clamp(24*scale, 24, 24*10.0f);
-            
-            Rectangle r = new Rectangle(o.pos.x - scaleFix, o.pos.y - scaleFix, 2*scaleFix, 2*scaleFix);
-            g.setColor(Color.darkGray);
-            fillOval(g, mapRect(r, 0, scale));
-                if(o instanceof WorldPlayer){
-                    g.setColor(Color.cyan);
-                } else if(o instanceof NPC){
-                    g.setColor(Color.green);
-                } else {
-                    g.setColor(Color.red);
-                }
-                int offset = width/100;
-                fillOval(g, mapRect(r, offset, scale));
-            }
-        }
-        g.setDrawMode(Graphics.MODE_NORMAL);
-        g.setColor(previous);
-    }
-    
-    public void fillOval(Graphics g, Rectangle r){
-        g.fillOval(r.getX(), r.getY(), r.getWidth(), r.getHeight());
-    }
-    
-    public Rectangle mapRect(Rectangle r, int offset, float scale){
-        int width = miniMap.getWidth();
-        int height = miniMap.getHeight();
-        int aspectWidth = 16 * (height/9);
-        
-        Rectangle cam = Camera.viewPort;
-        Rectangle sample = new Rectangle(-(B_WIDTH/2f)*scale + cam.getCenterX(), -(B_HEIGHT/2f)*scale + cam.getCenterY(), B_WIDTH*scale, B_HEIGHT*scale);
-        
-        float x = MathHelper.scaleRange(r.getX() - sample.getX(), 0, sample.getWidth(), 0, aspectWidth) - ((aspectWidth - width)/2) + offset;
-        float y = MathHelper.scaleRange(r.getY() - sample.getY(), 0, sample.getHeight(), 0, height) + offset;
-        float rWidth = MathHelper.scaleRange(r.getWidth(), 0, sample.getWidth(), 0, aspectWidth) - 2*offset; 
-        float rHeight = MathHelper.scaleRange(r.getHeight(), 0, sample.getHeight(), 0, height) - 2*offset;
-        
-        return new Rectangle(x, y, rWidth, rHeight);
-    }
     
     public static void setMap(GameMap newMap){
         map = newMap;
